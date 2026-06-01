@@ -14,6 +14,8 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,7 +40,7 @@ jobs:
       - name: Create release PR or publish to npm
         uses: changesets/action@v1
         with:
-          publish: pnpm changeset publish
+          publish: pnpm publish --access public --no-git-checks
           title: "chore: version packages"
           commit: "chore: version packages"
         env:

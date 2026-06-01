@@ -28,6 +28,7 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+          registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -38,7 +39,7 @@ jobs:
       - name: Create release PR or publish to npm
         uses: changesets/action@v1
         with:
-          publish: pnpm publish --access public --no-git-checks
+          publish: npm publish --access public
           title: "chore: version packages"
           commit: "chore: version packages"
         env:

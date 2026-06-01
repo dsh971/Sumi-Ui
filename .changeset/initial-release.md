@@ -1,8 +1,8 @@
 ---
-"@sumi/ui": major
+"@sumiui/react": major
 ---
 
-Initial release of `@sumi/ui` — React component library implementing the Sumi Design System (水墨).
+Initial release of `@sumiui/react` — React component library implementing the Sumi Design System (水墨).
 
 **20 components across 7 phases:**
 

@@ -1,0 +1,165 @@
+import { Meta, ColorPalette, ColorItem, Typeset } from "@storybook/blocks";
+
+<Meta title="Tokens" />
+
+# Design Tokens
+
+All values are CSS custom properties defined in `dist/sumi.css`. Import `@sumiui/react/styles` once and reference them via `var(--token-name)` or the mapped Tailwind utilities.
+
+---
+
+## Surfaces
+
+<ColorPalette>
+  <ColorItem title="Background" subtitle="Page surfaces" colors={{ "bg-0 · page": "#f7f4eb", "bg-1 · card": "#f1ecdd", "bg-2 · sunken": "#ebe5d8", "bg-3 · pressed": "#dcd2ba" }} />
+  <ColorItem title="Overlay" subtitle="Modal scrims" colors={{ "bg-overlay": "rgba(28,27,26,0.32)", "bg-scrim": "rgba(28,27,26,0.55)" }} />
+</ColorPalette>
+
+---
+
+## Foregrounds
+
+<ColorPalette>
+  <ColorItem title="Text" subtitle="Ink hierarchy" colors={{ "fg-1 · primary": "#1c1b1a", "fg-2 · secondary": "#5c564e", "fg-3 · tertiary": "#9a9184", "fg-4 · quaternary": "#c4bcb2" }} />
+</ColorPalette>
+
+---
+
+## Semantic Accents
+
+<ColorPalette>
+  <ColorItem title="Primary" subtitle="--accent family" colors={{ accent: "#1e4d2b", "accent-hover": "#1f6357", "accent-strong": "#163821" }} />
+  <ColorItem title="Secondary" subtitle="--secondary family" colors={{ secondary: "#1c3b57", "secondary-soft": "#e8f0f7", "secondary-strong": "#132840" }} />
+  <ColorItem title="Highlight" subtitle="--highlight family (cinnabar)" colors={{ highlight: "#a62b2b", "highlight-soft": "#fdf0f0", "highlight-strong": "#862020" }} />
+</ColorPalette>
+
+---
+
+## Status
+
+<ColorPalette>
+  <ColorItem title="Success" colors={{ "status-success": "#1e4d2b", "status-success-bg": "#eaf2ec" }} />
+  <ColorItem title="Warning" colors={{ "status-warning": "#9f5217", "status-warning-bg": "#fff8ec" }} />
+  <ColorItem title="Danger" colors={{ "status-danger": "#a62b2b", "status-danger-bg": "#fdf0f0" }} />
+  <ColorItem title="Info" colors={{ "status-info": "#1c3b57", "status-info-bg": "#e8f0f7" }} />
+</ColorPalette>
+
+---
+
+## Color Scales
+
+<ColorPalette>
+  <ColorItem title="Malachite 翠" subtitle="Primary brand" colors={{ 50: "#eaf2ec", 100: "#d0e5d4", 200: "#a8ccaf", 300: "#78ae83", 400: "#4f9060", 500: "#336d49", 600: "#265436", 700: "#1e4d2b", 800: "#163821", 900: "#0e2416" }} />
+  <ColorItem title="Azurite 藍" subtitle="Secondary brand" colors={{ 50: "#e8f0f7", 100: "#ccdae9", 200: "#99b5d3", 300: "#6690bd", 400: "#3d6fa0", 500: "#2a5683", 600: "#1f4166", 700: "#1c3b57", 800: "#132840", 900: "#0b1a2a" }} />
+  <ColorItem title="Cinnabar 朱" subtitle="Seal · danger" colors={{ 50: "#fdf0f0", 100: "#fadada", 200: "#f4b4b4", 300: "#eb8888", 400: "#de5a5a", 500: "#ce3535", 600: "#a62b2b", 700: "#862020", 800: "#641717", 900: "#420f0f" }} />
+  <ColorItem title="Ink 墨" subtitle="Text · rules" colors={{ 50: "#f4f3f2", 100: "#e4e2df", 200: "#c9c5c0", 300: "#aaa49c", 400: "#8a837a", 500: "#6e665c", 600: "#5c564e", 700: "#47423c", 800: "#1c1b1a", 900: "#0e0d0c" }} />
+  <ColorItem title="Silk 絹" subtitle="Light backgrounds" colors={{ 50: "#fdfcf8", 100: "#f7f4eb", 200: "#efe9d5", 300: "#e5dbbf", 400: "#d8cbaa", 500: "#c8b892", 600: "#b09f78", 700: "#937f59", 800: "#71603e", 900: "#4b3f27" }} />
+  <ColorItem title="Persimmon 柿" subtitle="Warning" colors={{ 50: "#fff8ec", 100: "#ffeece", 200: "#ffd896", 300: "#ffbe5c", 400: "#ffa343", 500: "#f08020", 600: "#d9620a", 700: "#9f5217", 800: "#7a3d12", 900: "#52280c" }} />
+</ColorPalette>
+
+---
+
+## Typography
+
+<Typeset
+  fontSizes={[12, 13, 15, 17, 20, 24, 30, 38, 48]}
+  fontWeight={300}
+  sampleText="A quiet place to write."
+  fontFamily='"Cormorant Garamond", Georgia, serif'
+/>
+
+<Typeset
+  fontSizes={[12, 13, 15, 17, 20, 24]}
+  fontWeight={400}
+  sampleText="Restrained. Precise. Present."
+  fontFamily='"Inter", -apple-system, sans-serif'
+/>
+
+<Typeset
+  fontSizes={[12, 13, 15]}
+  fontWeight={400}
+  sampleText="const ink = 'var(--pigment-ink)';"
+  fontFamily='"JetBrains Mono", monospace'
+/>
+
+| Token | Value |
+|---|---|
+| `--font-display` | Cormorant Garamond, Noto Serif SC, Georgia, serif |
+| `--font-body` | Inter, -apple-system, Helvetica Neue, sans-serif |
+| `--font-mono` | JetBrains Mono, ui-monospace, Menlo, monospace |
+| `--font-han` | Noto Serif SC, Songti SC, serif |
+| `--text-xs` | 12px |
+| `--text-sm` | 13px |
+| `--text-base` | 15px |
+| `--text-md` | 17px |
+| `--text-lg` | 20px |
+| `--text-xl` | 24px |
+| `--text-2xl` | 30px |
+| `--text-3xl` | 38px |
+| `--text-4xl` | 48px |
+| `--text-5xl` | 64px |
+| `--text-6xl` | 84px |
+
+---
+
+## Spacing
+
+4px base scale — negative space is a first-class element.
+
+| Token | Value | Use |
+|---|---|---|
+| `--space-0` | 0 | — |
+| `--space-1` | 4px | Icon gap, tight inline |
+| `--space-2` | 8px | Input padding, chip gap |
+| `--space-3` | 12px | Form element spacing |
+| `--space-4` | 16px | Card padding (compact) |
+| `--space-5` | 20px | Card padding (default) |
+| `--space-6` | 24px | Section gap (tight) |
+| `--space-7` | 32px | Section gap (default) |
+| `--space-8` | 40px | Between unrelated blocks |
+| `--space-9` | 56px | Page gutter (desktop) |
+| `--space-10` | 72px | — |
+| `--space-11` | 96px | — |
+| `--space-12` | 128px | Hero vertical padding |
+
+---
+
+## Border Radius
+
+| Token | Value | Use |
+|---|---|---|
+| `--radius-0` | 0 | Sharp edges, tables |
+| `--radius-1` | 2px | Tags, dense badges |
+| `--radius-2` | 4px | Inputs, buttons |
+| `--radius-3` | 6px | Cards (default) |
+| `--radius-4` | 10px | Modals, popovers |
+| `--radius-5` | 14px | Large cards |
+| `--radius-full` | 999px | Avatars, pills, toggle thumbs |
+
+---
+
+## Shadows
+
+| Token | Use |
+|---|---|
+| `--shadow-xs` | Card at rest |
+| `--shadow-sm` | Card on hover |
+| `--shadow-md` | Dropdown, popover |
+| `--shadow-lg` | Modal |
+| `--shadow-xl` | Overlay panel |
+| `--shadow-inset` | Pressed / sunken input |
+| `--shadow-seal` | Highlighted / sealed item |
+
+---
+
+## Motion
+
+| Token | Value | Use |
+|---|---|---|
+| `--dur-1` | 120ms | Micro interactions (hover fill) |
+| `--dur-2` | 200ms | Default transition |
+| `--dur-3` | 320ms | Layout shifts, panel open |
+| `--dur-4` | 520ms | Page transitions |
+| `--ease-out` | cubic-bezier(0.22, 0.61, 0.36, 1) | Enter |
+| `--ease-in-out` | cubic-bezier(0.65, 0.05, 0.36, 1) | Exit |
+| `--ease-stand` | cubic-bezier(0.4, 0, 0.2, 1) | Layout resize |

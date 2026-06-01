@@ -1,4 +1,4 @@
-# @sumi/ui
+# @sumiui/react
 
 > **sumi · 墨** — ink. A React component library for the Sumi Design System.
 
@@ -7,9 +7,9 @@ A calm, restrained, paper-and-ink UI library built around the discipline of Chin
 ## Install
 
 ```bash
-npm install @sumi/ui
+npm install @sumiui/react
 # or
-pnpm add @sumi/ui
+pnpm add @sumiui/react
 ```
 
 **Peer dependencies** (must be in your project):
@@ -25,13 +25,13 @@ Import the CSS once at your app root — it provides all design tokens and base 
 
 ```tsx
 // main.tsx or _app.tsx
-import "@sumi/ui/styles";
+import "@sumiui/react/styles";
 ```
 
 Then use components:
 
 ```tsx
-import { Button, Card, CardBody, CardHeader } from "@sumi/ui";
+import { Button, Card, CardBody, CardHeader } from "@sumiui/react";
 
 export function App() {
   return (
@@ -57,7 +57,7 @@ export function App() {
 Wrap your app root in `TooltipProvider` so tooltips share a single floating layer:
 
 ```tsx
-import { TooltipProvider } from "@sumi/ui";
+import { TooltipProvider } from "@sumiui/react";
 
 <TooltipProvider>
   <App />
@@ -88,7 +88,7 @@ document.documentElement.setAttribute("data-theme", "dark");
 All design values are CSS custom properties. Override them at `:root` to theme the library without touching component code:
 
 ```css
-/* your-theme.css — import AFTER @sumi/ui/styles */
+/* your-theme.css — import AFTER @sumiui/react/styles */
 :root {
   /* Example: swap the primary brand colour */
   --accent: #2563eb;

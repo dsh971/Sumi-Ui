@@ -1,0 +1,108 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Introduction" />
+
+# sumi · 墨
+
+> *ink* — a design system built around the discipline of Chinese ink-wash painting:
+> a great deal of unmarked paper, a few decisive marks, a single red seal.
+
+Sumi is a calm, restrained, paper-and-ink UI library for React. It is built on a deliberately small palette — aged silk paper, charcoal ink, two brand greens, one deep blue, and the cinnabar seal — and the negative space between them.
+
+---
+
+## Design Principles
+
+### 1. Restraint
+Empty space is a first-class design element, not a failure to fill the canvas. Every element earns its place. When in doubt, remove.
+
+### 2. Warmth
+Surfaces stay in the silk and canvas family — `#F7F4EB` page, `#EBE5D8` sunken. Never pure white. The paper tone is load-bearing; it carries the entire ink-wash metaphor.
+
+### 3. Legibility
+Foregrounds are ink — never pure black, always `--ink-800` (`#1C1B1A`) or softer. Hierarchy comes from scale and weight contrast, not from color variety. No grey-on-grey.
+
+### 4. Depth
+Five shadow tiers (xs → xl) lift surfaces like paper on paper — soft, warm, never coloured. Elevation is communicated through shadow depth and border weight, not gradients or glassmorphism.
+
+### 5. Harmony
+Every element echoes the brush. Corner radii are modest (6px default). Motion is a fade-and-slip, never a bounce. The cinnabar seal appears at most once per page — a signature, not a decoration.
+
+---
+
+## Quick start
+
+```bash
+npm install @sumiui/react
+# or
+pnpm add @sumiui/react
+```
+
+Import the stylesheet once at your app root — it provides all design tokens and base styles:
+
+```tsx
+// main.tsx or _app.tsx
+import "@sumiui/react/styles";
+```
+
+Then use components:
+
+```tsx
+import { Button, Card, CardBody, CardHeader } from "@sumiui/react";
+
+export function App() {
+  return (
+    <Card>
+      <CardHeader>
+        <h2>A quiet place to write.</h2>
+      </CardHeader>
+      <CardBody>
+        <Button variant="primary">Start a draft</Button>
+        <Button variant="ghost">Browse</Button>
+      </CardBody>
+    </Card>
+  );
+}
+```
+
+Wrap your app in `TooltipProvider` so tooltips share a single floating layer:
+
+```tsx
+import { TooltipProvider } from "@sumiui/react";
+
+<TooltipProvider>
+  <App />
+</TooltipProvider>
+```
+
+---
+
+## Themes
+
+Toggle dark mode by setting `data-theme="dark"` on the `<html>` element or any ancestor:
+
+```tsx
+document.documentElement.setAttribute("data-theme", "dark");
+```
+
+Switch it back by removing the attribute or setting it to `"light"`. All tokens remap automatically — no class toggling required.
+
+---
+
+## Token families
+
+All design values are CSS custom properties. Override them at `:root` to theme without touching component code:
+
+```css
+/* your-theme.css — import AFTER @sumiui/react/styles */
+:root {
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+}
+```
+
+Color scales: `--silk-*` · `--canvas-*` · `--ink-*` · `--malachite-*` · `--azurite-*` · `--teal-*` · `--cinnabar-*` · `--persimmon-*` · `--sienna-*` · `--slate-*` · `--steel-*`
+
+Semantic aliases: `--accent` · `--secondary` · `--highlight` · `--status-*` · `--bg-*` · `--fg-*`
+
+See the **Tokens** section in the sidebar for a full visual reference.

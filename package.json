@@ -1,6 +1,6 @@
 {
   "name": "@sumiui/react",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "React component library for the Sumi Design System (水墨)",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -15,8 +15,13 @@
     "./styles": "./dist/sumi.css",
     "./package.json": "./package.json"
   },
-  "sideEffects": ["dist/sumi.css"],
-  "files": ["dist", "README.md"],
+  "sideEffects": [
+    "dist/sumi.css"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist",
     "dev": "vite build --watch",
@@ -83,6 +88,13 @@
   "publishConfig": {
     "access": "public"
   },
-  "keywords": ["react", "component-library", "design-system", "sumi", "tailwind", "typescript"],
+  "keywords": [
+    "react",
+    "component-library",
+    "design-system",
+    "sumi",
+    "tailwind",
+    "typescript"
+  ],
   "license": "MIT"
 }

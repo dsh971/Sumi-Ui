@@ -29,7 +29,7 @@
     }
   },
   "files": {
-    "ignore": ["dist", "node_modules", ".ladle"]
+    "ignore": ["dist", "node_modules", ".ladle", "storybook-static"]
   },
   "overrides": [
     {

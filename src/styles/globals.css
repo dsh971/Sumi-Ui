@@ -1,0 +1,241 @@
+/* ==========================================================================
+   SUMI — globals.css
+   Minimal reset + sumi base typography.
+   Intentionally excludes Tailwind preflight (handled by the consumer app).
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-0);
+  color: var(--fg-1);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  font-weight: var(--weight-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Heading scale — display uses serif (Cormorant), body headings use Inter */
+.display,
+.h-display {
+  font-family: var(--font-display);
+  font-weight: var(--weight-light);
+  font-size: clamp(var(--text-4xl), 6vw, var(--text-6xl));
+  line-height: var(--leading-tight);
+  letter-spacing: var(--track-tight);
+  color: var(--fg-1);
+  margin: 0;
+}
+
+h1,
+.h1 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-normal);
+  font-size: var(--text-4xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--track-tight);
+  color: var(--fg-1);
+  margin: 0 0 var(--space-4);
+}
+
+h2,
+.h2 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-normal);
+  font-size: var(--text-3xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--track-tight);
+  color: var(--fg-1);
+  margin: 0 0 var(--space-4);
+}
+
+h3,
+.h3 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-medium);
+  font-size: var(--text-2xl);
+  line-height: var(--leading-snug);
+  color: var(--fg-1);
+  margin: 0 0 var(--space-3);
+}
+
+h4,
+.h4 {
+  font-family: var(--font-body);
+  font-weight: var(--weight-semi);
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+  color: var(--fg-1);
+  margin: 0 0 var(--space-2);
+}
+
+h5,
+.h5 {
+  font-family: var(--font-body);
+  font-weight: var(--weight-semi);
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+  color: var(--fg-1);
+  margin: 0 0 var(--space-2);
+}
+
+h6,
+.h6,
+.eyebrow {
+  font-family: var(--font-body);
+  font-weight: var(--weight-medium);
+  font-size: var(--text-xs);
+  line-height: 1;
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+  color: var(--fg-2);
+  margin: 0 0 var(--space-3);
+}
+
+p,
+.p {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  color: var(--fg-1);
+  margin: 0 0 var(--space-4);
+  text-wrap: pretty;
+}
+
+.lead {
+  font-weight: var(--weight-light);
+  font-size: var(--text-lg);
+  line-height: var(--leading-loose);
+  color: var(--fg-2);
+}
+
+small,
+.small {
+  font-size: var(--text-sm);
+  color: var(--fg-2);
+}
+
+.caption {
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  color: var(--fg-3);
+  letter-spacing: 0.01em;
+}
+
+blockquote,
+.quote {
+  font-family: var(--font-display);
+  font-weight: var(--weight-light);
+  font-style: italic;
+  font-size: var(--text-xl);
+  line-height: var(--leading-loose);
+  color: var(--fg-1);
+  border-left: 1px solid var(--line-ink);
+  padding: var(--space-2) 0 var(--space-2) var(--space-5);
+  margin: var(--space-6) 0;
+}
+
+code,
+.code,
+kbd,
+samp {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  background: var(--bg-2);
+  color: var(--fg-1);
+  padding: 0.12em 0.4em;
+  border-radius: var(--radius-1);
+}
+
+pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-3);
+  padding: var(--space-4) var(--space-5);
+  overflow-x: auto;
+}
+pre > code {
+  background: transparent;
+  padding: 0;
+}
+
+a {
+  color: var(--accent-strong);
+  text-decoration: underline;
+  text-decoration-color: var(--line-2);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out);
+}
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-1);
+  margin: var(--space-7) 0;
+}
+
+::selection {
+  background: var(--cinnabar-200);
+  color: var(--ink-800);
+}
+
+/* accent-em — the hybrid voice's italic-tinted headline word */
+.accent-em {
+  font-style: italic;
+  color: var(--cinnabar-600);
+  font-family: inherit;
+}
+:root[data-theme="dark"] .accent-em,
+.theme-dark .accent-em {
+  color: var(--cinnabar-300);
+}
+
+/* brush-rule — ink stroke section divider */
+.brush-rule {
+  height: 1px;
+  width: 56px;
+  background: var(--line-ink);
+  border: 0;
+  margin: var(--space-5) 0;
+}
+
+/* skeleton shimmer animation */
+@keyframes sm-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* BUG-021 fix: warm canvas shimmer — canvas-100 (warm mid) → canvas-50 (near-white warm) per spec */
+.sm-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--canvas-100) 0%,
+    var(--canvas-50) 50%,
+    var(--canvas-100) 100%
+  );
+  background-size: 200% 100%;
+  animation: sm-shimmer var(--duration-skeleton) var(--ease-in-out) infinite;
+}

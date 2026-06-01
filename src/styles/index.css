@@ -1,0 +1,250 @@
+/* ==========================================================================
+   SUMI UI — styles entry point
+   Consumers import this via: import "@sumi/ui/styles"
+   ========================================================================== */
+
+/* Google Fonts — must precede all other rules */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@300;400;500;600&display=swap");
+
+/* Tailwind v4 utilities */
+@import "tailwindcss";
+
+/* Sumi design tokens + Tailwind @theme mapping */
+@import "./tokens.css";
+
+/* Sumi base typography + utility classes */
+@import "./globals.css";
+
+/* --------------------------------------------------------------------------
+   Tailwind @theme — maps sumi tokens to Tailwind utility namespaces.
+   Must be inline (not in an @import) for Tailwind v4's engine to process it.
+   -------------------------------------------------------------------------- */
+@theme {
+  /* ---- Color scales — silk -------------------------------------------- */
+  --color-silk-50: var(--silk-50);
+  --color-silk-100: var(--silk-100);
+  --color-silk-200: var(--silk-200);
+  --color-silk-300: var(--silk-300);
+  --color-silk-400: var(--silk-400);
+  --color-silk-500: var(--silk-500);
+  --color-silk-600: var(--silk-600);
+  --color-silk-700: var(--silk-700);
+  --color-silk-800: var(--silk-800);
+  --color-silk-900: var(--silk-900);
+
+  /* canvas */
+  --color-canvas-50: var(--canvas-50);
+  --color-canvas-100: var(--canvas-100);
+  --color-canvas-200: var(--canvas-200);
+  --color-canvas-300: var(--canvas-300);
+  --color-canvas-400: var(--canvas-400);
+  --color-canvas-500: var(--canvas-500);
+  --color-canvas-600: var(--canvas-600);
+  --color-canvas-700: var(--canvas-700);
+  --color-canvas-800: var(--canvas-800);
+  --color-canvas-900: var(--canvas-900);
+
+  /* ink */
+  --color-ink-50: var(--ink-50);
+  --color-ink-100: var(--ink-100);
+  --color-ink-200: var(--ink-200);
+  --color-ink-300: var(--ink-300);
+  --color-ink-400: var(--ink-400);
+  --color-ink-500: var(--ink-500);
+  --color-ink-600: var(--ink-600);
+  --color-ink-700: var(--ink-700);
+  --color-ink-800: var(--ink-800);
+  --color-ink-900: var(--ink-900);
+
+  /* malachite */
+  --color-malachite-50: var(--malachite-50);
+  --color-malachite-100: var(--malachite-100);
+  --color-malachite-200: var(--malachite-200);
+  --color-malachite-300: var(--malachite-300);
+  --color-malachite-400: var(--malachite-400);
+  --color-malachite-500: var(--malachite-500);
+  --color-malachite-600: var(--malachite-600);
+  --color-malachite-700: var(--malachite-700);
+  --color-malachite-800: var(--malachite-800);
+  --color-malachite-900: var(--malachite-900);
+
+  /* azurite */
+  --color-azurite-50: var(--azurite-50);
+  --color-azurite-100: var(--azurite-100);
+  --color-azurite-200: var(--azurite-200);
+  --color-azurite-300: var(--azurite-300);
+  --color-azurite-400: var(--azurite-400);
+  --color-azurite-500: var(--azurite-500);
+  --color-azurite-600: var(--azurite-600);
+  --color-azurite-700: var(--azurite-700);
+  --color-azurite-800: var(--azurite-800);
+  --color-azurite-900: var(--azurite-900);
+
+  /* teal */
+  --color-teal-50: var(--teal-50);
+  --color-teal-100: var(--teal-100);
+  --color-teal-200: var(--teal-200);
+  --color-teal-300: var(--teal-300);
+  --color-teal-400: var(--teal-400);
+  --color-teal-500: var(--teal-500);
+  --color-teal-600: var(--teal-600);
+  --color-teal-700: var(--teal-700);
+  --color-teal-800: var(--teal-800);
+  --color-teal-900: var(--teal-900);
+
+  /* cinnabar */
+  --color-cinnabar-50: var(--cinnabar-50);
+  --color-cinnabar-100: var(--cinnabar-100);
+  --color-cinnabar-200: var(--cinnabar-200);
+  --color-cinnabar-300: var(--cinnabar-300);
+  --color-cinnabar-400: var(--cinnabar-400);
+  --color-cinnabar-500: var(--cinnabar-500);
+  --color-cinnabar-600: var(--cinnabar-600);
+  --color-cinnabar-700: var(--cinnabar-700);
+  --color-cinnabar-800: var(--cinnabar-800);
+  --color-cinnabar-900: var(--cinnabar-900);
+
+  /* persimmon */
+  --color-persimmon-50: var(--persimmon-50);
+  --color-persimmon-100: var(--persimmon-100);
+  --color-persimmon-200: var(--persimmon-200);
+  --color-persimmon-300: var(--persimmon-300);
+  --color-persimmon-400: var(--persimmon-400);
+  --color-persimmon-500: var(--persimmon-500);
+  --color-persimmon-600: var(--persimmon-600);
+  --color-persimmon-700: var(--persimmon-700);
+  --color-persimmon-800: var(--persimmon-800);
+  --color-persimmon-900: var(--persimmon-900);
+
+  /* sienna */
+  --color-sienna-50: var(--sienna-50);
+  --color-sienna-100: var(--sienna-100);
+  --color-sienna-200: var(--sienna-200);
+  --color-sienna-300: var(--sienna-300);
+  --color-sienna-400: var(--sienna-400);
+  --color-sienna-500: var(--sienna-500);
+  --color-sienna-600: var(--sienna-600);
+  --color-sienna-700: var(--sienna-700);
+  --color-sienna-800: var(--sienna-800);
+  --color-sienna-900: var(--sienna-900);
+
+  /* slate */
+  --color-slate-50: var(--slate-50);
+  --color-slate-100: var(--slate-100);
+  --color-slate-200: var(--slate-200);
+  --color-slate-300: var(--slate-300);
+  --color-slate-400: var(--slate-400);
+  --color-slate-500: var(--slate-500);
+  --color-slate-600: var(--slate-600);
+  --color-slate-700: var(--slate-700);
+  --color-slate-800: var(--slate-800);
+  --color-slate-900: var(--slate-900);
+
+  /* steel */
+  --color-steel-50: var(--steel-50);
+  --color-steel-100: var(--steel-100);
+  --color-steel-200: var(--steel-200);
+  --color-steel-300: var(--steel-300);
+  --color-steel-400: var(--steel-400);
+  --color-steel-500: var(--steel-500);
+  --color-steel-600: var(--steel-600);
+  --color-steel-700: var(--steel-700);
+  --color-steel-800: var(--steel-800);
+  --color-steel-900: var(--steel-900);
+
+  /* ---- Semantic surfaces ------------------------------------------------ */
+  --color-bg-page: var(--bg-0);
+  --color-bg-card: var(--bg-1);
+  --color-bg-sunken: var(--bg-2);
+  --color-bg-pressed: var(--bg-3);
+  --color-bg-overlay: var(--bg-overlay);
+  --color-bg-scrim: var(--bg-scrim);
+
+  /* ---- Semantic foregrounds --------------------------------------------- */
+  --color-fg-1: var(--fg-1);
+  --color-fg-2: var(--fg-2);
+  --color-fg-3: var(--fg-3);
+  --color-fg-4: var(--fg-4);
+  --color-fg-on-malachite: var(--fg-on-malachite);
+  --color-fg-on-azurite: var(--fg-on-azurite);
+  --color-fg-on-cinnabar: var(--fg-on-cinnabar);
+  --color-fg-on-ink: var(--fg-on-ink);
+
+  /* ---- Accent / brand semantic ------------------------------------------ */
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-on: var(--accent-on);
+  --color-secondary: var(--secondary);
+  --color-secondary-soft: var(--secondary-soft);
+  --color-secondary-strong: var(--secondary-strong);
+  --color-highlight: var(--highlight);
+  --color-highlight-soft: var(--highlight-soft);
+  --color-highlight-strong: var(--highlight-strong);
+  --color-muted-warm: var(--muted-warm);
+
+  /* ---- Status ----------------------------------------------------------- */
+  --color-status-success: var(--status-success);
+  --color-status-success-bg: var(--status-success-bg);
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-bg: var(--status-warning-bg);
+  --color-status-warning-bar: var(--status-warning-bar);
+  --color-status-danger: var(--status-danger);
+  --color-status-danger-bg: var(--status-danger-bg);
+  --color-status-info: var(--status-info);
+  --color-status-info-bg: var(--status-info-bg);
+
+  /* ---- Border / rule colors --------------------------------------------- */
+  --color-line-1: var(--line-1);
+  --color-line-2: var(--line-2);
+  --color-line-3: var(--line-3);
+  --color-line-ink: var(--line-ink);
+
+  /* ---- Shadows — literal values to avoid same-name collision ------------ */
+  --shadow-xs: 0 1px 0 rgba(28, 27, 26, 0.04);
+  --shadow-sm: 0 1px 2px rgba(28, 27, 26, 0.06), 0 1px 1px rgba(28, 27, 26, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(28, 27, 26, 0.1), 0 2px 4px rgba(28, 27, 26, 0.05);
+  --shadow-lg: 0 12px 32px -8px rgba(28, 27, 26, 0.16), 0 4px 8px rgba(28, 27, 26, 0.05);
+  --shadow-xl: 0 24px 56px -16px rgba(28, 27, 26, 0.22), 0 8px 16px rgba(28, 27, 26, 0.07);
+  --shadow-seal: 0 0 0 1px rgba(166, 43, 43, 0.4), 0 6px 16px -4px rgba(166, 43, 43, 0.28);
+
+  /* ---- Radii — sumi values, modest ------------------------------------ */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 10px;
+  --radius-2xl: 14px;
+  --radius-full: 999px;
+
+  /* ---- Spacing — sumi 4px-base scale ---------------------------------- */
+  --spacing-px: 1px;
+  --spacing-0: 0;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-7: 32px;
+  --spacing-8: 40px;
+  --spacing-9: 56px;
+  --spacing-10: 72px;
+  --spacing-11: 96px;
+  --spacing-12: 128px;
+
+  /* ---- Font families ---------------------------------------------------- */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC",
+    sans-serif;
+  --font-serif: "Cormorant Garamond", "Noto Serif SC", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --font-display: "Cormorant Garamond", "Noto Serif SC", Georgia, serif;
+
+  /* ---- Breakpoints — sumi breakpoint scale overrides Tailwind defaults -- */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}

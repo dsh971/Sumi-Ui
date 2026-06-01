@@ -1,0 +1,439 @@
+/* ==========================================================================
+   SUMI DESIGN SYSTEM — tokens.css
+   Source of truth: Sumi-Design-System/colors_and_type.css (read-only).
+   This file: verbatim token definitions + Tailwind v4 @theme mapping.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Webfonts — all via CDN; no local font files bundled in the npm package.
+   Inter is loaded from Google Fonts (variable font with opsz + wght axes).
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   :root — LIGHT (default). Aged silk paper, charcoal ink, sparing pigment.
+   -------------------------------------------------------------------------- */
+:root {
+  /* ---- Brand pigments (raw) ----------------------------------------------- */
+  --pigment-silk: #f7f4eb;
+  --pigment-canvas: #ebe5d8;
+  --pigment-ink: #1c1b1a;
+  --pigment-diluted: #5c564e;
+  --pigment-misty: #9a9184;
+  --pigment-malachite: #1e4d2b;
+  --pigment-azurite: #1c3b57;
+  --pigment-teal: #1f6357;
+  --pigment-cinnabar: #a62b2b;
+  --pigment-persimmon: #ffa343;
+  --pigment-sienna: #a0522d;
+  --pigment-slate: #2f4f4f;
+  --pigment-steel: #5d8aa8;
+
+  /* ---- Silk scale (絹) — warm cream --------------------------------------- */
+  --silk-50: #fcfaf3;
+  --silk-100: #f7f4eb;
+  --silk-200: #f1ecdd;
+  --silk-300: #ebe5d8;
+  --silk-400: #dcd2ba;
+  --silk-500: #c8bb97;
+  --silk-600: #a89a75;
+  --silk-700: #847762;
+  --silk-800: #5f5544;
+  --silk-900: #3a3326;
+
+  /* ---- Canvas (麻) -------------------------------------------------------- */
+  --canvas-50: #f4f0e5;
+  --canvas-100: #ebe5d8;
+  --canvas-200: #dcd2ba;
+  --canvas-300: #c8bb97;
+  --canvas-400: #b0a079;
+  --canvas-500: #94855e;
+  --canvas-600: #756849;
+  --canvas-700: #5a4f36;
+  --canvas-800: #3d3624;
+  --canvas-900: #221e15;
+
+  /* ---- Ink scale (墨) — text & rule -------------------------------------- */
+  --ink-50: #f0efec;
+  --ink-100: #dddbd5;
+  --ink-200: #bab6ab;
+  --ink-300: #9a9184;
+  --ink-400: #75706a;
+  --ink-500: #5c564e;
+  --ink-600: #3f3b36;
+  --ink-700: #2c2a26;
+  --ink-800: #1c1b1a;
+  --ink-900: #0e0d0c;
+
+  /* ---- Malachite (翠) — primary brand ------------------------------------ */
+  --malachite-50: #ecf2ee;
+  --malachite-100: #d7e4dc;
+  --malachite-200: #adc9b7;
+  --malachite-300: #7fa88e;
+  --malachite-400: #4f8466;
+  --malachite-500: #336d49;
+  --malachite-600: #245835;
+  --malachite-700: #1e4d2b;
+  --malachite-800: #163d21;
+  --malachite-900: #0e2a16;
+
+  /* ---- Azurite (藍) — secondary brand / active --------------------------- */
+  --azurite-50: #eceff3;
+  --azurite-100: #d4dce5;
+  --azurite-200: #a5b6c6;
+  --azurite-300: #748da5;
+  --azurite-400: #466485;
+  --azurite-500: #2a4c6d;
+  --azurite-600: #1c3b57;
+  --azurite-700: #152d43;
+  --azurite-800: #0f2030;
+  --azurite-900: #08131d;
+
+  /* ---- Teal (碧) — interactive hover ------------------------------------- */
+  --teal-50: #ebf2f0;
+  --teal-100: #d2e1dd;
+  --teal-200: #a5c4bc;
+  --teal-300: #76a498;
+  --teal-400: #4a8475;
+  --teal-500: #2e6f61;
+  --teal-600: #1f6357;
+  --teal-700: #194e45;
+  --teal-800: #123830;
+  --teal-900: #0a211c;
+
+  /* ---- Cinnabar (朱) — seal · critical ----------------------------------- */
+  --cinnabar-50: #faefec;
+  --cinnabar-100: #f2d9d3;
+  --cinnabar-200: #e5b0a6;
+  --cinnabar-300: #d58579;
+  --cinnabar-400: #c26054;
+  --cinnabar-500: #b14338;
+  --cinnabar-600: #a62b2b;
+  --cinnabar-700: #862020;
+  --cinnabar-800: #5f1717;
+  --cinnabar-900: #3a0e0e;
+
+  /* ---- Persimmon (柿) — warning / attention ------------------------------ */
+  --persimmon-50: #fff6ec;
+  --persimmon-100: #ffe9d1;
+  --persimmon-200: #ffd09a;
+  --persimmon-300: #ffb76a;
+  --persimmon-400: #ffa343;
+  --persimmon-500: #e68630;
+  --persimmon-600: #c66b22;
+  --persimmon-700: #9f5217;
+  --persimmon-800: #6f390f;
+  --persimmon-900: #422109;
+
+  /* ---- Sienna (褐) — earth red-brown ------------------------------------- */
+  --sienna-50: #f7efe9;
+  --sienna-100: #ecdacc;
+  --sienna-200: #d6b395;
+  --sienna-300: #bd8b5f;
+  --sienna-400: #a56d43;
+  --sienna-500: #a0522d;
+  --sienna-600: #844126;
+  --sienna-700: #6a341e;
+  --sienna-800: #482416;
+  --sienna-900: #2a1409;
+
+  /* ---- Slate (石) — dark wet-stone gray ---------------------------------- */
+  --slate-50: #eef3f3;
+  --slate-100: #d4dede;
+  --slate-200: #a8bcbc;
+  --slate-300: #7d9999;
+  --slate-400: #547777;
+  --slate-500: #3f6363;
+  --slate-600: #2f4f4f;
+  --slate-700: #233d3d;
+  --slate-800: #182b2b;
+  --slate-900: #0d1818;
+
+  /* ---- Steel Blue (鋼) — steady mid-tone --------------------------------- */
+  --steel-50: #eef3f7;
+  --steel-100: #d6e0ea;
+  --steel-200: #b0c5d6;
+  --steel-300: #87a8c0;
+  --steel-400: #5d8aa8;
+  --steel-500: #46728e;
+  --steel-600: #355a72;
+  --steel-700: #284459;
+  --steel-800: #1a2d3b;
+  --steel-900: #0e1a23;
+
+  /* ---- Back-compat aliases ----------------------------------------------- */
+  --jade-50: var(--malachite-50);
+  --jade-100: var(--malachite-100);
+  --jade-200: var(--malachite-200);
+  --jade-300: var(--malachite-300);
+  --jade-400: var(--malachite-400);
+  --jade-500: var(--malachite-500);
+  --jade-600: var(--malachite-600);
+  --jade-700: var(--malachite-700);
+  --jade-800: var(--malachite-800);
+  --jade-900: var(--malachite-900);
+
+  --rice-50: var(--silk-50);
+  --rice-100: var(--silk-100);
+  --rice-200: var(--silk-200);
+  --rice-300: var(--silk-300);
+  --rice-400: var(--silk-400);
+  --rice-500: var(--silk-500);
+  --rice-600: var(--silk-600);
+  --rice-700: var(--silk-700);
+  --rice-800: var(--silk-800);
+  --rice-900: var(--silk-900);
+
+  --clay-50: var(--canvas-50);
+  --clay-100: var(--canvas-100);
+  --clay-200: var(--canvas-200);
+  --clay-300: var(--canvas-300);
+  --clay-400: var(--canvas-400);
+  --clay-500: var(--canvas-500);
+  --clay-600: var(--canvas-600);
+  --clay-700: var(--canvas-700);
+  --clay-800: var(--canvas-800);
+  --clay-900: var(--canvas-900);
+
+  --peach-50: var(--cinnabar-50);
+  --peach-100: var(--cinnabar-100);
+  --peach-200: var(--cinnabar-200);
+  --peach-300: var(--cinnabar-300);
+  --peach-400: var(--cinnabar-400);
+  --peach-500: var(--cinnabar-500);
+  --peach-600: var(--cinnabar-600);
+  --peach-700: var(--cinnabar-700);
+  --peach-800: var(--cinnabar-800);
+  --peach-900: var(--cinnabar-900);
+
+  --sumi-jade: var(--malachite-700);
+  --sumi-rice: var(--silk-100);
+  --sumi-clay: var(--canvas-400);
+  --sumi-peach: var(--cinnabar-600);
+  --sumi-ink: var(--ink-800);
+
+  /* ---- Semantic surfaces ------------------------------------------------- */
+  --bg-0: #f7f4eb;
+  --bg-1: #f1ecdd;
+  --bg-2: #ebe5d8;
+  --bg-3: #dcd2ba;
+  --bg-overlay: rgba(28, 27, 26, 0.32);
+  --bg-scrim: rgba(28, 27, 26, 0.55);
+
+  /* ---- Semantic foregrounds ---------------------------------------------- */
+  --fg-1: var(--ink-800);
+  --fg-2: var(--ink-500);
+  --fg-3: var(--ink-300);
+  --fg-4: var(--ink-200);
+  --fg-on-malachite: var(--silk-50);
+  --fg-on-azurite: var(--silk-50);
+  --fg-on-cinnabar: var(--silk-50);
+  --fg-on-ink: var(--silk-50);
+  --fg-on-jade: var(--silk-50);
+  --fg-on-clay: var(--silk-50);
+
+  /* ---- Semantic accents -------------------------------------------------- */
+  --accent: var(--malachite-700);
+  --accent-soft: var(--malachite-100);
+  --accent-strong: var(--malachite-800);
+  --accent-hover: var(--teal-600);
+  --accent-on: var(--silk-50);
+
+  --secondary: var(--azurite-600);
+  --secondary-soft: var(--azurite-100);
+  --secondary-strong: var(--azurite-700);
+
+  --highlight: var(--cinnabar-600);
+  --highlight-soft: var(--cinnabar-100);
+  --highlight-strong: var(--cinnabar-700);
+
+  --muted-warm: var(--canvas-400);
+
+  /* ---- Status ------------------------------------------------------------ */
+  --status-success: var(--malachite-700);
+  --status-success-bg: var(--malachite-50);
+  --status-warning: var(--persimmon-700);
+  --status-warning-bg: var(--persimmon-100);
+  --status-warning-bar: var(--persimmon-400);
+  --status-danger: var(--cinnabar-600);
+  --status-danger-bg: var(--cinnabar-50);
+  --status-info: var(--azurite-600);
+  --status-info-bg: var(--azurite-50);
+
+  /* ---- Borders & rules --------------------------------------------------- */
+  --line-1: rgba(28, 27, 26, 0.08);
+  --line-2: rgba(28, 27, 26, 0.14);
+  --line-3: rgba(28, 27, 26, 0.26);
+  --line-ink: var(--ink-800);
+
+  /* ---- Shadows — paper on paper ------------------------------------------ */
+  --shadow-xs: 0 1px 0 rgba(28, 27, 26, 0.04);
+  --shadow-sm: 0 1px 2px rgba(28, 27, 26, 0.06), 0 1px 1px rgba(28, 27, 26, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(28, 27, 26, 0.1), 0 2px 4px rgba(28, 27, 26, 0.05);
+  --shadow-lg: 0 12px 32px -8px rgba(28, 27, 26, 0.16), 0 4px 8px rgba(28, 27, 26, 0.05);
+  --shadow-xl: 0 24px 56px -16px rgba(28, 27, 26, 0.22), 0 8px 16px rgba(28, 27, 26, 0.07);
+  --shadow-inset: inset 0 1px 0 rgba(28, 27, 26, 0.06);
+  --shadow-seal: 0 0 0 1px rgba(166, 43, 43, 0.4), 0 6px 16px -4px rgba(166, 43, 43, 0.28);
+
+  /* ---- Radii — modest, paper folds --------------------------------------- */
+  --radius-0: 0;
+  --radius-1: 2px;
+  --radius-2: 4px;
+  --radius-3: 6px;
+  --radius-4: 10px;
+  --radius-5: 14px;
+  --radius-full: 999px;
+
+  /* ---- Spacing scale (4px base) ------------------------------------------ */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+  --space-10: 72px;
+  --space-11: 96px;
+  --space-12: 128px;
+
+  /* ---- Layout — containers ----------------------------------------------- */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1200px;
+  --container-2xl: 1440px;
+  --measure-read: 680px; /* long-form reading column max */
+  --measure-app: 1200px; /* app-shell content max (alias of --container-xl) */
+
+  /* ---- Breakpoints (min-width reference values) -------------------------- */
+  /* CSS vars cannot drive @media queries directly — use these as reference
+     when hardcoding breakpoint values in component styles or Tailwind config. */
+  --bp-sm: 640px; /* large phone / small tablet */
+  --bp-md: 768px; /* tablet portrait */
+  --bp-lg: 1024px; /* tablet landscape / laptop */
+  --bp-xl: 1280px; /* desktop */
+  --bp-2xl: 1536px; /* large desktop */
+
+  /* ---- Page gutters & grid ----------------------------------------------- */
+  --gutter-mobile: 20px; /* --space-5  · < md */
+  --gutter-tablet: 40px; /* --space-8  · md–lg */
+  --gutter-desktop: 56px; /* --space-9  · ≥ lg */
+  --grid-gutter: 24px; /* --space-6  · default 12-column gap */
+
+  /* ---- Motion — quiet, no bounce ----------------------------------------- */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1.0);
+  --ease-in-out: cubic-bezier(0.65, 0.05, 0.36, 1.0);
+  --ease-stand: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --dur-3: 320ms;
+  --dur-4: 520ms;
+  --duration-skeleton: 1500ms; /* shimmer — longer than UI transitions by design */
+
+  /* ---- Type families ----------------------------------------------------- */
+  --font-display: "Cormorant Garamond", "Noto Serif SC", "Songti SC", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC",
+    sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --font-han: "Noto Serif SC", "Songti SC", serif;
+
+  /* ---- Type scale -------------------------------------------------------- */
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-md: 17px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 30px;
+  --text-3xl: 38px;
+  --text-4xl: 48px;
+  --text-5xl: 64px;
+  --text-6xl: 84px;
+
+  /* ---- Weights ----------------------------------------------------------- */
+  --weight-light: 300;
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semi: 600;
+  --weight-bold: 700;
+
+  /* ---- Tracking ---------------------------------------------------------- */
+  --track-tight: -0.015em;
+  --track-normal: 0;
+  --track-wide: 0.04em;
+  --track-eyebrow: 0.18em;
+
+  /* ---- Line heights ------------------------------------------------------ */
+  --leading-tight: 1.12;
+  --leading-snug: 1.28;
+  --leading-body: 1.55;
+  --leading-loose: 1.72;
+}
+
+/* --------------------------------------------------------------------------
+   Dark — moonlit ink. Page is charcoal; pigments step lighter.
+   -------------------------------------------------------------------------- */
+:root[data-theme="dark"],
+.theme-dark {
+  --bg-0: #161514;
+  --bg-1: #1f1e1c;
+  --bg-2: #2a2825;
+  --bg-3: #34312c;
+  --bg-overlay: rgba(0, 0, 0, 0.55);
+  --bg-scrim: rgba(0, 0, 0, 0.72);
+
+  --fg-1: #eee7d6;
+  --fg-2: #c2bcaa;
+  --fg-3: #9a9184;
+  --fg-4: #645e54;
+  --fg-on-malachite: #161514;
+  --fg-on-azurite: #eee7d6;
+  --fg-on-cinnabar: #eee7d6;
+  --fg-on-ink: #eee7d6;
+  --fg-on-jade: #161514;
+  --fg-on-clay: #161514;
+
+  --accent: var(--malachite-400);
+  --accent-soft: rgba(127, 168, 142, 0.14);
+  --accent-strong: var(--malachite-300);
+  --accent-hover: var(--teal-300);
+  --accent-on: #161514;
+
+  --secondary: var(--azurite-300);
+  --secondary-soft: rgba(116, 141, 165, 0.14);
+  --secondary-strong: var(--azurite-200);
+
+  --highlight: var(--cinnabar-400);
+  --highlight-soft: rgba(194, 96, 84, 0.16);
+  --highlight-strong: var(--cinnabar-300);
+
+  --status-success: var(--malachite-300);
+  --status-success-bg: rgba(127, 168, 142, 0.14);
+  --status-warning: var(--persimmon-300);
+  --status-warning-bg: rgba(255, 183, 106, 0.14);
+  --status-warning-bar: var(--persimmon-400);
+  --status-danger: var(--cinnabar-300);
+  --status-danger-bg: rgba(213, 133, 121, 0.14);
+  --status-info: var(--azurite-300);
+  --status-info-bg: rgba(116, 141, 165, 0.14);
+
+  --line-1: rgba(238, 231, 214, 0.06);
+  --line-2: rgba(238, 231, 214, 0.12);
+  --line-3: rgba(238, 231, 214, 0.22);
+  --line-ink: var(--silk-100);
+
+  --shadow-xs: 0 1px 0 rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 1px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 32px -8px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.35);
+  --shadow-xl: 0 24px 56px -16px rgba(0, 0, 0, 0.7), 0 8px 16px rgba(0, 0, 0, 0.4);
+  --shadow-seal: 0 0 0 1px rgba(213, 133, 121, 0.35), 0 6px 16px -4px rgba(0, 0, 0, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   Tailwind v4 @theme — maps sumi tokens to Tailwind utility names.
+   @theme is in @layer theme (lower priority than unlayered :root above),
+   so var() references here resolve through the :root values with no cycle.
+   -------------------------------------------------------------------------- */

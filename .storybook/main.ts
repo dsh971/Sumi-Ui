@@ -17,6 +17,12 @@ const config: StorybookConfig = {
       },
     },
   },
+  async viteFinal(config) {
+    config.plugins = (config.plugins ?? []).filter(
+      (p) => !(p && !Array.isArray(p) && (p as { name?: string }).name === "vite:dts"),
+    );
+    return config;
+  },
   typescript: {
     reactDocgen: "react-docgen-typescript",
     reactDocgenTypescriptOptions: {

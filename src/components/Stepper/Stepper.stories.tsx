@@ -1,6 +1,15 @@
-import type { Story } from "@ladle/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import type { StepperStep } from "./Stepper.types";
 import { Stepper } from "./index";
+
+const meta: Meta<typeof Stepper> = {
+  title: "Navigation/Stepper",
+  component: Stepper,
+  tags: ["autodocs"],
+};
+
+export default meta;
+type Story = StoryObj<typeof Stepper>;
 
 const steps: StepperStep[] = [
   { label: "Account", description: "Signed in" },
@@ -15,32 +24,42 @@ const verticalSteps: StepperStep[] = [
   { label: "Deploy", description: "Goes live on a preview URL." },
 ];
 
-export const HorizontalStep1: Story = () => (
-  <div style={{ padding: 24 }}>
-    <Stepper steps={steps} currentStep={0} />
-  </div>
-);
+export const HorizontalStep1: Story = {
+  render: () => (
+    <div style={{ padding: 24 }}>
+      <Stepper steps={steps} currentStep={0} />
+    </div>
+  ),
+};
 
-export const HorizontalStep2: Story = () => (
-  <div style={{ padding: 24 }}>
-    <Stepper steps={steps} currentStep={1} />
-  </div>
-);
+export const HorizontalStep2: Story = {
+  render: () => (
+    <div style={{ padding: 24 }}>
+      <Stepper steps={steps} currentStep={1} />
+    </div>
+  ),
+};
 
-export const HorizontalStep3: Story = () => (
-  <div style={{ padding: 24 }}>
-    <Stepper steps={steps} currentStep={2} />
-  </div>
-);
+export const HorizontalStep3: Story = {
+  render: () => (
+    <div style={{ padding: 24 }}>
+      <Stepper steps={steps} currentStep={2} />
+    </div>
+  ),
+};
 
-export const Vertical: Story = () => (
-  <div style={{ padding: 24, maxWidth: 270 }}>
-    <Stepper steps={verticalSteps} currentStep={1} orientation="vertical" />
-  </div>
-);
+export const Vertical: Story = {
+  render: () => (
+    <div style={{ padding: 24, maxWidth: 270 }}>
+      <Stepper steps={verticalSteps} currentStep={1} orientation="vertical" />
+    </div>
+  ),
+};
 
-export const Compact: Story = () => (
-  <div style={{ padding: 24, maxWidth: 270 }}>
-    <Stepper steps={steps} currentStep={2} variant="compact" />
-  </div>
-);
+export const Compact: Story = {
+  render: () => (
+    <div style={{ padding: 24, maxWidth: 270 }}>
+      <Stepper steps={steps} currentStep={2} variant="compact" />
+    </div>
+  ),
+};

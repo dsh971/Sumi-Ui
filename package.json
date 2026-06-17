@@ -1,6 +1,6 @@
 {
   "name": "@sumiui/react",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "React component library for the Sumi Design System (水墨)",
   "type": "module",
   "main": "./dist/index.cjs",

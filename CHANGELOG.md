@@ -1,5 +1,11 @@
 # @sumiui/react
 
+## 1.1.0
+
+### Minor Changes
+
+- 12d61ad: Added components for toast, combobox, stepper and timeline per new design update
+
 ## 1.0.0
 
 ### Major Changes

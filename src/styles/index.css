@@ -248,3 +248,12 @@
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
 }
+
+@keyframes sumi-toast-timer {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}

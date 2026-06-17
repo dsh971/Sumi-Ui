@@ -51,6 +51,18 @@
           }
         }
       }
+    },
+    {
+      "include": ["src/components/Combobox/index.tsx"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "useSemanticElements": "off",
+            "useFocusableInteractive": "off",
+            "useKeyWithClickEvents": "off"
+          }
+        }
+      }
     }
   ]
 }

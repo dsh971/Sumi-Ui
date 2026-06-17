@@ -79,6 +79,15 @@ export type { DatePickerProps } from "./components/DatePicker/DatePicker.types";
 export { FileUpload } from "./components/FileUpload";
 export type { FileUploadProps } from "./components/FileUpload/FileUpload.types";
 
+export { Combobox } from "./components/Combobox";
+export type {
+  ComboboxProps,
+  ComboboxOption,
+  ComboboxGroup,
+  ComboboxSingleProps,
+  ComboboxMultiProps,
+} from "./components/Combobox/Combobox.types";
+
 // Phase 4 — Navigation components
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/Tabs";
 export type {
@@ -137,6 +146,9 @@ export type {
 export { Pagination } from "./components/Pagination";
 export type { PaginationProps } from "./components/Pagination/Pagination.types";
 
+export { Stepper } from "./components/Stepper";
+export type { StepperProps, StepperStep } from "./components/Stepper/Stepper.types";
+
 // Phase 5 — Feedback & Status components
 export { Alert } from "./components/Alert";
 export type { AlertProps, AlertVariant } from "./components/Alert/Alert.types";
@@ -159,6 +171,26 @@ export type { SkeletonProps, SkeletonVariant } from "./components/Skeleton/Skele
 
 export { EmptyState } from "./components/EmptyState";
 export type { EmptyStateProps } from "./components/EmptyState/EmptyState.types";
+
+export {
+  Toast,
+  ToastProvider,
+  ToastViewport,
+  ToastTitle,
+  ToastDescription,
+  ToastAction,
+  ToastClose,
+} from "./components/Toast";
+export type {
+  ToastProps,
+  ToastVariant,
+  ToastProviderProps,
+  ToastViewportProps,
+  ToastTitleProps,
+  ToastDescriptionProps,
+  ToastActionProps,
+  ToastCloseProps,
+} from "./components/Toast/Toast.types";
 
 // Phase 6 — Data components
 export {
@@ -187,6 +219,14 @@ export type {
   SortDirection,
   TableDensity,
 } from "./components/Table/Table.types";
+
+export { Timeline } from "./components/Timeline";
+export type {
+  TimelineProps,
+  TimelineItem,
+  TimelineItemData,
+  TimelineMarker,
+} from "./components/Timeline/Timeline.types";
 
 // Phase 7 — Brand & Identity components
 export { Avatar, AvatarSeal } from "./components/Avatar";

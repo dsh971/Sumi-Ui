@@ -1,6 +1,15 @@
-import type { Story } from "@ladle/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import type { TimelineItemData } from "./Timeline.types";
 import { Timeline } from "./index";
+
+const meta: Meta<typeof Timeline> = {
+  title: "Data/Timeline",
+  component: Timeline,
+  tags: ["autodocs"],
+};
+
+export default meta;
+type Story = StoryObj<typeof Timeline>;
 
 const CheckIcon = () => (
   <svg
@@ -114,12 +123,7 @@ const auditItems: TimelineItemData[] = [
     description: "Studio → Personal",
     marker: "dot-warn",
   },
-  {
-    id: "workspace",
-    time: "Mar 2",
-    title: "Workspace created",
-    marker: "dot",
-  },
+  { id: "workspace", time: "Mar 2", title: "Workspace created", marker: "dot" },
 ];
 
 const groupedItems: TimelineItemData[] = [
@@ -161,26 +165,34 @@ const groupedItems: TimelineItemData[] = [
   },
 ];
 
-export const ActivityFeed: Story = () => (
-  <div style={{ padding: 24, maxWidth: 420 }}>
-    <Timeline items={activityItems} />
-  </div>
-);
+export const ActivityFeed: Story = {
+  render: () => (
+    <div style={{ padding: 24, maxWidth: 420 }}>
+      <Timeline items={activityItems} />
+    </div>
+  ),
+};
 
-export const AuditLog: Story = () => (
-  <div style={{ padding: 24, maxWidth: 420 }}>
-    <Timeline items={auditItems} />
-  </div>
-);
+export const AuditLog: Story = {
+  render: () => (
+    <div style={{ padding: 24, maxWidth: 420 }}>
+      <Timeline items={auditItems} />
+    </div>
+  ),
+};
 
-export const GroupedByDay: Story = () => (
-  <div style={{ padding: 24, maxWidth: 480 }}>
-    <Timeline items={groupedItems} />
-  </div>
-);
+export const GroupedByDay: Story = {
+  render: () => (
+    <div style={{ padding: 24, maxWidth: 480 }}>
+      <Timeline items={groupedItems} />
+    </div>
+  ),
+};
 
-export const NoTimeGutter: Story = () => (
-  <div style={{ padding: 24, maxWidth: 360 }}>
-    <Timeline items={auditItems} timeGutter={false} />
-  </div>
-);
+export const NoTimeGutter: Story = {
+  render: () => (
+    <div style={{ padding: 24, maxWidth: 360 }}>
+      <Timeline items={auditItems} timeGutter={false} />
+    </div>
+  ),
+};

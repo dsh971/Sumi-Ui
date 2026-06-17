@@ -1,7 +1,23 @@
-import type { Story } from "@ladle/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import type { ComboboxGroup, ComboboxOption } from "./Combobox.types";
 import { Combobox } from "./index";
+
+const meta: Meta<typeof Combobox> = {
+  title: "Forms/Combobox",
+  component: Combobox,
+  tags: ["autodocs"],
+  decorators: [
+    (Story) => (
+      <div style={{ width: 320, padding: 24 }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export default meta;
+type Story = StoryObj<typeof Combobox>;
 
 const people: ComboboxOption[] = [
   {
@@ -12,7 +28,7 @@ const people: ComboboxOption[] = [
   {
     value: "marcus",
     label: "Marcus Reed",
-    avatar: { initials: "MA", color: "var(--azurite-500)" },
+    avatar: { initials: "MR", color: "var(--azurite-500)" },
   },
   { value: "ema", label: "Ema Lindqvist", avatar: { initials: "EM", color: "var(--sienna-500)" } },
 ];
@@ -39,10 +55,10 @@ const workspaces: ComboboxGroup[] = [
   },
 ];
 
-export const SingleSelect: Story = () => {
-  const [value, setValue] = useState<string>("");
-  return (
-    <div style={{ width: 320, padding: 24 }}>
+export const SingleSelect: Story = {
+  render: () => {
+    const [value, setValue] = useState<string>("");
+    return (
       <Combobox
         label="Assign reviewer"
         placeholder="Search a reviewer…"
@@ -50,14 +66,14 @@ export const SingleSelect: Story = () => {
         value={value}
         onValueChange={setValue}
       />
-    </div>
-  );
+    );
+  },
 };
 
-export const WithGroups: Story = () => {
-  const [value, setValue] = useState<string>("editorial");
-  return (
-    <div style={{ width: 320, padding: 24 }}>
+export const WithGroups: Story = {
+  render: () => {
+    const [value, setValue] = useState<string>("editorial");
+    return (
       <Combobox
         label="Workspace"
         placeholder="Search a workspace…"
@@ -65,14 +81,14 @@ export const WithGroups: Story = () => {
         value={value}
         onValueChange={setValue}
       />
-    </div>
-  );
+    );
+  },
 };
 
-export const MultiSelect: Story = () => {
-  const [value, setValue] = useState<string[]>(["ink-wash", "restraint"]);
-  return (
-    <div style={{ width: 320, padding: 24 }}>
+export const MultiSelect: Story = {
+  render: () => {
+    const [value, setValue] = useState<string[]>(["ink-wash", "restraint"]);
+    return (
       <Combobox
         multiple
         label="Tags"
@@ -81,14 +97,14 @@ export const MultiSelect: Story = () => {
         value={value}
         onValueChange={setValue}
       />
-    </div>
-  );
+    );
+  },
 };
 
-export const Loading: Story = () => {
-  const [value, setValue] = useState<string>("");
-  return (
-    <div style={{ width: 320, padding: 24 }}>
+export const Loading: Story = {
+  render: () => {
+    const [value, setValue] = useState<string>("");
+    return (
       <Combobox
         label="Directory"
         placeholder="Search directory…"
@@ -97,14 +113,14 @@ export const Loading: Story = () => {
         value={value}
         onValueChange={setValue}
       />
-    </div>
-  );
+    );
+  },
 };
 
-export const EmptyState: Story = () => {
-  const [value, setValue] = useState<string>("");
-  return (
-    <div style={{ width: 320, padding: 24 }}>
+export const EmptyState: Story = {
+  render: () => {
+    const [value, setValue] = useState<string>("");
+    return (
       <Combobox
         label="Directory"
         placeholder="Try typing zzz…"
@@ -112,6 +128,6 @@ export const EmptyState: Story = () => {
         value={value}
         onValueChange={setValue}
       />
-    </div>
-  );
+    );
+  },
 };

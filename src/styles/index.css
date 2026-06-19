@@ -18,6 +18,9 @@
 /* --------------------------------------------------------------------------
    Tailwind @theme — maps sumi tokens to Tailwind utility namespaces.
    Must be inline (not in an @import) for Tailwind v4's engine to process it.
+   These aliases are declared once, on :root — dark mode (`.theme-dark`,
+   `:root[data-theme="dark"]`) must re-declare the same aliases itself
+   (see tokens.css) or var() resolution freezes at :root's light value.
    -------------------------------------------------------------------------- */
 @theme {
   /* ---- Color scales — silk -------------------------------------------- */

@@ -34,7 +34,7 @@ export const Default: Story = {
           <DropdownMenuItem>Duplicate</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Archive</DropdownMenuItem>
-          <DropdownMenuItem style={{ color: "var(--status-danger)" }}>Delete</DropdownMenuItem>
+          <DropdownMenuItem variant="danger">Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

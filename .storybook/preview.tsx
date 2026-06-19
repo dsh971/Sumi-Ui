@@ -38,7 +38,7 @@ const preview: Preview = {
       const isDark = context.globals.backgrounds?.value === "#161514";
       return (
         <div
-          data-theme={isDark ? "dark" : undefined}
+          className={isDark ? "theme-dark" : undefined}
           style={{
             background: context.globals.backgrounds?.value ?? "var(--bg-0)",
             color: "var(--fg-1)",

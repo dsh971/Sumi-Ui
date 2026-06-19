@@ -237,3 +237,18 @@ export type { LogoProps, LogoVariant } from "./components/Logo/Logo.types";
 
 export { Seal } from "./components/Seal";
 export type { SealProps, SealSize } from "./components/Seal/Seal.types";
+
+// Layout primitives
+export { Container } from "./components/Container";
+export type { ContainerProps, ContainerSize } from "./components/Container/Container.types";
+
+export { Grid } from "./components/Grid";
+export type { GridProps } from "./components/Grid/Grid.types";
+
+// Command & overlays
+export { CommandPalette } from "./components/CommandPalette";
+export type {
+  CommandPaletteProps,
+  CommandItem,
+  CommandGroup,
+} from "./components/CommandPalette/CommandPalette.types";

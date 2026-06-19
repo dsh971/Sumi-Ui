@@ -1,5 +1,11 @@
 # @sumiui/react
 
+## 1.3.0
+
+### Minor Changes
+
+- c93bcca: Added Grid and imporve containers. Alos fix darkmode bug
+
 ## 1.2.0
 
 ### Minor Changes

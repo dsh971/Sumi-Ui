@@ -1,5 +1,11 @@
 # @sumiui/react
 
+## 1.2.0
+
+### Minor Changes
+
+- 694a297: Made improvements to timeline components to enable new usecases
+
 ## 1.1.0
 
 ### Minor Changes

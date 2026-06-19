@@ -430,10 +430,51 @@
   --shadow-lg: 0 12px 32px -8px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.35);
   --shadow-xl: 0 24px 56px -16px rgba(0, 0, 0, 0.7), 0 8px 16px rgba(0, 0, 0, 0.4);
   --shadow-seal: 0 0 0 1px rgba(213, 133, 121, 0.35), 0 6px 16px -4px rgba(0, 0, 0, 0.5);
-}
 
-/* --------------------------------------------------------------------------
-   Tailwind v4 @theme — maps sumi tokens to Tailwind utility names.
-   @theme is in @layer theme (lower priority than unlayered :root above),
-   so var() references here resolve through the :root values with no cycle.
-   -------------------------------------------------------------------------- */
+  /* Re-assert the @theme aliases from index.css (--color-bg-card, etc.).
+     Those are declared once, on :root, so their var() substitution is
+     resolved (and frozen) at :root's computed value the moment the page
+     loads -- redefining the raw bg/fg tokens here does not change an
+     alias that was never re-declared on this selector. Any component
+     styled via Tailwind classes (bg-bg-card, text-fg-1, etc, i.e. nearly
+     everything) needs the alias itself re-declared here, not just the
+     token it points to, or .theme-dark silently does nothing for it. */
+  --color-bg-page: var(--bg-0);
+  --color-bg-card: var(--bg-1);
+  --color-bg-sunken: var(--bg-2);
+  --color-bg-pressed: var(--bg-3);
+  --color-bg-overlay: var(--bg-overlay);
+  --color-bg-scrim: var(--bg-scrim);
+  --color-fg-1: var(--fg-1);
+  --color-fg-2: var(--fg-2);
+  --color-fg-3: var(--fg-3);
+  --color-fg-4: var(--fg-4);
+  --color-fg-on-malachite: var(--fg-on-malachite);
+  --color-fg-on-azurite: var(--fg-on-azurite);
+  --color-fg-on-cinnabar: var(--fg-on-cinnabar);
+  --color-fg-on-ink: var(--fg-on-ink);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-on: var(--accent-on);
+  --color-secondary: var(--secondary);
+  --color-secondary-soft: var(--secondary-soft);
+  --color-secondary-strong: var(--secondary-strong);
+  --color-highlight: var(--highlight);
+  --color-highlight-soft: var(--highlight-soft);
+  --color-highlight-strong: var(--highlight-strong);
+  --color-status-success: var(--status-success);
+  --color-status-success-bg: var(--status-success-bg);
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-bg: var(--status-warning-bg);
+  --color-status-warning-bar: var(--status-warning-bar);
+  --color-status-danger: var(--status-danger);
+  --color-status-danger-bg: var(--status-danger-bg);
+  --color-status-info: var(--status-info);
+  --color-status-info-bg: var(--status-info-bg);
+  --color-line-1: var(--line-1);
+  --color-line-2: var(--line-2);
+  --color-line-3: var(--line-3);
+  --color-line-ink: var(--line-ink);
+}

@@ -17,7 +17,9 @@ function TestMenu({ onSelect }: { onSelect?: (v: string) => void }) {
         <DropdownMenuItem onSelect={() => onSelect?.("edit")}>Edit</DropdownMenuItem>
         <DropdownMenuItem onSelect={() => onSelect?.("copy")}>Copy</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={() => onSelect?.("delete")}>Delete</DropdownMenuItem>
+        <DropdownMenuItem variant="danger" onSelect={() => onSelect?.("delete")}>
+          Delete
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -72,5 +74,12 @@ describe("DropdownMenu", () => {
     expect(screen.getByRole("menuitem", { name: "Edit" })).toHaveFocus();
     await user.keyboard("{ArrowDown}");
     expect(screen.getByRole("menuitem", { name: "Copy" })).toHaveFocus();
+  });
+
+  it("applies danger styling when variant is danger", async () => {
+    const user = userEvent.setup();
+    render(<TestMenu />);
+    await user.click(screen.getByText("Open menu"));
+    expect(screen.getByRole("menuitem", { name: "Delete" }).className).toContain("status-danger");
   });
 });

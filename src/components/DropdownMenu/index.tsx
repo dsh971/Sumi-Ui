@@ -55,16 +55,18 @@ DropdownMenuContent.displayName = "DropdownMenuContent";
 
 export const DropdownMenuItem = React.forwardRef<
   React.ElementRef<typeof RadixDropdown.Item>,
-  DropdownMenuItemProps & { inset?: boolean }
->(({ className, inset, ...props }, ref) => (
+  DropdownMenuItemProps & { inset?: boolean; variant?: "default" | "danger" }
+>(({ className, inset, variant = "default", ...props }, ref) => (
   <RadixDropdown.Item
     ref={ref}
     className={cn(
       "relative flex cursor-default select-none items-center gap-2",
-      "rounded-md px-2 py-1.5 text-sm text-fg-1",
+      "rounded-md px-2 py-1.5 text-sm",
       "outline-none transition-colors",
-      "focus:bg-bg-sunken focus:text-fg-1",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      variant === "danger"
+        ? "text-[color:var(--status-danger)] focus:bg-[color:var(--status-danger-bg)]"
+        : "text-fg-1 focus:bg-bg-sunken focus:text-fg-1",
       inset && "pl-8",
       className,
     )}

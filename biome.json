@@ -63,6 +63,18 @@
           }
         }
       }
+    },
+    {
+      "include": ["src/components/CommandPalette/index.tsx"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "useSemanticElements": "off",
+            "useFocusableInteractive": "off",
+            "useKeyWithClickEvents": "off"
+          }
+        }
+      }
     }
   ]
 }

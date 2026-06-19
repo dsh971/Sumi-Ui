@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
 import type { TimelineItemData } from "./Timeline.types";
 import { Timeline } from "./index";
 
@@ -96,5 +97,167 @@ describe("Timeline", () => {
     const { container } = render(<Timeline items={items} timeGutter={false} />);
     expect(container.querySelector(".grid-cols-\\[24px_1fr\\]")).toBeInTheDocument();
     expect(container.querySelector(".grid-cols-\\[64px_24px_1fr\\]")).not.toBeInTheDocument();
+  });
+
+  it("renders nested children as nested listitems under their parent", () => {
+    render(
+      <Timeline
+        items={[
+          {
+            id: "parent",
+            title: "Run",
+            children: [{ id: "child", title: "Span" }],
+          },
+        ]}
+      />,
+    );
+    expect(screen.getByText("Run")).toBeInTheDocument();
+    expect(screen.getByText("Span")).toBeInTheDocument();
+    expect(screen.getAllByRole("listitem")).toHaveLength(2);
+  });
+
+  it("calls onItemClick with the clicked item's data", async () => {
+    const user = userEvent.setup();
+    const onItemClick = vi.fn();
+    const item: TimelineItemData = { id: "a", title: "Deploy succeeded" };
+    render(<Timeline items={[item]} onItemClick={onItemClick} />);
+
+    await user.click(screen.getByRole("button", { name: "Deploy succeeded" }));
+
+    expect(onItemClick).toHaveBeenCalledWith(item);
+  });
+
+  it("does not throw when a node is clicked without an onItemClick handler", async () => {
+    const user = userEvent.setup();
+    render(<Timeline items={[{ id: "a", title: "Deploy succeeded" }]} />);
+
+    await expect(
+      user.click(screen.getByRole("button", { name: "Deploy succeeded" })),
+    ).resolves.not.toThrow();
+  });
+
+  it("applies aria-current only to the item matching selectedId", () => {
+    render(
+      <Timeline
+        items={[
+          { id: "a", title: "First" },
+          { id: "b", title: "Second" },
+        ]}
+        selectedId="b"
+      />,
+    );
+    expect(screen.getByRole("button", { name: "First" })).not.toHaveAttribute("aria-current");
+    expect(screen.getByRole("button", { name: "Second" })).toHaveAttribute("aria-current", "true");
+  });
+
+  it("applies the dot-pending marker class", () => {
+    const { container } = render(
+      <Timeline items={[{ title: "running", marker: "dot-pending" }]} />,
+    );
+    expect(container.querySelector(".bg-\\[color\\:var\\(--steel-500\\)\\]")).toBeInTheDocument();
+  });
+
+  it("renders a disclosure toggle only for nodes with children", () => {
+    render(
+      <Timeline
+        items={[{ id: "parent", title: "Parent", children: [{ id: "child", title: "Child" }] }]}
+      />,
+    );
+    expect(screen.getAllByRole("button", { name: "Collapse" })).toHaveLength(1);
+  });
+
+  it("does not call onItemClick when the disclosure toggle is clicked", async () => {
+    const user = userEvent.setup();
+    const onItemClick = vi.fn();
+    render(
+      <Timeline
+        items={[{ id: "parent", title: "Parent", children: [{ id: "child", title: "Child" }] }]}
+        onItemClick={onItemClick}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Collapse" }));
+
+    expect(onItemClick).not.toHaveBeenCalled();
+  });
+
+  it("does not toggle expand state when the title button is clicked", async () => {
+    const user = userEvent.setup();
+    render(
+      <Timeline
+        items={[{ id: "parent", title: "Parent", children: [{ id: "child", title: "Child" }] }]}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Parent" }));
+
+    expect(screen.getByText("Child")).toBeInTheDocument();
+  });
+
+  it("does not repeat the time gutter below the root level", () => {
+    const { container } = render(
+      <Timeline
+        items={[
+          {
+            id: "parent",
+            time: "00:00",
+            title: "Parent",
+            children: [{ id: "child", time: "00:01", title: "Child" }],
+          },
+        ]}
+        timeGutter
+      />,
+    );
+    const rows = container.querySelectorAll("li.grid");
+    expect(rows[0]).toHaveClass("grid-cols-[64px_24px_1fr]");
+    expect(rows[1]).toHaveClass("grid-cols-[24px_1fr]");
+    expect(rows[1]).not.toHaveClass("grid-cols-[64px_24px_1fr]");
+  });
+
+  const deepItems: TimelineItemData[] = [
+    {
+      id: "l0",
+      title: "Level 0",
+      children: [
+        {
+          id: "l1",
+          title: "Level 1",
+          children: [
+            {
+              id: "l2",
+              title: "Level 2",
+              children: [
+                {
+                  id: "l3",
+                  title: "Level 3",
+                  children: [{ id: "l4", title: "Level 4" }],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  it("collapses a node's children by default once depth reaches defaultCollapsedDepth", () => {
+    render(<Timeline items={deepItems} />);
+    expect(screen.getByText("Level 3")).toBeInTheDocument();
+    expect(screen.queryByText("Level 4")).not.toBeInTheDocument();
+  });
+
+  it("expands a collapsed node's children when its disclosure toggle is clicked", async () => {
+    const user = userEvent.setup();
+    render(<Timeline items={deepItems} />);
+
+    await user.click(screen.getByRole("button", { name: "Expand" }));
+
+    expect(screen.getByText("Level 4")).toBeInTheDocument();
+  });
+
+  it("respects a custom defaultCollapsedDepth", () => {
+    render(<Timeline items={deepItems} defaultCollapsedDepth={1} />);
+    expect(screen.getByText("Level 1")).toBeInTheDocument();
+    expect(screen.queryByText("Level 2")).not.toBeInTheDocument();
   });
 });

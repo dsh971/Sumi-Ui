@@ -1,0 +1,52 @@
+---
+title: Theming & Tokens
+description: How design tokens map to Tailwind utilities, and how dark mode works.
+---
+
+## Tokens are CSS, not JS
+
+Every design value — color, spacing, radius, shadow — is a CSS custom
+property, not a JS theme object. There's nothing to import to use a token;
+`@sumiui/react/styles` defines them all on `:root`, and every component
+already references them internally.
+
+Token families: `--silk-*` · `--canvas-*` · `--ink-*` · `--malachite-*` ·
+`--azurite-*` · `--teal-*` · `--cinnabar-*` · `--persimmon-*` · `--sienna-*`
+· `--slate-*` · `--steel-*`
+
+Semantic aliases sit on top of those scales and are what components
+actually use day to day: `--accent` · `--secondary` · `--highlight` ·
+`--status-*` · `--bg-*` · `--fg-*`.
+
+## Dark mode
+
+Toggle dark mode by setting `data-theme="dark"` on the `<html>` element (or
+any ancestor):
+
+```tsx
+document.documentElement.setAttribute("data-theme", "dark");
+```
+
+<ComponentDemo name="button/variants" />
+
+## Customizing tokens
+
+Override the custom properties at `:root` to theme the library without
+touching component code:
+
+```css
+/* your-theme.css — import AFTER @sumiui/react/styles */
+:root {
+  /* Example: swap the primary brand colour */
+  --accent: #2563eb;
+}
+```
+
+If you're authoring a *scoped* dark-mode toggle (applying it to something
+other than `<html>` — a nested container, a preview pane, etc.), re-declare
+the semantic `--color-*` aliases at that same selector too, not just the
+raw tokens underneath them. CSS resolves `var()` at the point a custom
+property is *declared*, not at the point it's inherited, so an alias
+declared once at `:root` stays pinned to whatever the raw token resolved to
+there — redefining the raw token further down the tree doesn't retroactively
+change an alias that was never re-declared at that same level.

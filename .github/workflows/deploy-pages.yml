@@ -1,4 +1,4 @@
-name: Deploy Storybook
+name: Deploy Pages
 
 on:
   push:
@@ -32,12 +32,22 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build docs site
+        run: pnpm --filter @sumiui/docs build
+
       - name: Build Storybook
         run: pnpm storybook:build --output-dir storybook-static
 
+      - name: Merge docs + Storybook into one artifact
+        run: |
+          mkdir -p site
+          cp -r docs/out/. site/
+          mkdir -p site/storybook
+          cp -r storybook-static/. site/storybook/
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: storybook-static
+          path: site
 
   deploy:
     needs: build

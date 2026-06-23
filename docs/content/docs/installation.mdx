@@ -1,0 +1,52 @@
+---
+title: Installation
+description: Package manager options and peer dependency requirements.
+---
+
+## Package manager
+
+<Tabs items={["pnpm", "npm", "yarn"]}>
+  <Tab value="pnpm">
+
+    ```bash
+    pnpm add @sumiui/react
+    ```
+
+  </Tab>
+  <Tab value="npm">
+
+    ```bash
+    npm install @sumiui/react
+    ```
+
+  </Tab>
+  <Tab value="yarn">
+
+    ```bash
+    yarn add @sumiui/react
+    ```
+
+  </Tab>
+</Tabs>
+
+## Peer dependencies
+
+SumiUi requires React 19 or later:
+
+```bash
+npm install react react-dom
+```
+
+## What you get
+
+- ESM + CJS dual build, fully typed (`.d.ts` included)
+- A single CSS file (`@sumiui/react/styles`) with all design tokens and base
+  styles — import it once at your app root
+- No required peer dependency on a CSS framework — components ship their
+  own styles via the token layer, you don't need Tailwind in your own app to
+  use them
+
+## Next
+
+**[Getting Started](/docs/getting-started)** walks through rendering your
+first component.

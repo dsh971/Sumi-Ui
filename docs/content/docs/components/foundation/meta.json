@@ -1,0 +1,4 @@
+{
+  "title": "Foundation",
+  "pages": ["button", "input", "card", "badge", "dialog", "container", "grid"]
+}

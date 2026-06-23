@@ -2,6 +2,7 @@ import type { Preview } from "@storybook/react";
 import React from "react";
 import "../src/styles/index.css";
 import { TooltipProvider } from "../src/components/Tooltip";
+import { cn } from "../src/lib/cn";
 
 const preview: Preview = {
   parameters: {
@@ -38,12 +39,16 @@ const preview: Preview = {
       const isDark = context.globals.backgrounds?.value === "#161514";
       return (
         <div
-          className={isDark ? "theme-dark" : undefined}
+          className={cn(
+            "px-[var(--gutter-mobile)] py-[var(--gutter-mobile)]",
+            "md:px-[var(--gutter-tablet)] md:py-[var(--gutter-tablet)]",
+            "lg:px-[var(--gutter-desktop)] lg:py-[var(--gutter-desktop)]",
+            isDark && "theme-dark",
+          )}
           style={{
             background: context.globals.backgrounds?.value ?? "var(--bg-0)",
             color: "var(--fg-1)",
             minHeight: "100vh",
-            padding: "32px",
             fontFamily: "var(--font-body)",
           }}
         >

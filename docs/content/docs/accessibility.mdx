@@ -1,0 +1,24 @@
+---
+title: Accessibility
+description: Contrast, keyboard navigation, and ARIA conventions across the library.
+---
+
+All components meet WCAG AA (4.5:1 body text, 3:1 large text and UI). Focus
+rings use the azurite secondary token. Every interactive component has
+keyboard navigation and appropriate ARIA roles.
+
+## What this means in practice
+
+- Every interactive primitive (`Select`, `Dialog`, `DropdownMenu`,
+  `Combobox`, `CommandPalette`, `Tabs`...) is built on Radix UI's headless
+  primitives, which handle focus management, roving tabindex, and ARIA
+  wiring for you.
+- Color is never the only signal — status components (`Badge`, `Alert`)
+  pair color with an icon or text label.
+- Components are tested for keyboard-only operation: tab order, arrow-key
+  navigation within composite widgets (menus, tabs, selects), and `Escape`
+  to dismiss overlays.
+
+See the [Sumi Design System's contrast and accessibility
+guidelines](/docs/theming) for the token-level contrast ratios this is
+built on.

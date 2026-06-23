@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+@source "../node_modules/fumadocs-ui/dist/**/*.js";
+
+/* Live <ComponentDemo> previews render real @sumiui/react components, which
+   expect to be inside a normal document flow with the library's own tokens
+   loaded (imported in app/layout.tsx) -- no extra scoping needed here, the
+   library's CSS is namespaced via its own custom properties (--color-...,
+   --bg-..., etc.) rather than resetting global element selectors. */

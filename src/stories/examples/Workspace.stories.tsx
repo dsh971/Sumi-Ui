@@ -10,8 +10,11 @@ import {
   ImageIcon,
   Italic,
   Link2,
+  Menu,
   Minus,
   Moon,
+  PanelLeft,
+  PanelLeftClose,
   Pilcrow,
   Quote,
   Search,
@@ -109,7 +112,11 @@ function ToolbarButton({ children, label }: { children: React.ReactNode; label: 
 
 function EditorToolbar() {
   return (
-    <div className="flex items-center gap-0.5 border-b border-[color:var(--line-1)] px-1 py-1.5">
+    <div className="flex items-center gap-0.5 overflow-x-auto border-b border-[color:var(--line-1)] px-1 py-1.5">
+      {/* overflow-x-auto: 11 icon buttons + 2 dividers run close to a
+          320px mobile viewport's width once the editor's own padding is
+          subtracted — scroll rather than wrap, since wrapping would break
+          the divider grouping. */}
       <ToolbarButton label="Bold">
         <Bold size={14} />
       </ToolbarButton>
@@ -176,11 +183,19 @@ function Sidebar({
   theme,
   onTheme,
   onOpenPalette,
+  mobileOpen,
+  onMobileClose,
+  collapsed,
+  onToggleCollapsed,
 }: {
   activeView: "dashboard" | "editor";
   theme: "light" | "dark";
   onTheme: (t: "light" | "dark") => void;
   onOpenPalette: () => void;
+  mobileOpen: boolean;
+  onMobileClose: () => void;
+  collapsed: boolean;
+  onToggleCollapsed: () => void;
 }) {
   const pieces = [
     { id: "p1", name: "On restraint" },
@@ -189,7 +204,16 @@ function Sidebar({
   ];
 
   return (
-    <aside className="flex h-full flex-col border-r border-[color:var(--line-1)] bg-bg-card">
+    <aside
+      className={cn(
+        "flex h-full flex-col border-r border-[color:var(--line-1)] bg-bg-card transition-transform",
+        "fixed inset-y-0 left-0 z-40 w-[240px] md:w-auto",
+        // collapsed is a desktop-only concept — the mobile drawer
+        // (mobileOpen, below) stays independent of it entirely.
+        collapsed ? "md:hidden" : "md:static md:translate-x-0",
+        mobileOpen ? "translate-x-0" : "-translate-x-full",
+      )}
+    >
       <div className="flex items-center gap-2.5 border-b border-[color:var(--line-1)] px-3.5 py-3">
         <Seal size="sm" />
         <div className="min-w-0 flex-1">
@@ -197,6 +221,22 @@ function Sidebar({
           <div className="text-xs text-fg-3">Personal · 3 spaces</div>
         </div>
         <ChevronDown size={14} className="text-fg-3" aria-hidden="true" />
+        <button
+          type="button"
+          aria-label="Collapse sidebar"
+          onClick={onToggleCollapsed}
+          className="hidden size-7 items-center justify-center rounded-md text-fg-3 hover:text-fg-1 md:flex"
+        >
+          <PanelLeftClose size={16} />
+        </button>
+        <button
+          type="button"
+          aria-label="Close sidebar"
+          onClick={onMobileClose}
+          className="flex size-7 items-center justify-center rounded-md text-fg-3 hover:text-fg-1 md:hidden"
+        >
+          <X size={16} />
+        </button>
       </div>
 
       <div className="px-3 pt-3">
@@ -310,6 +350,8 @@ function AppShell({
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const groups: CommandGroup[] = [
     {
@@ -337,24 +379,86 @@ function AppShell({
 
   return (
     <ToastProvider duration={2200}>
-      {/* Fixed-width "app window" + scroll wrapper: this is a desktop app-shell
-          mockup, not a fluid page — letting it shrink to fit narrow embedding
-          contexts (like the Storybook Docs column) squeezes the topbar/sidebar
-          into broken layouts instead of just scrolling. */}
-      <div style={{ overflowX: "auto" }}>
+      {/* Below `md`, the app window fills the viewport like a real app.
+          At `md` and up it's a fixed-size desktop mockup (1100x640) inside
+          a horizontal-scroll wrapper, so narrow embedding contexts (like
+          the Storybook Docs column) scroll instead of squeezing the
+          topbar/sidebar into a broken layout. */}
+      <div className="md:overflow-x-auto">
         <div
           className={cn(
-            "overflow-hidden rounded-xl border border-[color:var(--line-1)]",
+            "relative flex h-screen w-full flex-col overflow-hidden bg-bg-page",
+            "md:h-[640px] md:w-[1100px] md:rounded-xl md:border md:border-[color:var(--line-1)]",
             theme === "dark" && "theme-dark",
           )}
-          style={{ width: "1100px", height: "640px" }}
         >
-          <Grid cols={properties ? "240px 1fr 260px" : "240px 1fr"} gap="0" className="h-full">
+          {/* Opens the mobile drawer below `md`, always visible there
+              regardless of `sidebarCollapsed` (a desktop-only concept).
+              At `md` and up this row is normally hidden entirely — it only
+              reappears once the static column itself is gone, to host the
+              expand button. Sits in its own row above the Grid so it can
+              never collide with TopBar/DashboardContent the way a floating
+              absolutely-positioned button would. */}
+          <div
+            className={cn(
+              "flex items-center gap-2 border-b border-[color:var(--line-1)] px-3 py-2 md:hidden",
+              sidebarCollapsed && "md:flex",
+            )}
+          >
+            <button
+              type="button"
+              aria-label="Open sidebar"
+              onClick={() => setSidebarOpen(true)}
+              className="flex size-7 items-center justify-center rounded-md text-fg-2 hover:bg-bg-sunken hover:text-fg-1 md:hidden"
+            >
+              <Menu size={16} />
+            </button>
+            {sidebarCollapsed && (
+              <button
+                type="button"
+                aria-label="Expand sidebar"
+                onClick={() => setSidebarCollapsed(false)}
+                className="hidden size-7 items-center justify-center rounded-md text-fg-2 hover:bg-bg-sunken hover:text-fg-1 md:flex"
+              >
+                <PanelLeft size={16} />
+              </button>
+            )}
+            <span className="text-sm font-medium text-fg-1">
+              {activeView === "dashboard" ? "Dashboard" : "Editor"}
+            </span>
+          </div>
+
+          {sidebarOpen && (
+            <button
+              type="button"
+              aria-label="Close sidebar"
+              className="fixed inset-0 z-30 bg-black/40 md:hidden"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
+
+          <Grid
+            gap="0"
+            className={cn(
+              "flex-1 grid-cols-1 overflow-y-auto md:overflow-visible",
+              properties
+                ? sidebarCollapsed
+                  ? "md:grid-cols-[1fr_260px]"
+                  : "md:grid-cols-[240px_1fr_260px]"
+                : sidebarCollapsed
+                  ? "md:grid-cols-[1fr]"
+                  : "md:grid-cols-[240px_1fr]",
+            )}
+          >
             <Sidebar
               activeView={activeView}
               theme={theme}
               onTheme={setTheme}
               onOpenPalette={() => setPaletteOpen(true)}
+              mobileOpen={sidebarOpen}
+              onMobileClose={() => setSidebarOpen(false)}
+              collapsed={sidebarCollapsed}
+              onToggleCollapsed={() => setSidebarCollapsed(true)}
             />
             <div className="flex min-w-0 flex-col overflow-hidden bg-bg-page">
               {children(() => setPaletteOpen(true))}
@@ -529,7 +633,7 @@ function EditorContent({ onOpenPalette }: { onOpenPalette: () => void }) {
   return (
     <>
       <TopBar title={title || "Untitled"} onOpenPalette={onOpenPalette} />
-      <div className="flex-1 overflow-y-auto px-8 py-6">
+      <div className="flex-1 overflow-y-auto px-4 py-6 md:px-8">
         <div className="mx-auto max-w-2xl">
           <div className="mb-2 text-xs uppercase tracking-wide text-fg-3">Essay</div>
           <input
@@ -586,7 +690,7 @@ function PropertiesPanel() {
   ];
 
   return (
-    <aside className="flex h-full flex-col gap-6 overflow-y-auto border-l border-[color:var(--line-1)] bg-bg-card p-4">
+    <aside className="flex h-full flex-col gap-6 overflow-y-auto border-t border-[color:var(--line-1)] bg-bg-card p-4 md:border-t-0 md:border-l">
       <div>
         <div className="mb-2 text-xs uppercase tracking-wide text-fg-3">Properties</div>
         <div className="flex flex-col gap-2 text-sm">

@@ -1,0 +1,22 @@
+---
+title: Card
+description: A bordered surface composed from CardHeader, CardBody, and CardFooter.
+---
+
+```tsx
+import { Card, CardHeader, CardBody, CardFooter } from "@sumiui/react";
+```
+
+## Basic usage
+
+<ComponentDemo name="card/basic" />
+
+## Props
+
+| Prop | Type | Default |
+|---|---|---|
+| `variant` | `"default" \| "elevated"` | `"default"` |
+| `asChild` | `boolean` | `false` |
+
+`CardHeader`, `CardBody`, and `CardFooter` each accept every native `<div>`
+attribute — they're layout-only, no required props.

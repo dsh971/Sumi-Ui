@@ -1,0 +1,27 @@
+---
+title: Select
+description: A styled, accessible select built on Radix UI's Select primitive.
+---
+
+```tsx
+import { Select, SelectContent, SelectItem } from "@sumiui/react";
+```
+
+## Basic usage
+
+<ComponentDemo name="select/basic" />
+
+## Props
+
+`Select` extends Radix UI's `Select.Root` props, plus:
+
+| Prop | Type |
+|---|---|
+| `label` | `string` |
+| `helperText` | `string` |
+| `errorText` | `string` |
+| `placeholder` | `string` |
+| `triggerClassName` | `string` |
+
+`SelectContent`, `SelectItem`, `SelectGroup`, `SelectLabel`, and
+`SelectSeparator` mirror their Radix UI equivalents directly.

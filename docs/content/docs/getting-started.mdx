@@ -1,0 +1,73 @@
+---
+title: Getting Started
+description: Install SumiUi and render your first component.
+---
+
+## Install
+
+```bash
+npm install @sumiui/react
+# or
+pnpm add @sumiui/react
+```
+
+**Peer dependencies** (must be in your project):
+
+```bash
+npm install react react-dom
+# React >=19.0.0 required
+```
+
+## Import the styles
+
+Import the CSS once at your app root — it provides all design tokens and
+base styles:
+
+```tsx
+// main.tsx or _app.tsx
+import "@sumiui/react/styles";
+```
+
+## Render a component
+
+```tsx
+import { Button, Card, CardBody, CardHeader } from "@sumiui/react";
+
+export function App() {
+  return (
+    <Card>
+      <CardHeader>
+        <h2>A quiet place to write.</h2>
+      </CardHeader>
+      <CardBody>
+        <Button variant="primary">Start a draft</Button>
+        <Button variant="ghost">Browse</Button>
+      </CardBody>
+    </Card>
+  );
+}
+```
+
+That's the exact code rendering the live example below — every demo on this
+site is a real, working `@sumiui/react` import, not a mockup.
+
+<ComponentDemo name="card/basic" />
+
+## Tooltip setup
+
+If you use `Tooltip`, wrap your app root in `TooltipProvider` so tooltips
+share a single floating layer:
+
+```tsx
+import { TooltipProvider } from "@sumiui/react";
+
+<TooltipProvider>
+  <App />
+</TooltipProvider>;
+```
+
+## Next
+
+- **[Installation](/docs/installation)** — package manager details and peer
+  dependency notes.
+- **[Theming & Tokens](/docs/theming)** — dark mode and customizing tokens.

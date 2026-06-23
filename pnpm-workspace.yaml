@@ -1,8 +1,13 @@
+packages:
+  - "."
+  - "docs"
+
 allowBuilds:
   '@biomejs/biome': true
   '@swc/core': true
   esbuild: true
   msw: true
+  sharp: true
   simple-git-hooks: true
 ignoreScripts: false
 onlyBuiltDependencies:
@@ -10,4 +15,5 @@ onlyBuiltDependencies:
   - "@swc/core"
   - esbuild
   - msw
+  - sharp
   - simple-git-hooks

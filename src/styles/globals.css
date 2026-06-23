@@ -239,3 +239,18 @@ hr {
   background-size: 200% 100%;
   animation: sm-shimmer var(--duration-skeleton) var(--ease-in-out) infinite;
 }
+
+/* No dark-mode shimmer in the design system spec (preview/skeleton.html has
+   no dark variant, unlike dark-snapshot.html's other components) — logged
+   as a decision in documentation/decisions/003-component-gaps.md. canvas-50/
+   canvas-100 are raw scale tokens that don't flip under .theme-dark, so
+   without this override the light warm-paper shimmer would render as-is
+   against a dark page. --bg-2/--bg-3 are the dark theme's own adjacent
+   "pigment step" tokens (tokens.css: "page is charcoal; pigments step
+   lighter") — same structural relationship as canvas-100/canvas-50 in
+   light mode, without the near-white flash that would break dark mode's
+   palette. */
+.theme-dark .sm-skeleton {
+  background: linear-gradient(90deg, var(--bg-2) 0%, var(--bg-3) 50%, var(--bg-2) 100%);
+  background-size: 200% 100%;
+}

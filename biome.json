@@ -29,7 +29,16 @@
     }
   },
   "files": {
-    "ignore": ["dist", "node_modules", ".ladle", "storybook-static"]
+    "ignore": [
+      "dist",
+      "node_modules",
+      ".ladle",
+      "storybook-static",
+      "docs/.next",
+      "docs/.source",
+      "docs/out",
+      "docs/node_modules"
+    ]
   },
   "overrides": [
     {

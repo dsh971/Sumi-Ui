@@ -35,20 +35,26 @@ const block = (label: string) => (
 // always wins over classes regardless of breakpoint — so it can't itself be
 // "responsive". The pattern for going desktop → mobile is: leave `cols`
 // unset on `Grid`, and put literal (not dynamically built) responsive
-// Tailwind classes on each *child* — `col-span-12 md:col-span-6` stacks to a
-// full-width row below `md`, then becomes half-width from `md` up.
+// Tailwind classes on the grid itself (`grid-cols-1 md:grid-cols-12`) and on
+// each *child* (`md:col-span-6`).
+//
+// Don't also give children a base `col-span-12`: a `span` greater than the
+// grid's current explicit track count (1, below `md`) creates implicit
+// tracks to satisfy it, and `gap` still applies *between* those implicit
+// tracks even though they hold no content — 11 implicit gaps at
+// --grid-gutter (24px) is 264px the item must additionally claim, which
+// overflows a narrow mobile container. Leaving the base span unset lets the
+// item fall into the single real column with no implicit tracks at all.
 function TwelveColumnDemo() {
   return (
-    <div style={{ padding: "24px" }}>
-      <Grid cols={12}>
-        <div className="col-span-12">{block("col-span-12")}</div>
-        <div className="col-span-12 md:col-span-6">{block("col-span-12 md:col-span-6")}</div>
-        <div className="col-span-12 md:col-span-6">{block("col-span-12 md:col-span-6")}</div>
-        <div className="col-span-12 md:col-span-4">{block("col-span-12 md:col-span-4")}</div>
-        <div className="col-span-12 md:col-span-4">{block("col-span-12 md:col-span-4")}</div>
-        <div className="col-span-12 md:col-span-4">{block("col-span-12 md:col-span-4")}</div>
-      </Grid>
-    </div>
+    <Grid className="grid-cols-1 md:grid-cols-12">
+      <div className="md:col-span-12">{block("md:col-span-12")}</div>
+      <div className="md:col-span-6">{block("md:col-span-6")}</div>
+      <div className="md:col-span-6">{block("md:col-span-6")}</div>
+      <div className="md:col-span-4">{block("md:col-span-4")}</div>
+      <div className="md:col-span-4">{block("md:col-span-4")}</div>
+      <div className="md:col-span-4">{block("md:col-span-4")}</div>
+    </Grid>
   );
 }
 
@@ -68,22 +74,20 @@ export const TwelveColumnMobile: Story = {
 // from the README.
 function ResponsiveCardGridDemo() {
   return (
-    <div style={{ padding: "24px" }}>
-      <Grid className="grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-        {["One", "Two", "Three", "Four", "Five", "Six"].map((label) => (
-          <Card key={label}>
-            <CardHeader>
-              <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 500 }}>Card {label}</h3>
-            </CardHeader>
-            <CardBody>
-              <p style={{ margin: 0, fontSize: "14px", color: "var(--fg-2)" }}>
-                3 columns at xl, 2 at md, 1 below that.
-              </p>
-            </CardBody>
-          </Card>
-        ))}
-      </Grid>
-    </div>
+    <Grid className="grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+      {["One", "Two", "Three", "Four", "Five", "Six"].map((label) => (
+        <Card key={label}>
+          <CardHeader>
+            <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 500 }}>Card {label}</h3>
+          </CardHeader>
+          <CardBody>
+            <p style={{ margin: 0, fontSize: "14px", color: "var(--fg-2)" }}>
+              3 columns at xl, 2 at md, 1 below that.
+            </p>
+          </CardBody>
+        </Card>
+      ))}
+    </Grid>
   );
 }
 
@@ -104,12 +108,10 @@ export const ResponsiveCardGridMobile: Story = {
 // equivalent, so it should stack rather than just shrink.
 function AsymmetricDemo() {
   return (
-    <div style={{ padding: "24px" }}>
-      <Grid className="grid-cols-1 md:grid-cols-[1.4fr_1fr]">
-        <div>{block("Content column — 1.4fr (full width below md)")}</div>
-        <div>{block("Whitespace / anchor column — 1fr (stacks below md)")}</div>
-      </Grid>
-    </div>
+    <Grid className="grid-cols-1 md:grid-cols-[1.4fr_1fr]">
+      <div>{block("Content column — 1.4fr (full width below md)")}</div>
+      <div>{block("Whitespace / anchor column — 1fr (stacks below md)")}</div>
+    </Grid>
   );
 }
 
@@ -126,12 +128,10 @@ export const AsymmetricMobile: Story = {
 
 export const CustomGap: Story = {
   render: () => (
-    <div style={{ padding: "24px" }}>
-      <Grid cols={3} gap="var(--space-3)">
-        <div>{block("gap = --space-3")}</div>
-        <div>{block("gap = --space-3")}</div>
-        <div>{block("gap = --space-3")}</div>
-      </Grid>
-    </div>
+    <Grid cols={3} gap="var(--space-3)">
+      <div>{block("gap = --space-3")}</div>
+      <div>{block("gap = --space-3")}</div>
+      <div>{block("gap = --space-3")}</div>
+    </Grid>
   ),
 };

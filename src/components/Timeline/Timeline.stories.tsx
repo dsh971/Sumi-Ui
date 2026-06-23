@@ -1,10 +1,28 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
+import { ChevronLeft } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Badge } from "../Badge";
 import type { BadgeVariant } from "../Badge/Badge.types";
 import { Card, CardBody, CardFooter, CardHeader } from "../Card";
 import type { TimelineItemData, TimelineMarker } from "./Timeline.types";
 import { Timeline } from "./index";
+
+// Story-local only — matches the precedent set by Workspace.stories.tsx's
+// local helpers (NavItem/ToolbarButton/Tag) for illustrative-example code
+// that doesn't belong in src/components/. Needed to know whether the
+// full-screen mobile panel below should render at all — at `md:` and up the
+// static side-by-side Card stays the only detail view.
+function useIsMobile(breakpoint = 768): boolean {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, [breakpoint]);
+  return isMobile;
+}
 
 const meta: Meta<typeof Timeline> = {
   title: "Data/Timeline",
@@ -283,28 +301,80 @@ export const TraceTreeWithDetailPanel: Story = {
       const [selectedId, setSelectedId] = useState<string | undefined>("run");
       const selected = selectedId ? findTraceItem(traceItems, selectedId) : undefined;
       const status = selected?.marker ? statusByMarker[selected.marker] : undefined;
+      // 1024 (lg), not the default 768 (md) — a portrait tablet clears 768px
+      // on width alone but doesn't have the flat, wide feel the side-by-side
+      // Card assumes; real master-detail apps (Mail, Notion) only switch to
+      // side-by-side around landscape-tablet/laptop width, not phone width.
+      const isMobile = useIsMobile(1024);
+      const panelRef = useRef<HTMLDialogElement>(null);
+
+      // showModal()/close() (native, zero dependencies) give a real focus
+      // trap, top-layer rendering, and Escape-to-close for free — instead
+      // of a role="dialog" div re-implementing all of that by hand.
+      useEffect(() => {
+        const panel = panelRef.current;
+        if (!panel) return;
+        if (isMobile && selected) {
+          if (!panel.open) panel.showModal();
+        } else if (panel.open) {
+          panel.close();
+        }
+      }, [isMobile, selected]);
 
       return (
-        <div style={{ padding: 24, display: "flex", gap: 24, alignItems: "flex-start" }}>
-          <div style={{ flex: "0 0 360px" }}>
+        <div className="flex flex-col gap-6 p-6 lg:flex-row lg:items-start">
+          <div className="w-full lg:w-[360px] lg:flex-none">
             <Timeline
               items={traceItems}
               selectedId={selectedId}
               onItemClick={(item) => setSelectedId(item.id)}
             />
           </div>
-          <div style={{ width: 280 }}>
+
+          {/* lg: and up only, matching isMobile's 1024 threshold above — a
+              narrow column doesn't fit a mobile *or* portrait-tablet
+              viewport, and below that there's nothing to permanently
+              reserve scroll space for until something's actually
+              selected — see the full-screen panel below instead. 320px,
+              not the original 280px — real description content (see
+              traceItems below) wraps into 3-4 lines per field at 280px;
+              320px keeps it visually secondary to Timeline's 360px column
+              while meaningfully cutting down on wrapping. */}
+          <div className="hidden w-[320px] lg:block">
             {selected ? (
-              <Card>
+              // max-h + flex-col, CardBody as the one flex-1 overflow-y-auto
+              // region — same pattern as the full-screen panel below.
+              // Without this, CardBody (plain padding, no height logic) just
+              // grows unbounded with content, towering over the Timeline
+              // column with no scroll boundary at all.
+              <Card className="flex max-h-[70vh] flex-col">
                 <CardHeader>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <h3 style={{ margin: 0, fontSize: 15, fontWeight: 500, color: "var(--fg-1)" }}>
-                      {selected.title}
-                    </h3>
-                    {status && <Badge variant={status.variant}>{status.label}</Badge>}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <h3
+                        style={{ margin: 0, fontSize: 15, fontWeight: 500, color: "var(--fg-1)" }}
+                      >
+                        {selected.title}
+                      </h3>
+                      {status && <Badge variant={status.variant}>{status.label}</Badge>}
+                    </div>
+                    <button
+                      type="button"
+                      aria-label="Close"
+                      onClick={() => setSelectedId(undefined)}
+                      className="text-fg-3 hover:text-fg-1"
+                    >
+                      ✕
+                    </button>
                   </div>
                 </CardHeader>
-                <CardBody>
+                <CardBody className="flex-1 overflow-y-auto">
                   <dl
                     style={{
                       margin: 0,
@@ -336,6 +406,68 @@ export const TraceTreeWithDetailPanel: Story = {
               </Card>
             )}
           </div>
+
+          {/* Mobile only: full-screen drill-in, not a centered popup — this
+              reads as "viewing detail about this node," closer to a native
+              push navigation than an interrupting dialog. No enter/exit
+              motion yet — see the animate-in/slide-in-from-* classes used
+              elsewhere in this codebase (Dialog, Tooltip, DropdownMenu,
+              Alert, DatePicker, Toast, CommandPalette, Select): none of
+              them actually animate, there's no tailwindcss-animate/
+              tw-animate-css plugin installed and no hand-rolled @keyframes
+              backing those class names. Worth deciding deliberately rather
+              than copying a pattern that's already silently inert
+              elsewhere. Always mounted (showModal()/close() need the
+              element present to call); dismissed via the back button or
+              Escape, both routed through onCancel so React state and the
+              dialog's own open state never drift apart. */}
+          <dialog
+            ref={panelRef}
+            aria-labelledby="trace-detail-panel-title"
+            onCancel={() => setSelectedId(undefined)}
+            className="fixed inset-0 z-50 m-0 hidden h-full max-h-full w-full max-w-full flex-col bg-bg-page p-0 open:flex"
+          >
+            {selected && (
+              <>
+                <div className="flex items-center gap-2 border-b border-[color:var(--line-1)] px-4 py-3">
+                  <button
+                    type="button"
+                    aria-label="Back"
+                    onClick={() => setSelectedId(undefined)}
+                    className="flex size-8 items-center justify-center rounded-md text-fg-2 hover:bg-bg-sunken hover:text-fg-1"
+                  >
+                    <ChevronLeft size={18} />
+                  </button>
+                  <span id="trace-detail-panel-title" className="text-sm font-medium text-fg-1">
+                    {selected.title}
+                  </span>
+                  {status && <Badge variant={status.variant}>{status.label}</Badge>}
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-4">
+                  <dl
+                    style={{
+                      margin: 0,
+                      display: "grid",
+                      gridTemplateColumns: "auto 1fr",
+                      gap: "6px 12px",
+                      fontSize: 13,
+                    }}
+                  >
+                    <dt style={{ color: "var(--fg-3)" }}>Time</dt>
+                    <dd style={{ margin: 0, color: "var(--fg-1)" }}>{selected.time ?? "—"}</dd>
+                    <dt style={{ color: "var(--fg-3)" }}>Detail</dt>
+                    <dd style={{ margin: 0, color: "var(--fg-1)" }}>
+                      {selected.description ?? "—"}
+                    </dd>
+                  </dl>
+                  <p style={{ margin: "12px 0 0", fontSize: 12, color: "var(--fg-3)" }}>
+                    id: {selected.id}
+                  </p>
+                </div>
+              </>
+            )}
+          </dialog>
         </div>
       );
     }

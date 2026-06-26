@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import { Pagination } from "./index";
 
 describe("Pagination", () => {
@@ -67,5 +68,12 @@ describe("Pagination", () => {
     render(<Pagination page={5} totalPages={10} onPageChange={vi.fn()} />);
     expect(screen.getByRole("button", { name: "Page 1" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Page 10" })).toBeInTheDocument();
+  });
+});
+
+describe("Pagination accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Pagination page={3} totalPages={5} onPageChange={vi.fn()} />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

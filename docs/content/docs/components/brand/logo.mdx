@@ -1,12 +1,27 @@
 ---
 title: Logo
-description: Coming soon.
+description: The SumiUi wordmark, in light and dark surface variants.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Logo` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Logo/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { Logo } from "@sumiui/react";
+```
+
+## Light & dark
+
+<ComponentDemo name="logo/variants" />
+
+## Props
+
+`Logo` extends `React.SVGAttributes<SVGElement>`, plus:
+
+| Prop | Type | Default |
+|---|---|---|
+| `variant` | `"light" \| "dark"` | `"light"` |
+| `width` | `number` (height scales proportionally) | — |
+| `aria-label` | `string` | — |
+
+`variant` picks the logo's own ink color for the surface it sits on — it
+does not follow the page's dark-mode toggle automatically, since a logo is
+often placed on a fixed-color brand surface independent of the current
+theme.

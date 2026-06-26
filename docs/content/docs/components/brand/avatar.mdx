@@ -1,12 +1,33 @@
 ---
 title: Avatar
-description: Coming soon.
+description: A sized avatar with image, initials fallback, and an optional seal badge.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Avatar` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Avatar/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { Avatar, AvatarSeal } from "@sumiui/react";
+```
+
+## Sizes & AvatarSeal
+
+<ComponentDemo name="avatar/variants" />
+
+## Props
+
+`Avatar` extends `React.HTMLAttributes<HTMLSpanElement>`, plus:
+
+| Prop | Type | Default |
+|---|---|---|
+| `size` | `"sm" \| "md" \| "lg" \| "xl"` | `"md"` |
+| `src` | `string` | — |
+| `alt` | `string` | — |
+| `fallback` | `string` (1–2 character initials) | — |
+
+If `src` is omitted, or the image fails to load, the avatar falls back to
+`fallback` initials (or `"?"` with neither).
+
+`AvatarSeal` extends `Avatar`'s props with a cinnabar seal badge overlaid
+at bottom-right:
+
+| Prop | Type | Default |
+|---|---|---|
+| `sealGlyph` | `string` | `"墨"` |

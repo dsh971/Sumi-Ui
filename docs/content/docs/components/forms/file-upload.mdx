@@ -1,12 +1,28 @@
 ---
 title: FileUpload
-description: Coming soon.
+description: A drag-and-drop and click-to-browse file input.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `FileUpload` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/FileUpload/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { FileUpload } from "@sumiui/react";
+```
+
+## Variants
+
+<ComponentDemo name="file-upload/variants" />
+
+## Props
+
+| Prop | Type | Default |
+|---|---|---|
+| `accept` | `string` | — |
+| `multiple` | `boolean` | `false` |
+| `maxSize` | `number` (bytes) | — |
+| `onFilesChange` | `(files: File[]) => void` | — |
+| `disabled` | `boolean` | `false` |
+| `label` | `string` | — |
+| `helperText` | `string` | — |
+| `errorText` | `string` | — |
+| `files` | `File[]` (controlled file list) | — |
+
+When `errorText` is set, it replaces `helperText`.

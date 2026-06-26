@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
+import { axe } from "../../test-setup";
 import {
   Dialog,
   DialogClose,
@@ -74,5 +75,12 @@ describe("Dialog", () => {
   it("has accessible title", () => {
     render(<TestDialog open />);
     expect(screen.getByRole("dialog", { name: "Confirm action" })).toBeInTheDocument();
+  });
+});
+
+describe("Dialog accessibility", () => {
+  it("has no violations when open", async () => {
+    render(<TestDialog defaultOpen />);
+    expect(await axe(document.body)).toHaveNoViolations();
   });
 });

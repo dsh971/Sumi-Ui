@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { axe } from "../../test-setup";
 import { Skeleton } from "./index";
 
 describe("Skeleton", () => {
@@ -56,5 +57,12 @@ describe("Skeleton", () => {
     const ref = { current: null };
     render(<Skeleton ref={ref} />);
     expect(ref.current).toBeInstanceOf(HTMLElement);
+  });
+});
+
+describe("Skeleton accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Skeleton />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

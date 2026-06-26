@@ -70,7 +70,9 @@ function lineStyle(isFirst: boolean, isLast: boolean): React.CSSProperties {
 }
 
 function rowGridFor(depth: number, timeGutter: boolean): string {
-  return depth === 0 && timeGutter ? "grid grid-cols-[64px_24px_1fr]" : "grid grid-cols-[24px_1fr]";
+  return depth === 0 && timeGutter
+    ? "grid grid-cols-timeline-time-marker-content"
+    : "grid grid-cols-timeline-marker-content";
 }
 
 function isExpandedByDefault(depth: number, defaultCollapsedDepth: number): boolean {

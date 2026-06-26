@@ -250,6 +250,19 @@
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
+
+  /* ---- Grid templates — named by track role, not count ------------------
+     A raw arbitrary-value class (grid-cols-[240px_1fr_260px]) encodes
+     nothing about its own track count, so a child's col-span can silently
+     drift out of sync with it. Naming by role keeps the name accurate even
+     as a grid collapses to fewer tracks (decisions log, 2026-06-24). ---- */
+  --grid-template-columns-shell-sidebar-content-properties: 240px 1fr 260px;
+  --grid-template-columns-shell-content-properties: 1fr 260px;
+  --grid-template-columns-shell-sidebar-content: 240px 1fr;
+  --grid-template-columns-shell-content: 1fr;
+  --grid-template-columns-step-node-content: 26px 1fr;
+  --grid-template-columns-timeline-time-marker-content: 64px 24px 1fr;
+  --grid-template-columns-timeline-marker-content: 24px 1fr;
 }
 
 @keyframes sumi-toast-timer {

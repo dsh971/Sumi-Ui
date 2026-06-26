@@ -15,6 +15,9 @@ const variantClasses: Record<BadgeVariant, string> = {
   jade: "bg-malachite-100 text-malachite-700 border border-malachite-200",
   clay: "bg-canvas-100 text-canvas-700 border border-canvas-200",
   peach: "bg-cinnabar-100 text-cinnabar-700 border border-cinnabar-200",
+  malachite: "bg-malachite-100 text-malachite-700 border border-malachite-200",
+  canvas: "bg-canvas-100 text-canvas-700 border border-canvas-200",
+  sienna: "bg-cinnabar-100 text-cinnabar-700 border border-cinnabar-200",
   seal: "bg-[color:var(--highlight)] text-[color:var(--fg-on-cinnabar)] border-transparent",
 };
 
@@ -27,6 +30,9 @@ const dotColorClasses: Record<BadgeVariant, string> = {
   jade: "bg-malachite-500",
   clay: "bg-canvas-500",
   peach: "bg-cinnabar-500",
+  malachite: "bg-malachite-500",
+  canvas: "bg-canvas-500",
+  sienna: "bg-cinnabar-500",
   seal: "bg-[color:var(--fg-on-cinnabar)]",
 };
 
@@ -49,7 +55,10 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       {dot && (
         <span
           aria-hidden="true"
-          className={cn("block size-[6px] rounded-full flex-shrink-0", dotColorClasses[variant])}
+          className={cn(
+            "block size-[var(--badge-dot-size)] rounded-full flex-shrink-0",
+            dotColorClasses[variant],
+          )}
         />
       )}
       {children}

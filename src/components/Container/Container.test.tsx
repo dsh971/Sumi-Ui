@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { axe } from "../../test-setup";
 import { Container } from "./index";
 
 describe("Container", () => {
@@ -45,5 +46,12 @@ describe("Container", () => {
     const ref = { current: null };
     render(<Container ref={ref}>Content</Container>);
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  });
+});
+
+describe("Container accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Container>Page content</Container>);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

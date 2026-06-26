@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import type { TimelineItemData } from "./Timeline.types";
 import { Timeline } from "./index";
 
@@ -90,13 +91,15 @@ describe("Timeline", () => {
 
   it("uses the 3-column grid by default", () => {
     const { container } = render(<Timeline items={items} />);
-    expect(container.querySelector(".grid-cols-\\[64px_24px_1fr\\]")).toBeInTheDocument();
+    expect(container.querySelector(".grid-cols-timeline-time-marker-content")).toBeInTheDocument();
   });
 
   it("uses the 2-column grid when timeGutter is false", () => {
     const { container } = render(<Timeline items={items} timeGutter={false} />);
-    expect(container.querySelector(".grid-cols-\\[24px_1fr\\]")).toBeInTheDocument();
-    expect(container.querySelector(".grid-cols-\\[64px_24px_1fr\\]")).not.toBeInTheDocument();
+    expect(container.querySelector(".grid-cols-timeline-marker-content")).toBeInTheDocument();
+    expect(
+      container.querySelector(".grid-cols-timeline-time-marker-content"),
+    ).not.toBeInTheDocument();
   });
 
   it("renders nested children as nested listitems under their parent", () => {
@@ -209,9 +212,9 @@ describe("Timeline", () => {
       />,
     );
     const rows = container.querySelectorAll("li.grid");
-    expect(rows[0]).toHaveClass("grid-cols-[64px_24px_1fr]");
-    expect(rows[1]).toHaveClass("grid-cols-[24px_1fr]");
-    expect(rows[1]).not.toHaveClass("grid-cols-[64px_24px_1fr]");
+    expect(rows[0]).toHaveClass("grid-cols-timeline-time-marker-content");
+    expect(rows[1]).toHaveClass("grid-cols-timeline-marker-content");
+    expect(rows[1]).not.toHaveClass("grid-cols-timeline-time-marker-content");
   });
 
   const deepItems: TimelineItemData[] = [
@@ -259,5 +262,12 @@ describe("Timeline", () => {
     render(<Timeline items={deepItems} defaultCollapsedDepth={1} />);
     expect(screen.getByText("Level 1")).toBeInTheDocument();
     expect(screen.queryByText("Level 2")).not.toBeInTheDocument();
+  });
+});
+
+describe("Timeline accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Timeline items={items} />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

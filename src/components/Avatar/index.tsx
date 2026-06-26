@@ -3,7 +3,7 @@ import { cn } from "../../lib/cn";
 import type { AvatarProps, AvatarSealProps, AvatarSize } from "./Avatar.types";
 
 const sizeClasses: Record<AvatarSize, string> = {
-  sm: "size-6 text-[9px]",
+  sm: "size-6 text-[var(--avatar-fallback-text-sm)]",
   md: "size-8 text-xs",
   lg: "size-10 text-sm",
   xl: "size-14 text-base",

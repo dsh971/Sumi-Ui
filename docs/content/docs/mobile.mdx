@@ -1,0 +1,189 @@
+---
+title: Mobile & Responsive
+description: How SumiUi components behave on narrow viewports, recommended patterns, and known constraints.
+---
+
+SumiUi targets mobile-first usage for layout primitives and full-width
+form controls. Overlays (Dialog, CommandPalette, Toast) clamp to
+`calc(100vw - 2rem)` on small screens. Most interactive controls are
+keyboard and touch accessible at their default sizes, with guidance below
+on where to add touch-target padding in your layouts.
+
+## Components that adapt automatically
+
+These components handle narrow viewports without any consumer-side work:
+
+| Component | Mobile behaviour |
+|---|---|
+| `Button` | `w-full` is available via className; all size variants have adequate touch targets |
+| `Container` | Switches gutter from 56px → 20px below md via `--gutter-*` tokens |
+| `Grid` | Stateless CSS primitive; pass `cols` or responsive Tailwind classes yourself |
+| `Input` / `Select` | `w-full` by default, stacks label and error text naturally |
+| `FileUpload` | Full-width drop target with tall click area |
+| `EmptyState` | Centred, max-width constrained to fit any viewport |
+| `Breadcrumb` | `flex-wrap` so crumbs reflow across multiple lines |
+| `Alert` | Full-width, dismiss button meets minimum touch target |
+| `Toast` | Full-width on mobile (`< sm`), fixed 320px on `sm+`, anchored to top-right |
+| `Dialog` | Constrained to `calc(100vw - 2rem)` so it never bleeds to screen edges |
+| `CommandPalette` | Same `calc(100vw - 2rem)` constraint |
+| `Logo` / `Seal` / `Avatar` | SVG/image, scales via props |
+
+## Overlays (Dialog, CommandPalette, Toast)
+
+All three overlays are fixed-position and portal-rendered, so they sit
+above the layout. On viewports narrower than `512px` (`max-w-lg`):
+
+- **Dialog** and **CommandPalette** render at `calc(100vw - 2rem)` — 16px
+  margin on each side.
+- **Toast** viewport stretches `right-4 left-4` on mobile; each toast
+  expands to fill that width. On `sm+` the viewport is a fixed `320px`
+  column anchored to the top-right corner.
+
+No extra props are needed — this behaviour is built in.
+
+## Touch targets
+
+WCAG 2.5.8 (AA, WCAG 2.2) requires a minimum 24×24px touch target.
+WCAG 2.5.5 (AAA) and Apple/Google HIG recommend 44×44px.
+
+### Controls that meet 44px out of the box
+`Button` (all sizes), `Input` (height ~38px), `Select` trigger, `Tabs`
+tab triggers, `Pagination` buttons (32px, above 24px AA minimum).
+
+### Controls that need a touch-target wrapper in forms
+`Checkbox`, `Radio`, and `Switch` use compact visual sizes (16–20px) that
+pair with a text label. The label is tappable (via `htmlFor`), making the
+effective hit area much wider than the indicator alone. For vertical
+padding, wrap each item:
+
+```tsx
+// Adds 12px top/bottom padding to each row → 44px total tap height
+<div className="flex flex-col gap-0">
+  {items.map(item => (
+    <div key={item.id} className="py-[12px]">
+      <Checkbox label={item.label} />
+    </div>
+  ))}
+</div>
+```
+
+Or, if you're building a form group where tighter spacing is fine on
+desktop but you want larger targets on mobile:
+
+```tsx
+<div className="flex flex-col gap-1 sm:gap-2">
+  <div className="min-h-[44px] flex items-center">
+    <Checkbox label="Accept terms" />
+  </div>
+</div>
+```
+
+### Pagination on mobile
+The default 32px page buttons are above the WCAG 2.5.8 24px minimum. To
+hit 44px pass a `className` that overrides the button size via a parent
+selector, or render a simplified prev/next-only strip on mobile:
+
+```tsx
+// Simplified mobile pagination
+<div className="flex sm:hidden gap-2">
+  <Button variant="secondary" onClick={() => onPageChange(page - 1)} disabled={page === 1}>
+    Previous
+  </Button>
+  <Button variant="secondary" onClick={() => onPageChange(page + 1)} disabled={page === totalPages}>
+    Next
+  </Button>
+</div>
+<div className="hidden sm:flex">
+  <Pagination page={page} totalPages={totalPages} onPageChange={onPageChange} />
+</div>
+```
+
+## Stepper orientation on mobile
+
+`Stepper` defaults to `orientation="horizontal"`, which works well on
+tablet and desktop. On mobile, switch to `vertical` or `compact`:
+
+```tsx
+// Responsive: vertical on narrow screens, horizontal above sm
+<Stepper
+  steps={steps}
+  currentStep={step}
+  orientation={isMobile ? "vertical" : "horizontal"}
+/>
+
+// Or always compact — progress bar takes no horizontal space
+<Stepper steps={steps} currentStep={step} variant="compact" />
+```
+
+To detect the viewport in React, use a `useMediaQuery` hook or observe
+the `sm` breakpoint (640px) against `window.innerWidth`.
+
+## Table on mobile
+
+`Table` wraps in `overflow-x-auto` so wide tables scroll horizontally
+without breaking the page layout. For a better mobile experience, consider:
+
+1. **Reduce columns**: hide less important columns with `hidden sm:table-cell`
+   on `TableHead` / `TableCell` pairs.
+2. **Increase density**: `density="dense"` reduces cell padding and fits
+   more rows on screen.
+3. **Card-style fallback**: for very narrow viewports, render a list of
+   cards instead of a table — map over the same data and use `Card` /
+   `CardBody` rows.
+
+```tsx
+// Hide the Status column below sm
+<TableHead className="hidden sm:table-cell">Status</TableHead>
+// ...
+<TableCell className="hidden sm:table-cell">{row.status}</TableCell>
+```
+
+## Tabs on mobile
+
+`Tabs` renders a horizontal tab list. When tabs overflow the viewport they
+scroll horizontally (browser default with `overflow: auto`). For a
+vertical layout on mobile, wrap in a responsive container:
+
+```tsx
+<Tabs
+  defaultValue="overview"
+  orientation="horizontal"     // Radix supports "vertical" too
+  className="flex flex-col sm:flex-row"
+>
+  <TabsList className="flex-row sm:flex-col sm:w-40 sm:border-r ...">
+    ...
+  </TabsList>
+  ...
+</Tabs>
+```
+
+## DatePicker on mobile
+
+The calendar popover is `280px` wide and anchors to the input trigger.
+On screens narrower than ~320px it can overflow the viewport edge. Prevent
+this by setting `align="center"` on the Radix popover or by placing the
+`DatePicker` in a full-width container:
+
+```tsx
+<div className="w-full max-w-sm">
+  <DatePicker label="Start date" />
+</div>
+```
+
+On touch devices users can interact with the calendar grid normally — each
+date cell has a comfortable tap size.
+
+## Responsive layout patterns
+
+See the [CSS & Styling guide](/docs/css#layout-grid-tokens) for the named
+`grid-cols-shell-*` tokens that encode sidebar/content/properties track
+layouts. These use `md:` prefixes so they only apply from tablet width up,
+stacking to a single column on mobile automatically.
+
+```tsx
+// Single column on mobile, sidebar + content from md up
+<Grid className="grid-cols-1 md:grid-cols-shell-sidebar-content">
+  <aside>…</aside>
+  <main>…</main>
+</Grid>
+```

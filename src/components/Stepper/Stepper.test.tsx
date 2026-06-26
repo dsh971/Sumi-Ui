@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { axe } from "../../test-setup";
 import type { StepperStep } from "./Stepper.types";
 import { Stepper } from "./index";
 
@@ -49,5 +50,12 @@ describe("Stepper", () => {
     render(<Stepper steps={steps} currentStep={1} orientation="vertical" />);
     expect(screen.getAllByRole("listitem")).toHaveLength(4);
     expect(screen.getByText("2")).toHaveAttribute("aria-current", "step");
+  });
+});
+
+describe("Stepper accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Stepper steps={steps} currentStep={2} />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

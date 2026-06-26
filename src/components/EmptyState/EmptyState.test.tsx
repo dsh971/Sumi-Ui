@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { FileX } from "lucide-react";
 import { describe, expect, it } from "vitest";
+import { axe } from "../../test-setup";
 import { EmptyState } from "./index";
 
 describe("EmptyState", () => {
@@ -65,5 +66,12 @@ describe("EmptyState", () => {
     expect(screen.getByText("Your items will appear here.")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Add item" })).toBeInTheDocument();
     expect(screen.getByText("No fuss.")).toBeInTheDocument();
+  });
+});
+
+describe("EmptyState accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<EmptyState title="Nothing here yet" />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

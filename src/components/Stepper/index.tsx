@@ -106,7 +106,7 @@ function VerticalStepper({
         const isLast = index === steps.length - 1;
         const connectorFilled = index < currentStep;
         return (
-          <li key={step.label} className="grid grid-cols-[26px_1fr] gap-x-[13px]">
+          <li key={step.label} className="grid grid-cols-step-node-content gap-x-[13px]">
             <div className="flex flex-col items-center">
               <StepNode index={index} state={state} />
               {!isLast ? (

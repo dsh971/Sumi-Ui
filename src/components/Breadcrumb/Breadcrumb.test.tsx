@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { axe } from "../../test-setup";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -78,5 +79,12 @@ describe("Breadcrumb", () => {
       </Breadcrumb>,
     );
     expect(screen.getByRole("button", { name: "Home" })).toBeInTheDocument();
+  });
+});
+
+describe("Breadcrumb accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<TestBreadcrumb />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

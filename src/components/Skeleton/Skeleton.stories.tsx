@@ -88,3 +88,43 @@ export const ListSkeleton: Story = {
     </div>
   ),
 };
+
+/**
+ * Each `Skeleton` is correctly `aria-hidden` — a placeholder has nothing to
+ * announce. But that leaves a *group* of skeletons silent to screen readers
+ * while it's the only content on screen. Wrap the group in `role="status"`
+ * (implicit `aria-live="polite"`) with a visually-hidden label so assistive
+ * tech gets one "Loading…" announcement when the region mounts, without
+ * re-announcing on every shimmer frame. This is documented guidance, not a
+ * new exported component — apply it at the call site that renders the
+ * skeleton group.
+ */
+export const AccessibleLoadingRegion: Story = {
+  render: () => (
+    // <output> carries an implicit role="status" (implicit aria-live=
+    // "polite") — the semantic element Biome's a11y rule asks for in place
+    // of a plain div with role="status" bolted on.
+    <output style={{ display: "block", padding: "24px", maxWidth: "360px" }}>
+      <span className="sr-only">Loading…</span>
+      <div
+        style={{
+          border: "1px solid var(--line-1)",
+          borderRadius: "6px",
+          padding: "20px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "12px",
+        }}
+      >
+        <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+          <Skeleton variant="circle" width={40} />
+          <div style={{ flex: 1 }}>
+            <Skeleton variant="text" style={{ width: "60%", marginBottom: "6px" }} />
+            <Skeleton variant="text" style={{ width: "40%", height: "12px" }} />
+          </div>
+        </div>
+        <Skeleton variant="rect" height={80} />
+      </div>
+    </output>
+  ),
+};

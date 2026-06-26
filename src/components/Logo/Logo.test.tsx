@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { axe } from "../../test-setup";
 import { Logo } from "./index";
 
 describe("Logo", () => {
@@ -56,5 +57,12 @@ describe("Logo", () => {
   it("accepts additional className", () => {
     const { container } = render(<Logo className="custom" />);
     expect(container.querySelector("svg")).toHaveClass("custom");
+  });
+});
+
+describe("Logo accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Logo />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

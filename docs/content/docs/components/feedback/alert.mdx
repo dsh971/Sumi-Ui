@@ -1,12 +1,27 @@
 ---
 title: Alert
-description: Coming soon.
+description: An inline status banner with info, success, warning, and danger variants.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Alert` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Alert/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { Alert } from "@sumiui/react";
+```
+
+## Variants
+
+<ComponentDemo name="alert/variants" />
+
+## Props
+
+| Prop | Type | Default |
+|---|---|---|
+| `variant` | `"info" \| "success" \| "warning" \| "danger"` | `"info"` |
+| `title` | `string` | — |
+| `onDismiss` | `() => void` | — |
+
+`danger` uses an inverse cinnabar fill (dark `cinnabar-600` background,
+`silk-50` text) with a lighter `cinnabar-200` left accent bar — the highest
+severity level in the system.
+
+Passing `onDismiss` renders a close button; the component itself doesn't
+track visibility, so the caller owns showing/hiding the alert.

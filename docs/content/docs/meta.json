@@ -1,4 +1,13 @@
 {
   "title": "SumiUi",
-  "pages": ["index", "getting-started", "installation", "theming", "accessibility", "components"]
+  "pages": [
+    "index",
+    "getting-started",
+    "installation",
+    "theming",
+    "css",
+    "mobile",
+    "accessibility",
+    "components"
+  ]
 }

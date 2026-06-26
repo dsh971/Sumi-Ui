@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import type { CommandGroup, CommandItem } from "./CommandPalette.types";
 import { CommandPalette } from "./index";
 
@@ -72,5 +73,12 @@ describe("CommandPalette", () => {
     await user.click(screen.getByPlaceholderText("Type a command, or search…"));
     await user.keyboard("{Escape}");
     expect(screen.queryByText("New piece")).not.toBeInTheDocument();
+  });
+});
+
+describe("CommandPalette accessibility", () => {
+  it("has no violations when open", async () => {
+    render(<Harness />);
+    expect(await axe(document.body)).toHaveNoViolations();
   });
 });

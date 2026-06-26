@@ -386,7 +386,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
           </span>
         )}
         <Popover.Root open={open && !disabled} onOpenChange={setOpen}>
-          <Popover.Trigger asChild>
+          <Popover.Anchor asChild>
             <div
               className={cn(
                 "flex w-full items-center gap-2",
@@ -446,7 +446,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
               )}
               <ChevronDown size={15} className="flex-none text-fg-3" aria-hidden="true" />
             </div>
-          </Popover.Trigger>
+          </Popover.Anchor>
 
           <Popover.Portal>
             <Popover.Content
@@ -454,7 +454,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
               sideOffset={6}
               onOpenAutoFocus={(e) => e.preventDefault()}
               className={cn(
-                "z-50 w-[var(--radix-popover-trigger-width)]",
+                "z-50 w-[var(--radix-popover-anchor-width)]",
                 "bg-[color:var(--bg-1)] border border-[color:var(--line-1)] rounded-lg",
                 "[box-shadow:var(--shadow-lg)] p-[5px]",
               )}

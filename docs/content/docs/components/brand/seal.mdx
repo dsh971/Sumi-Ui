@@ -1,12 +1,22 @@
 ---
 title: Seal
-description: Coming soon.
+description: A cinnabar Sumi seal glyph, used as a brand mark or accent.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Seal` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Seal/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { Seal } from "@sumiui/react";
+```
+
+## Sizes & glyphs
+
+<ComponentDemo name="seal/variants" />
+
+## Props
+
+`Seal` extends `React.SVGAttributes<SVGElement>` (minus `color`), plus:
+
+| Prop | Type | Default |
+|---|---|---|
+| `glyph` | `string` (Hanzi glyph inside the seal) | `"墨"` |
+| `size` | `"sm" \| "md" \| "lg" \| "xl"` | `"md"` |
+| `aria-label` | `string` | `"Sumi seal"` |

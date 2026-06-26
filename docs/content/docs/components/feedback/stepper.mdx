@@ -1,12 +1,23 @@
 ---
 title: Stepper
-description: Coming soon.
+description: A multi-step progress indicator, horizontal or vertical.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Stepper` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Stepper/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { Stepper } from "@sumiui/react";
+```
+
+## Variants
+
+<ComponentDemo name="stepper/variants" />
+
+## Props
+
+| Prop | Type | Default |
+|---|---|---|
+| `steps` | `StepperStep[]` | — |
+| `currentStep` | `number` (0-based) | — |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` |
+| `variant` | `"default" \| "compact"` | `"default"` |
+
+A `StepperStep` is `{ label: string, description?: string }`.

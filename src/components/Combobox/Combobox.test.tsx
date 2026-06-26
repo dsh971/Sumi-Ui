@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import type { ComboboxOption } from "./Combobox.types";
 import { Combobox } from "./index";
 
@@ -75,5 +76,12 @@ describe("Combobox", () => {
     await user.click(screen.getByPlaceholderText("Search"));
     await user.type(screen.getByPlaceholderText("Search"), "zzz");
     expect(screen.getByText('No matches for "zzz".')).toBeInTheDocument();
+  });
+});
+
+describe("Combobox accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Combobox options={options} label="Assignee" />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

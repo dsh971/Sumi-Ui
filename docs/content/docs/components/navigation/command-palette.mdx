@@ -1,12 +1,28 @@
 ---
 title: CommandPalette
-description: Coming soon.
+description: A searchable, keyboard-navigable command palette overlay.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `CommandPalette` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/CommandPalette/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { CommandPalette } from "@sumiui/react";
+```
+
+## Example
+
+<ComponentDemo name="command-palette/variants" />
+
+## Props
+
+`CommandPalette` is fully controlled — pass `open` and `onOpenChange`.
+
+| Prop | Type | Default |
+|---|---|---|
+| `open` | `boolean` | — |
+| `onOpenChange` | `(open: boolean) => void` | — |
+| `groups` | `CommandGroup[]` | — |
+| `onSelect` | `(item: CommandItem) => void` | — |
+| `placeholder` | `string` | — |
+| `emptyMessage` | `string` | — |
+
+A `CommandItem` is `{ id, label, hint?, disabled? }`. A `CommandGroup` is
+`{ label, items: CommandItem[] }`.

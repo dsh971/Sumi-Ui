@@ -105,7 +105,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             onClick={handleDismiss}
             aria-label="Dismiss alert"
             className={cn(
-              "flex-shrink-0 rounded p-0.5 -mr-1 -mt-0.5",
+              "flex-shrink-0 rounded p-2 -mr-1.5 -mt-1.5",
               "transition-colors",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
               dismissClasses[variant],

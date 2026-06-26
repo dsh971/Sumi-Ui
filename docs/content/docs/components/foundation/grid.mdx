@@ -1,12 +1,42 @@
 ---
 title: Grid
-description: Coming soon.
+description: A CSS grid layout primitive with a responsive-classes pattern.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Grid` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Grid/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { Grid } from "@sumiui/react";
+```
+
+## Responsive columns
+
+<ComponentDemo name="grid/variants" />
+
+## Props
+
+| Prop | Type | Default |
+|---|---|---|
+| `cols` | `number \| string` | — |
+| `gap` | `string` | `var(--grid-gutter)` |
+
+## Going responsive
+
+`cols` sets `grid-template-columns` via an inline style, which always wins
+over a class regardless of breakpoint — so `cols` itself can't be
+responsive. To go desktop → mobile, leave `cols` unset and put literal
+(not dynamically built) responsive Tailwind classes directly on the grid,
+e.g. `grid-cols-1 md:grid-cols-2 xl:grid-cols-3`.
+
+If you also span children (`md:col-span-N`), don't give them an unscoped
+base `col-span-12` — a span greater than the grid's current explicit track
+count creates implicit tracks to satisfy it, and `gap` still applies
+between those, which can overflow a narrow container. Leave the base span
+unset and only apply `md:col-span-N` once that breakpoint's grid actually
+has that many columns.
+
+For a known, reusable multi-column shell (e.g. a sidebar + content layout
+used in more than one place), prefer a named `grid-cols-<roles>` utility
+over a raw arbitrary-value class — see the `grid-cols-shell-*` tokens in
+`src/styles/index.css` and their use in `Workspace.stories.tsx` for the
+pattern. A name that lists each track by role (e.g.
+`grid-cols-shell-sidebar-content`) stays self-evidently accurate even as
+tracks come and go, which a numeric or raw pixel-value class name does not.

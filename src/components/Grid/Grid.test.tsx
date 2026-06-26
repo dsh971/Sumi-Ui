@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { axe } from "../../test-setup";
 import { Grid } from "./index";
 
 describe("Grid", () => {
@@ -42,5 +43,17 @@ describe("Grid", () => {
     const ref = { current: null };
     render(<Grid ref={ref}>Content</Grid>);
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  });
+});
+
+describe("Grid accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(
+      <Grid cols={2}>
+        <div>A</div>
+        <div>B</div>
+      </Grid>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

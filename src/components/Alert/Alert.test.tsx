@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import { Alert } from "./index";
 
 describe("Alert", () => {
@@ -56,5 +57,12 @@ describe("Alert", () => {
     const ref = { current: null };
     render(<Alert ref={ref}>Message</Alert>);
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
+  });
+});
+
+describe("Alert accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Alert title="Save failed">Check your connection.</Alert>);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

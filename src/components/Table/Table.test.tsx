@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import {
   Table,
   TableBody,
@@ -329,5 +330,12 @@ describe("Table row selection", () => {
     render(<SelectableTable selectedIds={["row-2"]} />);
     expect(screen.getByRole("checkbox", { name: "Select row row-2" })).toBeChecked();
     expect(screen.getByRole("checkbox", { name: "Select row row-1" })).not.toBeChecked();
+  });
+});
+
+describe("Table accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<BasicTable />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

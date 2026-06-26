@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { axe } from "../../test-setup";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./index";
 
 function TestTooltip({ side }: { side?: "top" | "right" | "bottom" | "left" }) {
@@ -64,5 +65,12 @@ describe("Tooltip", () => {
       </TooltipProvider>,
     );
     expect(await screen.findByRole("tooltip")).toBeInTheDocument();
+  });
+});
+
+describe("Tooltip accessibility", () => {
+  it("has no violations when closed", async () => {
+    const { container } = render(<TestTooltip />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

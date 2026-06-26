@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import { Checkbox } from "./index";
 
 describe("Checkbox", () => {
@@ -46,5 +47,12 @@ describe("Checkbox", () => {
     const ref = { current: null };
     render(<Checkbox ref={ref} />);
     expect(ref.current).toBeInstanceOf(HTMLButtonElement);
+  });
+});
+
+describe("Checkbox accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Checkbox label="Accept terms" />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

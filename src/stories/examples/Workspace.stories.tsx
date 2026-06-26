@@ -437,17 +437,29 @@ function AppShell({
             />
           )}
 
+          {/* This Grid's column class is the single source of truth for
+              which tracks exist at md: and up — its name lists each track
+              by role (sidebar/content/properties), so the count is always
+              the number of dash-joined role words, not a number that can
+              go stale. `Sidebar` goes `md:hidden` when collapsed (see
+              Sidebar below), so the "sidebar" role correctly drops out of
+              the name in the collapsed variants below. None of these three
+              children carry a `col-span` override — each occupies exactly
+              one track in source order. If you ever add one, it must match
+              a role this Grid's *active* class actually declares; this is
+              exactly the mismatch that broke a consuming app's copy of
+              this pattern (see decisions log, 2026-06-24). */}
           <Grid
             gap="0"
             className={cn(
               "flex-1 grid-cols-1 overflow-y-auto md:overflow-visible",
               properties
                 ? sidebarCollapsed
-                  ? "md:grid-cols-[1fr_260px]"
-                  : "md:grid-cols-[240px_1fr_260px]"
+                  ? "md:grid-cols-shell-content-properties"
+                  : "md:grid-cols-shell-sidebar-content-properties"
                 : sidebarCollapsed
-                  ? "md:grid-cols-[1fr]"
-                  : "md:grid-cols-[240px_1fr]",
+                  ? "md:grid-cols-shell-content"
+                  : "md:grid-cols-shell-sidebar-content",
             )}
           >
             <Sidebar

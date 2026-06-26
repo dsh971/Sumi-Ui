@@ -1,12 +1,36 @@
 ---
 title: Timeline
-description: Coming soon.
+description: An activity feed / event log, with optional nesting for trace-style views.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Timeline` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Timeline/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { Timeline } from "@sumiui/react";
+```
+
+## Example
+
+<ComponentDemo name="timeline/variants" />
+
+## Props
+
+| Prop | Type | Default |
+|---|---|---|
+| `items` | `TimelineItemData[]` | — |
+| `timeGutter` | `boolean` | `true` |
+| `selectedId` | `string` | — |
+| `onItemClick` | `(item: TimelineItemData) => void` | — |
+| `defaultCollapsedDepth` | `number` | — |
+
+A `TimelineItemData` is:
+
+| Field | Type |
+|---|---|
+| `id` | `string` |
+| `time` | `string` |
+| `title` | `ReactNode` |
+| `description` | `string` |
+| `marker` | `"dot" \| "dot-ok" \| "dot-info" \| "dot-warn" \| "dot-danger" \| "dot-pending" \| "dot-hollow" \| "icon" \| "icon-ok" \| "icon-danger"` |
+| `iconNode` | `ReactNode` (used when `marker` is one of the `icon*` variants) |
+| `avatar` | `{ initials: string, color: string }` |
+| `groupLabel` | `string` |
+| `children` | `TimelineItemData[]` — nest items to render a collapsible trace tree; pass `selectedId`/`onItemClick` to drive a master-detail view |

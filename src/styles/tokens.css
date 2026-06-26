@@ -1,7 +1,11 @@
 /* ==========================================================================
    SUMI DESIGN SYSTEM — tokens.css
    Source of truth: Sumi-Design-System/colors_and_type.css (read-only).
-   This file: verbatim token definitions + Tailwind v4 @theme mapping.
+   This file: verbatim token definitions only (:root custom properties).
+   The Tailwind v4 @theme mapping lives in index.css, not here — Tailwind
+   v4 only fully processes an @theme block when it's inline in the entry
+   file, not when it's reached through an @import (see decisions log,
+   2026-05-28).
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -370,6 +374,13 @@
   --leading-snug: 1.28;
   --leading-body: 1.55;
   --leading-loose: 1.72;
+
+  /* ---- Component-scoped one-offs — deliberate values with no shared
+     scale step to reuse (same idea as --duration-skeleton above) ----------- */
+  --textarea-min-h: 80px; /* TextArea — no shared scale step fits */
+  --avatar-fallback-text-sm: 9px; /* Avatar sm fallback initials — text-xs (12px) reads too large at size-6 */
+  --badge-dot-size: 6px; /* Badge status dot */
+  --dialog-backdrop-blur: 2px; /* Dialog backdrop — subtler than any shared blur step */
 }
 
 /* --------------------------------------------------------------------------

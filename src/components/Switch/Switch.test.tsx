@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import { Switch } from "./index";
 
 describe("Switch", () => {
@@ -41,5 +42,12 @@ describe("Switch", () => {
     const ref = { current: null };
     render(<Switch ref={ref} />);
     expect(ref.current).toBeInstanceOf(HTMLButtonElement);
+  });
+});
+
+describe("Switch accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Switch label="Dark mode" />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

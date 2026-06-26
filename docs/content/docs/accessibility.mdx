@@ -1,24 +1,102 @@
 ---
 title: Accessibility
-description: Contrast, keyboard navigation, and ARIA conventions across the library.
+description: Keyboard navigation, ARIA conventions, focus management, and automated testing across the library.
 ---
 
-All components meet WCAG AA (4.5:1 body text, 3:1 large text and UI). Focus
-rings use the azurite secondary token. Every interactive component has
+All components meet WCAG 2.1 AA (4.5:1 body text, 3:1 large text and UI components).
+Focus rings use `--accent` (malachite green). Every interactive component has
 keyboard navigation and appropriate ARIA roles.
 
-## What this means in practice
+## Foundations
 
-- Every interactive primitive (`Select`, `Dialog`, `DropdownMenu`,
-  `Combobox`, `CommandPalette`, `Tabs`...) is built on Radix UI's headless
-  primitives, which handle focus management, roving tabindex, and ARIA
-  wiring for you.
-- Color is never the only signal — status components (`Badge`, `Alert`)
+- Every interactive primitive (`Select`, `Dialog`, `DropdownMenu`, `Combobox`,
+  `CommandPalette`, `Tabs`, `Tooltip`, `Popover`…) is built on
+  [Radix UI](https://www.radix-ui.com/) headless primitives, which handle focus
+  trapping, roving `tabindex`, and ARIA wiring automatically.
+- Color is never the only signal — status components (`Badge`, `Alert`) always
   pair color with an icon or text label.
-- Components are tested for keyboard-only operation: tab order, arrow-key
-  navigation within composite widgets (menus, tabs, selects), and `Escape`
-  to dismiss overlays.
+- Every component has an automated [axe-core](https://github.com/dequelabs/axe-core)
+  test (`jest-axe`) that runs in CI — violations block the build.
 
-See the [Sumi Design System's contrast and accessibility
-guidelines](/docs/theming) for the token-level contrast ratios this is
-built on.
+## Keyboard navigation
+
+| Pattern | Keys |
+|---|---|
+| Focus interactive element | `Tab` / `Shift+Tab` |
+| Activate button / link | `Enter` or `Space` |
+| Open overlay (Dialog, DropdownMenu, Select, Combobox) | `Enter` or `Space` on trigger |
+| Close overlay | `Escape` |
+| Navigate list items (DropdownMenu, Select, Combobox, CommandPalette) | `↑` / `↓` |
+| Select highlighted option | `Enter` |
+| Navigate Tabs | `←` / `→` (roving tabindex within tab list) |
+| Navigate Stepper (read-only) | `Tab` between steps |
+| Pagination prev/next | `Tab` to button, `Enter` to activate |
+| Table column sort | `Enter` on a `sortable` `TableHead` |
+| Table row select-all | `Space` on `TableSelectHead` checkbox |
+| Combobox search | Type to filter; `↑`/`↓` to move active option |
+| DatePicker | Keyboard-navigable calendar grid; `Escape` to dismiss |
+| Toast dismiss | `Escape` |
+
+## ARIA patterns
+
+| Component | Role / pattern |
+|---|---|
+| `Alert` | `role="alert"` (live region, announces on mount) |
+| `Avatar` | `role="img"` with `aria-label` |
+| `Checkbox` | `<input type="checkbox">` with `aria-invalid` on error |
+| `Combobox` | `<input role="combobox">` + `aria-expanded` + `aria-controls` pointing to listbox |
+| `Dialog` | `role="dialog"` + `aria-modal` + focus trap; `aria-labelledby` from title |
+| `DropdownMenu` | `role="menu"` + `role="menuitem"` items |
+| `Pagination` | `<nav aria-label="Pagination">` wrapping `<button>` elements |
+| `Radio` | `<input type="radio">` grouped in a `<fieldset>` with `<legend>` |
+| `Select` | Radix `listbox` pattern with `aria-expanded` on trigger |
+| `Switch` | `<button role="switch">` with `aria-checked` |
+| `Table` | Native `<table>` with `<caption>`, `scope` on headers, `aria-sort` on sortable columns |
+| `Tabs` | `role="tablist"` + `role="tab"` + `role="tabpanel"` with `aria-selected` / `aria-controls` |
+| `Toast` | `role="status"` (polite live region) |
+| `Tooltip` | `role="tooltip"` with trigger `aria-describedby` pointing to it |
+
+## Focus management
+
+- Focus rings: all interactive elements use `outline: 2px solid var(--accent)` with
+  a 2px offset. The accent token is malachite green (#1e4d2b in light mode) — selected
+  for both distinctiveness and WCAG 3:1 contrast against all background surfaces.
+- Overlays (Dialog, DropdownMenu, CommandPalette, Combobox): focus moves to the first
+  interactive element on open, and returns to the trigger on close.
+- Radix manages focus trapping for Dialog automatically via `aria-modal`.
+- Combobox uses `aria-activedescendant` rather than moving DOM focus, so the text
+  input retains focus while the active list option is announced.
+
+## Form validation
+
+`Input`, `Checkbox`, and `Switch` share a consistent error pattern:
+
+- `errorText` prop renders a red helper message below the control.
+- The field is marked `aria-invalid="true"` when `errorText` is set.
+- The error message element is referenced via `aria-describedby`.
+
+## Automated testing
+
+Every component test file (`*.test.tsx`) includes an axe describe block:
+
+```tsx
+import { axe } from "../../test-setup";
+
+describe("MyComponent accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<MyComponent />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+});
+```
+
+`color-contrast` is disabled in the test config — jsdom has no layout engine,
+so every element computes as 0/0 contrast; disabling this rule prevents false
+positives across the whole suite while still catching all structural ARIA
+violations.
+
+Portal components (Dialog, Toast, CommandPalette) run axe against `document.body`
+rather than `container`, since Radix renders them outside the React root.
+
+See [`src/test-setup.ts`](https://github.com/dsh971/Sumi-Ui/blob/main/src/test-setup.ts)
+for the full axe configuration.

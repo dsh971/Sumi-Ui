@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import { Button } from "./index";
 
 describe("Button", () => {
@@ -81,5 +82,12 @@ describe("Button", () => {
     const ref = { current: null };
     render(<Button ref={ref}>Ref</Button>);
     expect(ref.current).toBeInstanceOf(HTMLButtonElement);
+  });
+});
+
+describe("Button accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Button>Save changes</Button>);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

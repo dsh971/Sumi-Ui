@@ -1,12 +1,26 @@
 ---
 title: Checkbox
-description: Coming soon.
+description: A styled, accessible checkbox built on Radix UI's Checkbox primitive.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Checkbox` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Checkbox/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { Checkbox } from "@sumiui/react";
+```
+
+## Variants
+
+<ComponentDemo name="checkbox/variants" />
+
+## Props
+
+`Checkbox` extends Radix UI's `Checkbox.Root` props (`checked`, `defaultChecked`,
+`onCheckedChange`, `disabled`, etc.), plus:
+
+| Prop | Type | Default |
+|---|---|---|
+| `label` | `string` | — |
+| `helperText` | `string` | — |
+| `errorText` | `string` | — |
+
+`checked` accepts `boolean \| "indeterminate"`. When `errorText` is set, it
+replaces `helperText` and the input is marked `aria-invalid`.

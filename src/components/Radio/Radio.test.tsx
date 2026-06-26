@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import { RadioGroup, RadioItem } from "./index";
 
 function TestGroup({ defaultValue }: { defaultValue?: string }) {
@@ -48,5 +49,12 @@ describe("RadioGroup", () => {
     screen.getByLabelText("Red").focus();
     await user.keyboard("{ArrowDown}");
     expect(screen.getByLabelText("Green")).toHaveFocus();
+  });
+});
+
+describe("RadioGroup accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<TestGroup />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

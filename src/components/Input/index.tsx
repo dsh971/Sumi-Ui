@@ -95,7 +95,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           }
           className={cn(
             inputBaseClasses,
-            "px-3 py-2 text-sm resize-y min-h-[80px]",
+            "px-3 py-2 text-sm resize-y min-h-[var(--textarea-min-h)]",
             hasError && inputErrorClasses,
             className,
           )}

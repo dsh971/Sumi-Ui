@@ -1,12 +1,25 @@
 ---
 title: EmptyState
-description: Coming soon.
+description: A placeholder for views with no content, with optional icon and action.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `EmptyState` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/EmptyState/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { EmptyState } from "@sumiui/react";
+```
+
+## Example
+
+<ComponentDemo name="empty-state/variants" />
+
+## Props
+
+| Prop | Type | Notes |
+|---|---|---|
+| `title` | `string` | ≤ 6 words; optionally one italic-tinted word via `<accent-em>`. |
+| `description` | `string` | ≤ 18 words of context. |
+| `action` | `ReactNode` | Primary action button or link. |
+| `closingBeat` | `string` | Short self-aware closing beat — "That's it." · "No fuss." |
+| `icon` | `ReactNode` | Rendered at size 32 (e.g. a Lucide icon). |
+
+The title renders in the display serif (`font-display`, Cormorant
+Garamond) at 20px — intentional contrast against body text.

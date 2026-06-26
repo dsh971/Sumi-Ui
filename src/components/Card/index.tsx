@@ -22,16 +22,25 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
 );
 Card.displayName = "Card";
 
+// BUG-008 fix: pt-5/pb-5 only apply via first:/last: — each sub-component's
+// outer edge is correct (20px, matching the design system's flat-card spec)
+// whenever it's actually touching the Card's border, regardless of which
+// other sub-components are present. The pt-4/pb-4 base is the contribution
+// to the 32px inter-section gap when a sub-component sits in the middle.
 export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("flex flex-col gap-1 px-5 pt-5 pb-4", className)} {...props} />
+    <div
+      ref={ref}
+      className={cn("flex flex-col gap-1 px-5 pt-4 pb-4 first:pt-5 last:pb-5", className)}
+      {...props}
+    />
   ),
 );
 CardHeader.displayName = "CardHeader";
 
 export const CardBody = React.forwardRef<HTMLDivElement, CardBodyProps>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("px-5 py-4", className)} {...props} />
+    <div ref={ref} className={cn("px-5 pt-4 pb-4 first:pt-5 last:pb-5", className)} {...props} />
   ),
 );
 CardBody.displayName = "CardBody";
@@ -41,8 +50,10 @@ export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
     <div
       ref={ref}
       className={cn(
-        "flex items-center px-5 pt-4 pb-5",
-        "border-t border-[color:var(--line-1)]",
+        "flex items-center px-5 pt-4 pb-4 first:pt-5 last:pb-5",
+        // first:border-t-0 — no stray top rule if Footer is ever used
+        // without anything above it.
+        "border-t border-[color:var(--line-1)] first:border-t-0",
         className,
       )}
       {...props}

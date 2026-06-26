@@ -1,12 +1,23 @@
 ---
 title: Radio
-description: Coming soon.
+description: An accessible radio group built on Radix UI's RadioGroup primitive.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Radio` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Radio/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { RadioGroup, RadioItem } from "@sumiui/react";
+```
+
+## Variants
+
+<ComponentDemo name="radio/variants" />
+
+## Props
+
+`RadioGroup` extends Radix UI's `RadioGroup.Root` props (`value`,
+`defaultValue`, `onValueChange`, `disabled`, `aria-label`, etc.).
+
+`RadioItem` extends Radix UI's `RadioGroup.Item` props, plus:
+
+| Prop | Type | Default |
+|---|---|---|
+| `label` | `string` | — |

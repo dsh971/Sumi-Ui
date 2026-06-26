@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import type { ToastVariant } from "./Toast.types";
 import {
   Toast,
@@ -88,5 +89,17 @@ describe("Toast", () => {
       </Toast>,
     );
     expect(ref.current).toBeInstanceOf(HTMLElement);
+  });
+});
+
+describe("Toast accessibility", () => {
+  it("has no violations when open", async () => {
+    renderToast(
+      <Toast open>
+        <ToastTitle>Saved</ToastTitle>
+        <ToastDescription>Your changes are live.</ToastDescription>
+      </Toast>,
+    );
+    expect(await axe(document.body)).toHaveNoViolations();
   });
 });

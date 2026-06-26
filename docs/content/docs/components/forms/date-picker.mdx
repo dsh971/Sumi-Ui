@@ -1,12 +1,28 @@
 ---
 title: DatePicker
-description: Coming soon.
+description: A calendar date input with label, helper, error, and bounds support.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `DatePicker` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/DatePicker/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { DatePicker } from "@sumiui/react";
+```
+
+## Variants
+
+<ComponentDemo name="date-picker/variants" />
+
+## Props
+
+| Prop | Type | Default |
+|---|---|---|
+| `value` | `string` (ISO `"YYYY-MM-DD"`) | — |
+| `onChange` | `(value: string) => void` | — |
+| `placeholder` | `string` | — |
+| `disabled` | `boolean` | `false` |
+| `label` | `string` | — |
+| `helperText` | `string` | — |
+| `errorText` | `string` | — |
+| `min` | `string` (ISO `"YYYY-MM-DD"`) | — |
+| `max` | `string` (ISO `"YYYY-MM-DD"`) | — |
+
+When `errorText` is set, it replaces `helperText`.

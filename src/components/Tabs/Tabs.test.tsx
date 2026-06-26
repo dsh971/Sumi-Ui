@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
+import { axe } from "../../test-setup";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./index";
 
 function TestTabs({ defaultValue = "tab1" }: { defaultValue?: string }) {
@@ -63,5 +64,12 @@ describe("Tabs", () => {
       </Tabs>,
     );
     expect(ref.current).toBeInstanceOf(HTMLElement);
+  });
+});
+
+describe("Tabs accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<TestTabs />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

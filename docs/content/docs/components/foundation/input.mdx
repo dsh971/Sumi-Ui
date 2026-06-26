@@ -1,12 +1,30 @@
 ---
 title: Input
-description: Coming soon.
+description: A styled text input and textarea with label, helper, and error states.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Input` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Input/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { Input, TextArea } from "@sumiui/react";
+```
+
+## Variants
+
+<ComponentDemo name="input/variants" />
+
+## Props
+
+`Input` extends every native `<input>` attribute except `size` (overridden
+below), plus:
+
+| Prop | Type | Default |
+|---|---|---|
+| `label` | `string` | — |
+| `helperText` | `string` | — |
+| `errorText` | `string` | — |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` |
+
+`TextArea` extends every native `<textarea>` attribute, plus the same
+`label`/`helperText`/`errorText` props and a `rows` prop.
+
+When `errorText` is set, it replaces `helperText` and the field is marked
+`aria-invalid`.

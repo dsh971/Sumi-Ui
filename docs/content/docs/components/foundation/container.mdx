@@ -1,12 +1,25 @@
 ---
 title: Container
-description: Coming soon.
+description: A max-width content wrapper with responsive side gutters.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Container` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Container/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { Container } from "@sumiui/react";
+```
+
+## Sizes
+
+<ComponentDemo name="container/variants" />
+
+## Props
+
+| Prop | Type | Default |
+|---|---|---|
+| `size` | `"sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "read" \| "app"` | `"app"` |
+| `gutter` | `boolean` | `true` |
+
+`size="read"` maps to `--measure-read` (680px) for long-form prose;
+`size="app"` maps to `--measure-app` (1200px) for app-shell layouts. The
+rest map directly to the `--container-*` breakpoint tokens. Set
+`gutter={false}` to drop the responsive side padding for edge-to-edge
+content at the container's width.

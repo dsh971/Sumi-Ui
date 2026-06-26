@@ -38,7 +38,7 @@ export const DialogContent = React.forwardRef<
       className={cn(
         "fixed inset-0 z-50",
         "bg-[color:var(--bg-scrim)]",
-        "backdrop-blur-[2px]",
+        "backdrop-blur-[var(--dialog-backdrop-blur)]",
         "data-[state=open]:animate-in data-[state=closed]:animate-out",
         "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       )}
@@ -49,7 +49,7 @@ export const DialogContent = React.forwardRef<
       className={cn(
         "fixed left-1/2 top-1/2 z-50",
         "-translate-x-1/2 -translate-y-1/2",
-        "w-full max-w-lg",
+        "w-[calc(100vw-2rem)] max-w-lg",
         "bg-bg-card rounded-xl",
         "border border-[color:var(--line-1)]",
         "[box-shadow:var(--shadow-xl)]",

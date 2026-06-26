@@ -1,0 +1,252 @@
+---
+title: CSS & Styling
+description: Token reference, writing custom CSS against the Sumi token layer, and Tailwind utility patterns.
+---
+
+SumiUi ships a single CSS import that defines all design tokens as custom properties
+and loads the Tailwind utilities that map to them. You don't need a JS theme object —
+everything is plain CSS.
+
+```tsx
+// In your app's entry point
+import "@sumiui/react/styles";
+```
+
+## Token families
+
+Tokens are organized into two tiers. **Raw scale tokens** are the full color
+ramps — you reference these when you need a specific step on a scale (e.g.
+`--malachite-700` for the primary brand green). **Semantic tokens** are the
+ones components actually use — they alias into the raw scales and flip in
+dark mode.
+
+Prefer semantic tokens in your own CSS. Semantic tokens are stable across
+light/dark automatically; raw scale values are not.
+
+## Semantic color tokens
+
+### Surfaces (backgrounds)
+
+| Token | Light | Dark | Use for |
+|---|---|---|---|
+| `--bg-0` | silk-100 | #161514 | Page background |
+| `--bg-1` | silk-200 | #1f1e1c | Card / panel surfaces |
+| `--bg-2` | silk-300 | #2a2825 | Sunken / input backgrounds |
+| `--bg-3` | canvas-200 | #34312c | Pressed / active states |
+| `--bg-overlay` | ink rgba 32% | black 55% | Modal backdrop |
+| `--bg-scrim` | ink rgba 55% | black 72% | Full-screen scrim |
+
+### Foregrounds (text)
+
+| Token | Use for |
+|---|---|
+| `--fg-1` | Primary text |
+| `--fg-2` | Secondary / label text |
+| `--fg-3` | Placeholder / muted text |
+| `--fg-4` | Disabled text |
+| `--fg-on-malachite` | Text on malachite fill |
+| `--fg-on-azurite` | Text on azurite fill |
+| `--fg-on-cinnabar` | Text on cinnabar fill |
+| `--fg-on-ink` | Text on ink fill |
+
+### Accent (primary brand — malachite green)
+
+| Token | Use for |
+|---|---|
+| `--accent` | Primary interactive elements, focus rings |
+| `--accent-soft` | Tinted backgrounds (e.g. focus ring halo) |
+| `--accent-strong` | Hover darken step |
+| `--accent-hover` | Teal hover shift |
+| `--accent-on` | Text/icon on `--accent` fill |
+
+### Status
+
+| Token | Use for |
+|---|---|
+| `--status-success` / `--status-success-bg` | Success foreground / tint |
+| `--status-warning` / `--status-warning-bg` | Warning foreground / tint |
+| `--status-danger` / `--status-danger-bg` | Danger foreground / tint |
+| `--status-info` / `--status-info-bg` | Info foreground / tint |
+
+### Borders
+
+| Token | Use for |
+|---|---|
+| `--line-1` | Subtle dividers (ink 8%) |
+| `--line-2` | Default borders (ink 14%) |
+| `--line-3` | Strong borders (ink 26%) |
+| `--line-ink` | Opaque ink border |
+
+## Typography tokens
+
+```css
+/* Families */
+--font-display:  "Cormorant Garamond", "Noto Serif SC", Georgia, serif;
+--font-body:     "Inter", -apple-system, sans-serif;
+--font-mono:     "JetBrains Mono", ui-monospace, monospace;
+--font-han:      "Noto Serif SC", "Songti SC", serif;
+
+/* Scale (px) */
+--text-xs: 12px   --text-sm: 13px   --text-base: 15px   --text-md: 17px
+--text-lg: 20px   --text-xl: 24px   --text-2xl: 30px    --text-3xl: 38px
+
+/* Weights */
+--weight-light: 300   --weight-normal: 400   --weight-medium: 500
+--weight-semi: 600    --weight-bold: 700
+
+/* Line heights */
+--leading-tight: 1.12   --leading-snug: 1.28
+--leading-body: 1.55    --leading-loose: 1.72
+```
+
+Titles and display headings use `--font-display` (Cormorant Garamond). Body
+copy and UI labels use `--font-body` (Inter). Code uses `--font-mono`
+(JetBrains Mono).
+
+## Spacing scale
+
+4 px base grid. Use these for padding, gap, and margin in custom CSS rather
+than hard-coded pixel values.
+
+| Token | Value |
+|---|---|
+| `--space-1` | 4px |
+| `--space-2` | 8px |
+| `--space-3` | 12px |
+| `--space-4` | 16px |
+| `--space-5` | 20px |
+| `--space-6` | 24px |
+| `--space-7` | 32px |
+| `--space-8` | 40px |
+| `--space-9` | 56px |
+| `--space-10` | 72px |
+
+## Border radius
+
+| Token | Value | Typical use |
+|---|---|---|
+| `--radius-1` | 2px | Chips, tags |
+| `--radius-2` | 4px | Buttons, inputs |
+| `--radius-3` | 6px | Small panels |
+| `--radius-4` | 10px | Cards, dialogs |
+| `--radius-5` | 14px | Large modals |
+| `--radius-full` | 999px | Pills, avatars |
+
+## Shadows
+
+| Token | Use |
+|---|---|
+| `--shadow-xs` | Subtle lift (dividers) |
+| `--shadow-sm` | Buttons, inputs |
+| `--shadow-md` | Dropdowns, popovers |
+| `--shadow-lg` | Dialogs, command palette |
+| `--shadow-xl` | Full-screen sheets |
+
+## Motion
+
+| Token | Value | Use |
+|---|---|---|
+| `--dur-1` | 120ms | Micro-interactions |
+| `--dur-2` | 200ms | Standard transitions |
+| `--dur-3` | 320ms | Larger enter/exit |
+| `--ease-out` | `cubic-bezier(0.22, 0.61, 0.36, 1)` | Enter animations |
+| `--ease-in-out` | `cubic-bezier(0.65, 0.05, 0.36, 1)` | State transitions |
+
+## Writing custom CSS with tokens
+
+Reference any token directly in your own CSS:
+
+```css
+.my-card {
+  background: var(--bg-1);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-4);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-5);
+  color: var(--fg-1);
+  font-family: var(--font-body);
+}
+
+.my-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+```
+
+Semantic tokens (`--bg-*`, `--fg-*`, `--accent`, etc.) flip automatically in
+dark mode — you get light and dark for free without any conditional logic.
+
+## Tailwind utilities
+
+The token layer bridges into Tailwind via `@theme` mappings in `index.css`.
+This means raw color scales like `--malachite-500` are available as Tailwind
+color utilities:
+
+```tsx
+// Color scales as Tailwind utilities
+<div className="bg-malachite-50 text-malachite-800" />
+<div className="border-azurite-200" />
+
+// Semantic surface utilities
+<div className="bg-bg-page" />       // --bg-0
+<div className="bg-bg-card" />       // --bg-1
+<div className="bg-bg-sunken" />     // --bg-2
+
+// Semantic foreground utilities
+<p className="text-fg-1" />          // primary text
+<p className="text-fg-2" />          // secondary text
+<p className="text-fg-3" />          // muted / placeholder
+
+// Accent
+<button className="bg-accent text-accent-on" />
+```
+
+## Layout grid tokens
+
+Named `grid-template-columns` utilities for reusable shell layouts —
+prefer these over raw arbitrary-value classes (e.g. `grid-cols-[240px_1fr]`)
+so span/track count mismatches are caught by name rather than by pixel audit:
+
+```tsx
+// Sidebar + content shell
+<Grid className="grid-cols-shell-sidebar-content" />
+
+// Sidebar + content + properties panel
+<Grid className="grid-cols-shell-sidebar-content-properties" />
+
+// Timeline-specific grids (used internally)
+// grid-cols-timeline-time-marker-content  (3 columns, with time gutter)
+// grid-cols-timeline-marker-content       (2 columns, no time gutter)
+```
+
+See `src/styles/index.css` for the full `@theme` registry.
+
+## Overriding tokens
+
+Override at `:root` to theme the library without touching component code.
+Import your override file **after** `@sumiui/react/styles`:
+
+```css
+/* your-theme.css */
+:root {
+  --accent: #2563eb;          /* swap primary brand colour */
+  --accent-soft: #dbeafe;
+  --accent-strong: #1d4ed8;
+  --accent-on: #ffffff;
+}
+```
+
+If you need a scoped dark-mode toggle on a subtree (not `<html>`), re-declare
+the semantic aliases at that same selector — CSS resolves `var()` at
+declaration time, so aliases set at `:root` won't pick up raw token overrides
+further down the tree:
+
+```css
+.my-dark-pane {
+  --bg-0: #161514;
+  --bg-1: #1f1e1c;
+  --fg-1: #eee7d6;
+  --accent: var(--malachite-400);   /* lighter step for dark surfaces */
+  /* … re-declare all semantic tokens you use */
+}
+```

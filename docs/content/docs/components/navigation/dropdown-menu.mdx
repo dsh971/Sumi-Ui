@@ -1,12 +1,34 @@
 ---
 title: DropdownMenu
-description: Coming soon.
+description: A Radix-based menu with items, checkboxes, radio groups, and submenus.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `DropdownMenu` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/DropdownMenu/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@sumiui/react";
+```
+
+## Example
+
+<ComponentDemo name="dropdown-menu/variants" />
+
+## Props
+
+`DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`,
+`DropdownMenuLabel`, `DropdownMenuSeparator`, `DropdownMenuCheckboxItem`,
+`DropdownMenuRadioGroup`, `DropdownMenuRadioItem`, `DropdownMenuSub`,
+`DropdownMenuSubTrigger`, and `DropdownMenuSubContent` mirror their Radix
+UI `DropdownMenu.*` equivalents directly.
+
+`DropdownMenuItem` extends Radix UI's `DropdownMenu.Item` props, plus:
+
+| Prop | Type | Default |
+|---|---|---|
+| `inset` | `boolean` | `false` |
+| `variant` | `"default" \| "danger"` | `"default"` |

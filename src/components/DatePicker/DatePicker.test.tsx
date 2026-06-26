@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import { DatePicker } from "./index";
 
 describe("DatePicker", () => {
@@ -70,5 +71,12 @@ describe("DatePicker", () => {
   it("shows error text with role=alert", () => {
     render(<DatePicker errorText="Date required" />);
     expect(screen.getByRole("alert")).toHaveTextContent("Date required");
+  });
+});
+
+describe("DatePicker accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<DatePicker label="Start date" />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

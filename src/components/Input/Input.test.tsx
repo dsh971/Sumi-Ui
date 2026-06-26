@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
+import { axe } from "../../test-setup";
 import { Input, TextArea } from "./index";
 
 describe("Input", () => {
@@ -68,5 +69,12 @@ describe("TextArea", () => {
     const ref = { current: null };
     render(<TextArea ref={ref} />);
     expect(ref.current).toBeInstanceOf(HTMLTextAreaElement);
+  });
+});
+
+describe("Input accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Input label="Email address" />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

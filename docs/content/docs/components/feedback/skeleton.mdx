@@ -1,12 +1,45 @@
 ---
 title: Skeleton
-description: Coming soon.
+description: A loading placeholder with text, circle, and rect variants.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Skeleton` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Skeleton/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { Skeleton } from "@sumiui/react";
+```
+
+## Example
+
+<ComponentDemo name="skeleton/variants" />
+
+## Props
+
+| Prop | Type | Default |
+|---|---|---|
+| `variant` | `"text" \| "circle" \| "rect"` | `"text"` |
+| `width` | `string \| number` | — |
+| `height` | `string \| number` | — |
+
+Compose individual `Skeleton`s to mirror the loaded layout's shape, as in
+the example above.
+
+## Loading announcements
+
+Each `Skeleton` is `aria-hidden` — a placeholder has nothing to announce.
+But that leaves a *group* of skeletons silent to screen readers while it's
+the only content on screen. Wrap the group in an `<output>` element (it
+carries an implicit `role="status"` / `aria-live="polite"`) with a
+visually-hidden label, so assistive tech gets one "Loading…" announcement
+when the region mounts, rather than nothing at all or a re-announcement on
+every shimmer frame:
+
+```tsx
+<output style={{ display: "block" }}>
+  <span className="sr-only">Loading…</span>
+  <Skeleton variant="circle" width={40} />
+  <Skeleton variant="text" />
+</output>
+```
+
+This is guidance to apply at the call site that renders a skeleton group,
+not a prop on `Skeleton` itself or a separate wrapper component — see the
+`AccessibleLoadingRegion` story in Storybook for a fuller worked example.

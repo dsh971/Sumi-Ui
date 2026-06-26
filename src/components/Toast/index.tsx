@@ -86,7 +86,7 @@ export const ToastViewport = React.forwardRef<
   <RadixToast.Viewport
     ref={ref}
     className={cn(
-      "fixed top-4 right-4 z-50 flex flex-col gap-2.5 w-80 max-h-screen outline-none",
+      "fixed top-4 right-4 left-4 sm:left-auto z-50 flex flex-col gap-2.5 w-auto sm:w-80 max-h-screen outline-none",
       className,
     )}
     {...props}
@@ -104,7 +104,7 @@ export const Toast = React.forwardRef<React.ElementRef<typeof RadixToast.Root>, 
           ref={ref}
           duration={duration}
           className={cn(
-            "relative flex items-start gap-[11px] w-80 p-[13px_14px_14px]",
+            "relative flex items-start gap-[11px] w-full sm:w-80 p-[13px_14px_14px]",
             "bg-[color:var(--bg-1)] border border-[color:var(--line-1)] border-l-[3px]",
             "rounded-lg [box-shadow:var(--shadow-lg)] overflow-hidden",
             "data-[state=open]:animate-in data-[state=open]:slide-in-from-top-2 data-[state=open]:fade-in-0",
@@ -196,7 +196,7 @@ export const ToastClose = React.forwardRef<
       ref={ref}
       aria-label={ariaLabel}
       className={cn(
-        "flex-none flex items-center justify-center w-[22px] h-[22px] -mr-[3px] -mt-0.5",
+        "flex-none flex items-center justify-center min-w-[36px] min-h-[36px] -mr-[10px] -mt-[10px]",
         "bg-transparent border-0 cursor-pointer rounded opacity-55 hover:opacity-100",
         "transition-opacity",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",

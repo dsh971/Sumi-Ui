@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { axe } from "../../test-setup";
 import { Avatar, AvatarSeal } from "./index";
 
 describe("Avatar", () => {
@@ -55,5 +56,12 @@ describe("AvatarSeal", () => {
   it.each(["sm", "md", "lg", "xl"] as const)("renders size=%s without throwing", (size) => {
     const { container } = render(<AvatarSeal size={size} fallback="AB" />);
     expect(container.textContent).toContain("AB");
+  });
+});
+
+describe("Avatar accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Avatar fallback="JD" />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

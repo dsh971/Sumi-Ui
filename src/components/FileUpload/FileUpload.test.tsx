@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import { FileUpload } from "./index";
 
 describe("FileUpload", () => {
@@ -73,5 +74,12 @@ describe("FileUpload", () => {
     const files = [new File(["x"], "controlled.txt", { type: "text/plain" })];
     render(<FileUpload files={files} />);
     expect(screen.getByText("controlled.txt")).toBeInTheDocument();
+  });
+});
+
+describe("FileUpload accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<FileUpload />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

@@ -1,12 +1,46 @@
 ---
 title: Table
-description: Coming soon.
+description: A semantic table with sorting, row selection, striping, and density options.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Table` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Table/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+  TableSelectHead,
+  TableSelectCell,
+} from "@sumiui/react";
+```
+
+## Example
+
+<ComponentDemo name="table/variants" />
+
+## Props
+
+`TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableCell`, and
+`TableCaption` extend their native HTML table element attributes directly.
+
+`Table` extends `React.HTMLAttributes<HTMLTableElement>`, plus:
+
+| Prop | Type | Default |
+|---|---|---|
+| `striped` | `boolean` | `false` |
+| `stickyHeader` | `boolean` | `false` |
+| `density` | `"default" \| "dense"` | `"default"` |
+| `selectable` | `boolean` | `false` |
+| `selectedIds` | `string[]` | — |
+| `rowIds` | `string[]` | — |
+| `onSelectionChange` | `(ids: string[]) => void` | — |
+
+`TableHead` adds `sortable`, `sortDirection` (`"asc" \| "desc" \| "none"`),
+and `onSort`. `TableRow` adds an optional `rowId` (required when inside a
+`selectable` table). Use `TableSelectHead`/`TableSelectCell` for the
+select-all/per-row checkbox columns. With no rows in `TableBody`, an empty
+state renders automatically.

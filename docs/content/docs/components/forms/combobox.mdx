@@ -1,12 +1,30 @@
 ---
 title: Combobox
-description: Coming soon.
+description: A searchable, filterable select with single, multi, and grouped options.
 ---
 
-<Callout title="Coming soon">
-  A full worked example for `Combobox` hasn't been written yet. In the
-  meantime, see this component's stories in
-  [Storybook](/Sumi-Ui/storybook/?path=/docs/) or its source under
-  `src/components/Combobox/` in the
-  [SumiUi repo](https://github.com/dsh971/Sumi-Ui).
-</Callout>
+```tsx
+import { Combobox } from "@sumiui/react";
+```
+
+## Variants
+
+<ComponentDemo name="combobox/variants" />
+
+## Props
+
+`Combobox` is fully controlled — pass `value` and `onValueChange`.
+
+| Prop | Type | Default |
+|---|---|---|
+| `options` | `ComboboxOption[] \| ComboboxGroup[]` | — |
+| `multiple` | `boolean` | `false` |
+| `value` | `string` (single) or `string[]` (multiple) | — |
+| `onValueChange` | `(value: string) => void` or `(value: string[]) => void` | — |
+| `placeholder` | `string` | `"Search…"` |
+| `label` | `string` | — |
+| `loading` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+
+A `ComboboxOption` is `{ value, label, avatar?, subLabel? }`. A
+`ComboboxGroup` is `{ label, options: ComboboxOption[] }`.

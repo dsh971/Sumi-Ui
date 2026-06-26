@@ -8,7 +8,20 @@ const meta: Meta<typeof Badge> = {
   argTypes: {
     variant: {
       control: { type: "select" },
-      options: ["neutral", "success", "warning", "danger", "info", "jade", "clay", "peach", "seal"],
+      options: [
+        "neutral",
+        "success",
+        "warning",
+        "danger",
+        "info",
+        "malachite",
+        "canvas",
+        "sienna",
+        "jade",
+        "clay",
+        "peach",
+        "seal",
+      ],
     },
     dot: { control: { type: "boolean" } },
     children: { control: { type: "text" } },
@@ -58,10 +71,31 @@ export const BrandVariants: Story = {
         alignItems: "center",
       }}
     >
+      <Badge variant="malachite">Malachite</Badge>
+      <Badge variant="canvas">Canvas</Badge>
+      <Badge variant="sienna">Sienna</Badge>
+      <Badge variant="seal">Seal</Badge>
+    </div>
+  ),
+};
+
+// Deprecated alias names (jade/clay/peach) — kept working for back-compat
+// per Sumi-Design-System's own migration strategy. New work should use
+// BrandVariants' canonical names above instead.
+export const LegacyAliases: Story = {
+  render: () => (
+    <div
+      style={{
+        display: "flex",
+        gap: "8px",
+        flexWrap: "wrap",
+        padding: "24px",
+        alignItems: "center",
+      }}
+    >
       <Badge variant="jade">Jade</Badge>
       <Badge variant="clay">Clay</Badge>
       <Badge variant="peach">Peach</Badge>
-      <Badge variant="seal">Seal</Badge>
     </div>
   ),
 };
@@ -87,14 +121,14 @@ export const AllWithDots: Story = {
         </Badge>
       </div>
       <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
-        <Badge variant="jade" dot>
-          Jade
+        <Badge variant="malachite" dot>
+          Malachite
         </Badge>
-        <Badge variant="clay" dot>
-          Clay
+        <Badge variant="canvas" dot>
+          Canvas
         </Badge>
-        <Badge variant="peach" dot>
-          Peach
+        <Badge variant="sienna" dot>
+          Sienna
         </Badge>
         <Badge variant="seal" dot>
           Seal

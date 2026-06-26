@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import { Seal } from "./index";
 
 describe("Seal", () => {
@@ -62,5 +63,12 @@ describe("Seal", () => {
   it("accepts additional className", () => {
     const { container } = render(<Seal className="custom" />);
     expect(container.querySelector("svg")).toHaveClass("custom");
+  });
+});
+
+describe("Seal accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<Seal />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

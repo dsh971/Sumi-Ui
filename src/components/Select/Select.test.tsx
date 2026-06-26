@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
+import { axe } from "../../test-setup";
 import { Select, SelectContent, SelectItem } from "./index";
 
 function TestSelect({ defaultValue }: { defaultValue?: string }) {
@@ -64,5 +65,12 @@ describe("Select", () => {
       </Select>,
     );
     expect(screen.getByRole("combobox")).toHaveAttribute("aria-invalid", "true");
+  });
+});
+
+describe("Select accessibility", () => {
+  it("has no violations", async () => {
+    const { container } = render(<TestSelect />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

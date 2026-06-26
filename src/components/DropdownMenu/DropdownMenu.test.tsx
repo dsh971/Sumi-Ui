@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { axe } from "../../test-setup";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,5 +82,12 @@ describe("DropdownMenu", () => {
     render(<TestMenu />);
     await user.click(screen.getByText("Open menu"));
     expect(screen.getByRole("menuitem", { name: "Delete" }).className).toContain("status-danger");
+  });
+});
+
+describe("DropdownMenu accessibility", () => {
+  it("has no violations when closed", async () => {
+    const { container } = render(<TestMenu />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

@@ -52,7 +52,7 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
           aria-hidden="true"
           className={cn(
             "flex size-full items-center justify-center rounded-full",
-            "bg-bg-sunken text-fg-2 font-display font-medium",
+            "bg-bg-sunken text-fg-2 font-display font-medium leading-none",
             !showFallback && "hidden",
           )}
         >
@@ -73,7 +73,17 @@ export const AvatarSeal = React.forwardRef<HTMLDivElement, AvatarSealProps>(
     return (
       <div ref={ref} className="relative inline-flex">
         <Avatar size={size} className={className} {...rest} />
-        {/* Cinnabar seal badge — color is locked, intentionally no override */}
+        {/* Cinnabar seal badge — color is locked, intentionally no override.
+            Square with a modest corner radius per the design system's own
+            .seal utility (colors_and_type.css) — a literal reference to a
+            Chinese chop/seal (印章), which is historically square, never
+            round; --radius-full is deliberately reserved for avatars,
+            pills, and toggle thumbs (UI_GUIDE.md), not the seal. The
+            box-shadow layers the DS's --shadow-seal halo with a solid
+            page-background ring (matching the avatar-stack separation
+            technique in Sumi-Design-System/preview/avatar-seal.html) so
+            the badge reads as a distinct layered element, not a stray
+            square notch. */}
         <span
           aria-hidden="true"
           data-avatar-seal
@@ -81,12 +91,13 @@ export const AvatarSeal = React.forwardRef<HTMLDivElement, AvatarSealProps>(
           style={{
             width: px,
             height: px,
-            background: "var(--pigment-cinnabar)",
+            background: "var(--cinnabar-400)",
             fontSize: px * 0.55,
             fontFamily: "var(--font-han)",
-            color: "var(--silk-50)",
+            color: "var(--fg-on-ink)",
             lineHeight: 1,
-            borderRadius: 2,
+            borderRadius: "var(--radius-2)",
+            boxShadow: "0 0 0 2px var(--bg-0), var(--shadow-seal)",
           }}
         >
           {sealGlyph}

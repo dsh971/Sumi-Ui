@@ -37,6 +37,15 @@ describe("Avatar", () => {
     render(<Avatar ref={ref} fallback="AB" />);
     expect(ref.current).toBeInstanceOf(HTMLSpanElement);
   });
+
+  it("fallback text has leading-none so it centers within the circle", () => {
+    // Without an explicit line-height, the ambient --leading-body (1.55) on
+    // the fallback span pushes font-display's glyphs above true center in
+    // a flex-centered box — regression guard for that fix.
+    const { container } = render(<Avatar fallback="AB" />);
+    const fallbackSpan = container.querySelector('span[aria-hidden="true"]');
+    expect(fallbackSpan).toHaveClass("leading-none");
+  });
 });
 
 describe("AvatarSeal", () => {
@@ -56,6 +65,15 @@ describe("AvatarSeal", () => {
   it.each(["sm", "md", "lg", "xl"] as const)("renders size=%s without throwing", (size) => {
     const { container } = render(<AvatarSeal size={size} fallback="AB" />);
     expect(container.textContent).toContain("AB");
+  });
+
+  it("uses the design system's seal tokens, not ad hoc values", () => {
+    const { container } = render(<AvatarSeal fallback="JD" />);
+    const seal = container.querySelector("[data-avatar-seal]") as HTMLElement;
+    expect(seal.style.background).toBe("var(--cinnabar-400)");
+    expect(seal.style.color).toBe("var(--fg-on-ink)");
+    expect(seal.style.borderRadius).toBe("var(--radius-2)");
+    expect(seal.style.boxShadow).toContain("var(--shadow-seal)");
   });
 });
 

@@ -31,3 +31,16 @@ at bottom-right:
 | Prop | Type | Default |
 |---|---|---|
 | `sealGlyph` | `string` | `"墨"` |
+
+The badge is square (with a modest corner radius), not circular — this is
+intentional, a literal reference to a Chinese chop/seal (印章), which is
+historically square, never round. See
+[`Seal`](/docs/components/brand/seal) for the standalone version and the
+full design rationale.
+
+**Use `AvatarSeal` once per page, never on more than one avatar at a
+time.** The design system treats the cinnabar seal as the single fully
+saturated mark on a surface — it's a signature/verification motif, not a
+per-row decorator. Reach for a [`Badge`](/docs/components/foundation/badge)
+or a status dot instead if you need a per-item indicator repeated across
+a list of avatars.

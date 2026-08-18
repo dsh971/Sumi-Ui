@@ -162,7 +162,7 @@ function TimelineRow({
       )}
       <li className={rowGridFor(depth, timeGutter)}>
         {depth === 0 && timeGutter && (
-          <div className="font-mono text-[11px] text-fg-3 text-right pr-3 pt-[2px] whitespace-nowrap">
+          <div className="font-mono text-[11px] text-fg-3 text-end pe-3 pt-[2px] whitespace-nowrap">
             {item.time}
           </div>
         )}
@@ -174,7 +174,7 @@ function TimelineRow({
           />
           <Marker marker={marker} iconNode={item.iconNode} />
         </div>
-        <div className={cn("pl-[14px]", isLast && !showChildren ? "pb-0" : "pb-5")}>
+        <div className={cn("ps-[14px]", isLast && !showChildren ? "pb-0" : "pb-5")}>
           <div className="flex items-start gap-1">
             {hasChildren && (
               <DisclosureToggle expanded={expanded} onToggle={() => onToggle(path)} />
@@ -194,7 +194,7 @@ function TimelineRow({
                 {item.avatar && (
                   <span
                     aria-hidden="true"
-                    className="w-6 h-6 rounded-full inline-flex items-center justify-center font-semibold text-[10px] text-[color:var(--silk-50)] align-middle mr-1.5"
+                    className="w-6 h-6 rounded-full inline-flex items-center justify-center font-semibold text-[10px] text-[color:var(--silk-50)] align-middle me-1.5"
                     style={{ background: item.avatar.color }}
                   >
                     {item.avatar.initials}
@@ -210,7 +210,7 @@ function TimelineRow({
             </button>
           </div>
           {showChildren && (
-            <ul className="relative list-none p-0 m-0 pl-[var(--space-4)] mt-2">
+            <ul className="relative list-none p-0 m-0 ps-[var(--space-4)] mt-2">
               <TimelineRows
                 items={item.children as TimelineItemData[]}
                 depth={depth + 1}

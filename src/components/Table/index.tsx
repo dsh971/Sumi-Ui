@@ -1,3 +1,4 @@
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import React, { createContext, useCallback, useContext } from "react";
 import { cn } from "../../lib/cn";
@@ -15,6 +16,7 @@ import type {
   TableRowProps,
   TableSelectCellProps,
   TableSelectHeadProps,
+  TableVirtualizeConfig,
 } from "./Table.types";
 
 // ---------------------------------------------------------------------------
@@ -98,34 +100,121 @@ export const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeader
 );
 TableHeader.displayName = "TableHeader";
 
-export const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
-  ({ className, children, ...props }, ref) => {
-    const isEmpty = React.Children.count(children) === 0;
+function VirtualizedTableBody<T>({
+  className,
+  virtualize,
+  ref,
+  ...props
+}: Omit<React.HTMLAttributes<HTMLTableSectionElement>, "children"> & {
+  virtualize: TableVirtualizeConfig<T>;
+  ref: React.Ref<HTMLTableSectionElement>;
+}) {
+  const { rows, estimateRowHeight, renderRow, overscan = 8 } = virtualize;
+  const scrollRef = React.useRef<HTMLTableSectionElement>(null);
 
-    if (isEmpty) {
-      return (
-        <tbody ref={ref} className={className} {...props}>
-          <tr>
-            <td colSpan={100}>
-              <EmptyState
-                title="Nothing here yet"
-                description="No rows to display."
-                className="py-16"
-              />
-            </td>
+  const virtualizer = useVirtualizer({
+    count: rows.length,
+    getScrollElement: () => scrollRef.current,
+    estimateSize: () => estimateRowHeight,
+    overscan,
+  });
+
+  return (
+    <tbody
+      ref={(node) => {
+        scrollRef.current = node;
+        if (typeof ref === "function") ref(node);
+        else if (ref) ref.current = node;
+      }}
+      // Display below is overridden to block for virtualization, which
+      // drops tbody's implicit rowgroup role in some browsers — restored
+      // explicitly rather than a substitute for the element.
+      // biome-ignore lint/a11y/noRedundantRoles: see comment above.
+      // biome-ignore lint/a11y/useSemanticElements: see comment above.
+      role="rowgroup"
+      className={cn(
+        "relative block max-h-[480px] overflow-y-auto [&_tr:last-child]:border-0",
+        className,
+      )}
+      style={{ height: virtualizer.getTotalSize() }}
+      {...props}
+    >
+      {virtualizer.getVirtualItems().map((virtualRow) => {
+        const row = rows[virtualRow.index];
+        if (row === undefined) return null;
+        return (
+          <tr
+            key={virtualRow.key}
+            ref={virtualizer.measureElement}
+            data-index={virtualRow.index}
+            // Display below is overridden to flex for windowing, which
+            // drops tr's implicit row role in some browsers — restored
+            // explicitly.
+            // biome-ignore lint/a11y/noRedundantRoles: see comment above.
+            // biome-ignore lint/a11y/useSemanticElements: see comment above.
+            role="row"
+            className="border-b border-[color:var(--line-1)]"
+            style={{
+              display: "flex",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              transform: `translateY(${virtualRow.start}px)`,
+            }}
+          >
+            {renderRow(row, virtualRow.index)}
           </tr>
-        </tbody>
-      );
-    }
+        );
+      })}
+    </tbody>
+  );
+}
 
+// Generic forwardRef: React.forwardRef's own type doesn't support a generic
+// render function, so the ref-forwarding component is declared as a plain
+// generic function and cast to the callable shape React expects. This is
+// what lets `<TableBody virtualize={{ rows: Person[], renderRow: (row) =>
+// ... }} />` infer `row` as `Person` instead of `unknown`.
+function TableBodyImpl<T>(
+  { className, children, virtualize, ...props }: TableBodyProps<T>,
+  ref: React.Ref<HTMLTableSectionElement>,
+) {
+  if (virtualize) {
     return (
-      <tbody ref={ref} className={cn("[&_tr:last-child]:border-0", className)} {...props}>
-        {children}
+      <VirtualizedTableBody ref={ref} className={className} virtualize={virtualize} {...props} />
+    );
+  }
+
+  const isEmpty = React.Children.count(children) === 0;
+
+  if (isEmpty) {
+    return (
+      <tbody ref={ref} className={className} {...props}>
+        <tr>
+          <td colSpan={100}>
+            <EmptyState
+              title="Nothing here yet"
+              description="No rows to display."
+              className="py-16"
+            />
+          </td>
+        </tr>
       </tbody>
     );
-  },
-);
-TableBody.displayName = "TableBody";
+  }
+
+  return (
+    <tbody ref={ref} className={cn("[&_tr:last-child]:border-0", className)} {...props}>
+      {children}
+    </tbody>
+  );
+}
+
+export const TableBody = React.forwardRef(TableBodyImpl) as <T = unknown>(
+  props: TableBodyProps<T> & { ref?: React.Ref<HTMLTableSectionElement> },
+) => React.ReactElement;
+(TableBody as { displayName?: string }).displayName = "TableBody";
 
 export const TableFooter = React.forwardRef<HTMLTableSectionElement, TableFooterProps>(
   ({ className, ...props }, ref) => (
@@ -168,9 +257,9 @@ TableRow.displayName = "TableRow";
 // ---------------------------------------------------------------------------
 
 const sortIcon: Record<SortDirection, React.ReactNode> = {
-  none: <ArrowUpDown size={14} className="text-fg-3 ml-1 flex-shrink-0" aria-hidden="true" />,
-  asc: <ArrowUp size={14} className="text-accent ml-1 flex-shrink-0" aria-hidden="true" />,
-  desc: <ArrowDown size={14} className="text-accent ml-1 flex-shrink-0" aria-hidden="true" />,
+  none: <ArrowUpDown size={14} className="text-fg-3 ms-1 flex-shrink-0" aria-hidden="true" />,
+  asc: <ArrowUp size={14} className="text-accent ms-1 flex-shrink-0" aria-hidden="true" />,
+  desc: <ArrowDown size={14} className="text-accent ms-1 flex-shrink-0" aria-hidden="true" />,
 };
 
 export const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>(

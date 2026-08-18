@@ -2,6 +2,7 @@ import * as RadixDropdown from "@radix-ui/react-dropdown-menu";
 import { Check, ChevronRight, Circle } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
+import { popperTransition } from "../../lib/motion";
 import type {
   DropdownMenuCheckboxItemProps,
   DropdownMenuContentProps,
@@ -40,11 +41,8 @@ export const DropdownMenuContent = React.forwardRef<
         "bg-bg-card",
         "border border-[color:var(--line-1)]",
         "[box-shadow:var(--shadow-md)]",
-        "data-[state=open]:animate-in data-[state=closed]:animate-out",
-        "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-        "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-        "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
-        "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "origin-[--radix-dropdown-menu-content-transform-origin]",
+        popperTransition,
         className,
       )}
       {...props}
@@ -67,7 +65,7 @@ export const DropdownMenuItem = React.forwardRef<
       variant === "danger"
         ? "text-[color:var(--status-danger)] focus:bg-[color:var(--status-danger-bg)]"
         : "text-fg-1 focus:bg-bg-sunken focus:text-fg-1",
-      inset && "pl-8",
+      inset && "ps-8",
       className,
     )}
     {...props}
@@ -83,7 +81,7 @@ export const DropdownMenuLabel = React.forwardRef<
     ref={ref}
     className={cn(
       "px-2 py-1.5 text-xs font-medium text-fg-3 tracking-wide uppercase",
-      inset && "pl-8",
+      inset && "ps-8",
       className,
     )}
     {...props}
@@ -112,7 +110,7 @@ export const DropdownMenuCheckboxItem = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex cursor-default select-none items-center gap-2",
-      "rounded-md py-1.5 pl-8 pr-2 text-sm text-fg-1",
+      "rounded-md py-1.5 ps-8 pe-2 text-sm text-fg-1",
       "outline-none transition-colors",
       "focus:bg-bg-sunken",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
@@ -121,7 +119,7 @@ export const DropdownMenuCheckboxItem = React.forwardRef<
     checked={checked}
     {...props}
   >
-    <span className="absolute left-2 flex size-3.5 items-center justify-center">
+    <span className="absolute start-2 flex size-3.5 items-center justify-center">
       <RadixDropdown.ItemIndicator>
         <Check size={14} className="text-accent" aria-hidden="true" />
       </RadixDropdown.ItemIndicator>
@@ -145,7 +143,7 @@ export const DropdownMenuRadioItem = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex cursor-default select-none items-center gap-2",
-      "rounded-md py-1.5 pl-8 pr-2 text-sm text-fg-1",
+      "rounded-md py-1.5 ps-8 pe-2 text-sm text-fg-1",
       "outline-none transition-colors",
       "focus:bg-bg-sunken",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
@@ -153,7 +151,7 @@ export const DropdownMenuRadioItem = React.forwardRef<
     )}
     {...props}
   >
-    <span className="absolute left-2 flex size-3.5 items-center justify-center">
+    <span className="absolute start-2 flex size-3.5 items-center justify-center">
       <RadixDropdown.ItemIndicator>
         <Circle size={8} className="fill-accent text-accent" aria-hidden="true" />
       </RadixDropdown.ItemIndicator>
@@ -177,13 +175,13 @@ export const DropdownMenuSubTrigger = React.forwardRef<
       "rounded-md px-2 py-1.5 text-sm text-fg-1",
       "outline-none transition-colors",
       "focus:bg-bg-sunken data-[state=open]:bg-bg-sunken",
-      inset && "pl-8",
+      inset && "ps-8",
       className,
     )}
     {...props}
   >
     {children}
-    <ChevronRight size={14} className="ml-auto text-fg-3" aria-hidden="true" />
+    <ChevronRight size={14} className="ms-auto text-fg-3" aria-hidden="true" />
   </RadixDropdown.SubTrigger>
 ));
 DropdownMenuSubTrigger.displayName = "DropdownMenuSubTrigger";
@@ -200,10 +198,8 @@ export const DropdownMenuSubContent = React.forwardRef<
       "bg-bg-card",
       "border border-[color:var(--line-1)]",
       "[box-shadow:var(--shadow-md)]",
-      "data-[state=open]:animate-in data-[state=closed]:animate-out",
-      "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-      "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-      "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
+      "origin-[--radix-dropdown-menu-content-transform-origin]",
+      popperTransition,
       className,
     )}
     {...props}

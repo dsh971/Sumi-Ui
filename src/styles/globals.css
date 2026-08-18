@@ -218,6 +218,121 @@ hr {
   margin: var(--space-5) 0;
 }
 
+/* ---- Overlay motion — real enter/exit keyframes wired to the --dur-N and
+   --ease-N tokens. Prior to this, components referenced tailwindcss-animate's
+   animate-in/fade-in-0/zoom-in-95/slide-in-from-* vocabulary, but that
+   plugin was never installed, so every overlay (Dialog, Toast, Tooltip,
+   DropdownMenu, Select, CommandPalette, DatePicker) compiled to zero CSS
+   and snapped open/closed with no transition. These keyframes are
+   registered as Tailwind @theme --animate-* entries in index.css so
+   components consume them as ordinary animate-sumi-* utility classes that
+   the data-[state=...]/data-[side=...] variant engine combines correctly —
+   see lib/motion.ts for the shared class-string constants. */
+@keyframes sumi-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes sumi-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes sumi-modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+@keyframes sumi-modal-out {
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+/* Sheet's two forms. Radix's Dialog.Portal portals each of its children
+   (Overlay, Content) as independent top-level siblings under document.body
+   — NOT nested — so Content positions and centers itself independently;
+   it cannot rely on a flex-centering Overlay parent (verified live: an
+   earlier version assumed flex-centering and rendered Content off-screen).
+   Desktop keeps the fixed centering transform (translate(-50%,-50%)) baked
+   into the enter/exit keyframes since animating `transform` fully replaces
+   the static positioning transform, not composes with it. Mobile pins via
+   inset-x-0 bottom-0 in the utility classes, so its keyframe only needs Y. */
+@keyframes sumi-dialog-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes sumi-dialog-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.95);
+  }
+}
+@keyframes sumi-sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+@keyframes sumi-sheet-out {
+  to {
+    transform: translateY(100%);
+  }
+}
+@keyframes sumi-popper-in-top {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.95);
+  }
+}
+@keyframes sumi-popper-in-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem) scale(0.95);
+  }
+}
+@keyframes sumi-popper-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(0.5rem) scale(0.95);
+  }
+}
+@keyframes sumi-popper-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(-0.5rem) scale(0.95);
+  }
+}
+@keyframes sumi-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+}
+@keyframes sumi-toast-out {
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-state] {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
 /* skeleton shimmer animation */
 @keyframes sm-shimmer {
   0% {

@@ -28,3 +28,8 @@ import { Combobox } from "@sumiui/react";
 
 A `ComboboxOption` is `{ value, label, avatar?, subLabel? }`. A
 `ComboboxGroup` is `{ label, options: ComboboxOption[] }`.
+
+The option list is virtualized internally — passing hundreds or
+thousands of options renders only the visible window, with the active
+option auto-scrolled into view during keyboard navigation. This is
+transparent: no extra props, no API change.

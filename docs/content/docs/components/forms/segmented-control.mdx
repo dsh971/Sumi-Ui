@@ -1,0 +1,34 @@
+---
+title: Segmented Control
+description: A "paper inset" single-select value picker built on Radix UI's RadioGroup primitive.
+---
+
+```tsx
+import { SegmentedControl, SegmentedControlItem } from "@sumiui/react";
+```
+
+Segmented Control is a standalone value-picker in the design system's
+"paper inset" style — a pill-shaped active segment set against a sunken
+track. It's distinct from [`Tabs`](/docs/components/navigation/tabs)'
+segmented variant: Tabs switches between associated content panels,
+while Segmented Control is a plain single-select input with no content
+panels of its own (think a view-mode toggle, not a tab strip).
+
+## Example
+
+<ComponentDemo name="segmented-control/variants" />
+
+## Props
+
+`SegmentedControl` extends Radix UI's `RadioGroup.Root` props (`value`,
+`defaultValue`, `onValueChange`, `disabled`, `aria-label`, etc.).
+
+`SegmentedControlItem` extends Radix UI's `RadioGroup.Item` props, plus:
+
+| Prop | Type | Default |
+|---|---|---|
+| `label` | `string` | — (required) |
+
+Keyboard navigation (arrow keys move the selection, roving tabindex) and
+`radiogroup`/`radio` ARIA semantics come from the underlying Radix
+primitive.

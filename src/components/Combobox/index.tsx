@@ -1,7 +1,9 @@
 import * as Popover from "@radix-ui/react-popover";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { Check, ChevronDown, Search, X } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
+import { popperTransition } from "../../lib/motion";
 import type { ComboboxGroup, ComboboxOption, ComboboxProps } from "./Combobox.types";
 
 const labelClasses = "block text-xs font-medium text-fg-2 mb-1.5";
@@ -193,6 +195,31 @@ interface OptionListProps {
   onCommit: (option: ComboboxOption) => void;
 }
 
+type Row =
+  | { type: "group-header"; key: string; label: string }
+  | { type: "option"; key: string; option: ComboboxOption; flatIndex: number };
+
+const GROUP_HEADER_HEIGHT = 28;
+const OPTION_ROW_HEIGHT = 36;
+
+function buildRows(groups: ComboboxGroup[]): Row[] {
+  const rows: Row[] = [];
+  let flatIndex = -1;
+  groups.forEach((group, gi) => {
+    if (group.label) {
+      rows.push({ type: "group-header", key: `group-${group.label}-${gi}`, label: group.label });
+    }
+    for (const option of group.options) {
+      flatIndex += 1;
+      rows.push({ type: "option", key: option.value, option, flatIndex });
+    }
+  });
+  return rows;
+}
+
+// Virtualized so a large option list doesn't render every row at once (and
+// so the popover has an actual bounded, scrollable viewport at all — there
+// was previously no max-height/overflow-y on this list regardless of size).
 function OptionList({
   groups,
   visibleOptions,
@@ -204,67 +231,110 @@ function OptionList({
   onHover,
   onCommit,
 }: OptionListProps) {
-  let optionIndex = -1;
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const rows = React.useMemo(() => buildRows(groups), [groups]);
+
+  const virtualizer = useVirtualizer({
+    count: rows.length,
+    getScrollElement: () => scrollRef.current,
+    estimateSize: (index) =>
+      rows[index]?.type === "group-header" ? GROUP_HEADER_HEIGHT : OPTION_ROW_HEIGHT,
+    overscan: 8,
+  });
+
+  // Keyboard nav can move activeIndex outside the currently-rendered window
+  // (handleKeyDown in the parent has no visibility into scroll position) —
+  // keep the active row scrolled into view whenever it changes.
+  React.useEffect(() => {
+    const rowIndex = rows.findIndex((r) => r.type === "option" && r.flatIndex === activeIndex);
+    if (rowIndex !== -1) virtualizer.scrollToIndex(rowIndex, { align: "auto" });
+  }, [activeIndex, rows, virtualizer.scrollToIndex]);
+
+  if (loading) {
+    return (
+      <div className="px-3 py-[18px] text-center text-sm text-fg-3">
+        <span
+          className="me-2 inline-block size-4 animate-spin rounded-full border-2 border-[color:var(--line-2)] border-t-[color:var(--accent)] align-[-3px]"
+          aria-hidden="true"
+        />
+        Searching…
+      </div>
+    );
+  }
+
+  if (visibleOptions.length === 0) {
+    return (
+      <div className="px-3 py-[18px] text-center text-sm text-fg-3">No matches for “{query}”.</div>
+    );
+  }
+
   return (
-    <div id={listboxId} role="listbox">
-      {loading ? (
-        <div className="px-3 py-[18px] text-center text-sm text-fg-3">
-          <span
-            className="mr-2 inline-block size-4 animate-spin rounded-full border-2 border-[color:var(--line-2)] border-t-[color:var(--accent)] align-[-3px]"
-            aria-hidden="true"
-          />
-          Searching…
-        </div>
-      ) : visibleOptions.length === 0 ? (
-        <div className="px-3 py-[18px] text-center text-sm text-fg-3">
-          No matches for &quot;{query}&quot;.
-        </div>
-      ) : (
-        groups.map((group, gi) => (
-          <div key={group.label || `group-${gi}`}>
-            {group.label && (
-              <div className="px-[9px] pb-1 pt-[7px] font-mono text-[10px] uppercase tracking-[0.1em] text-fg-3">
-                {group.label}
+    <div ref={scrollRef} id={listboxId} role="listbox" className="max-h-[320px] overflow-y-auto">
+      <div style={{ height: virtualizer.getTotalSize(), position: "relative" }}>
+        {virtualizer.getVirtualItems().map((virtualRow) => {
+          const row = rows[virtualRow.index];
+          if (!row) return null;
+
+          const rowStyle: React.CSSProperties = {
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            transform: `translateY(${virtualRow.start}px)`,
+          };
+
+          if (row.type === "group-header") {
+            return (
+              <div
+                key={row.key}
+                ref={virtualizer.measureElement}
+                data-index={virtualRow.index}
+                style={rowStyle}
+                className="px-[9px] pb-1 pt-[7px] font-mono text-[10px] uppercase tracking-[0.1em] text-fg-3"
+              >
+                {row.label}
               </div>
-            )}
-            {group.options.map((option) => {
-              optionIndex += 1;
-              const itemIndex = optionIndex;
-              const active = itemIndex === activeIndex;
-              const selected = isSelected(option.value);
-              return (
-                <div
-                  key={option.value}
-                  role="option"
-                  aria-selected={selected}
-                  className={cn(
-                    "flex cursor-pointer items-center gap-[10px] rounded-md px-[9px] py-2 text-sm text-fg-1",
-                    active && "bg-[color:var(--bg-2)]",
-                    selected && "text-[color:var(--accent)]",
-                  )}
-                  onMouseEnter={() => onHover(itemIndex)}
-                  onClick={() => onCommit(option)}
-                >
-                  {option.avatar && <AvatarBadge avatar={option.avatar} />}
-                  <span>
-                    <HighlightedLabel label={option.label} query={query} />
-                    {option.subLabel && (
-                      <span className="ml-1 text-xs text-fg-3">{option.subLabel}</span>
-                    )}
-                  </span>
-                  {selected && (
-                    <Check
-                      size={15}
-                      className="ml-auto flex-none text-[color:var(--accent)]"
-                      aria-hidden="true"
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        ))
-      )}
+            );
+          }
+
+          const { option, flatIndex } = row;
+          const active = flatIndex === activeIndex;
+          const selected = isSelected(option.value);
+
+          return (
+            <div
+              key={row.key}
+              ref={virtualizer.measureElement}
+              data-index={virtualRow.index}
+              role="option"
+              aria-selected={selected}
+              style={rowStyle}
+              className={cn(
+                "flex cursor-pointer items-center gap-[10px] rounded-md px-[9px] py-2 text-sm text-fg-1",
+                active && "bg-[color:var(--bg-2)]",
+                selected && "text-[color:var(--accent)]",
+              )}
+              onMouseEnter={() => onHover(flatIndex)}
+              onClick={() => onCommit(option)}
+            >
+              {option.avatar && <AvatarBadge avatar={option.avatar} />}
+              <span>
+                <HighlightedLabel label={option.label} query={query} />
+                {option.subLabel && (
+                  <span className="ms-1 text-xs text-fg-3">{option.subLabel}</span>
+                )}
+              </span>
+              {selected && (
+                <Check
+                  size={15}
+                  className="ms-auto flex-none text-[color:var(--accent)]"
+                  aria-hidden="true"
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -393,6 +463,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
                 "bg-[color:var(--bg-0)] border border-[color:var(--line-2)] rounded-md",
                 "px-3 py-[9px] text-sm text-fg-1 transition-colors",
                 open && "border-[color:var(--accent)] shadow-[0_0_0_3px_var(--accent-soft)]",
+                "focus-within:border-[color:var(--accent)] focus-within:shadow-[0_0_0_3px_var(--accent-soft)]",
                 disabled && "opacity-50 cursor-not-allowed",
               )}
               onClick={() => {
@@ -457,6 +528,8 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
                 "z-50 w-[var(--radix-popover-anchor-width)]",
                 "bg-[color:var(--bg-1)] border border-[color:var(--line-1)] rounded-lg",
                 "[box-shadow:var(--shadow-lg)] p-[5px]",
+                "origin-[--radix-popover-content-transform-origin]",
+                popperTransition,
               )}
             >
               <OptionList

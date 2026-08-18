@@ -16,7 +16,10 @@ export const RadioItem = React.forwardRef<React.ElementRef<typeof RadixRadio.Ite
     const itemId = id ?? (label ? `radio-${label.toLowerCase().replace(/\s+/g, "-")}` : undefined);
 
     return (
-      <div className="flex items-center gap-2.5">
+      <label
+        htmlFor={itemId}
+        className={cn("flex items-center gap-2.5", label && "cursor-pointer")}
+      >
         <RadixRadio.Item
           ref={ref}
           id={itemId}
@@ -37,15 +40,8 @@ export const RadioItem = React.forwardRef<React.ElementRef<typeof RadixRadio.Ite
           </RadixRadio.Indicator>
         </RadixRadio.Item>
 
-        {label && (
-          <label
-            htmlFor={itemId}
-            className="text-sm text-fg-1 leading-snug cursor-pointer select-none"
-          >
-            {label}
-          </label>
-        )}
-      </div>
+        {label && <span className="text-sm text-fg-1 leading-snug select-none">{label}</span>}
+      </label>
     );
   },
 );

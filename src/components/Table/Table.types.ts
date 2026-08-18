@@ -20,7 +20,30 @@ export interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
 }
 
 export type TableHeaderProps = React.HTMLAttributes<HTMLTableSectionElement>;
-export type TableBodyProps = React.HTMLAttributes<HTMLTableSectionElement>;
+
+/** Opt-in windowed rendering for large datasets — see TableBodyProps.virtualize. */
+export interface TableVirtualizeConfig<T = unknown> {
+  rows: T[];
+  estimateRowHeight: number;
+  /** Return this row's <TableCell> children — no <tr> wrapper (the
+   *  virtualized body supplies it). Columns must be fixed-width: the
+   *  parent <tr> is display:flex for windowing, not table layout, so
+   *  cells no longer auto-size against the header's column widths. */
+  renderRow: (row: T, index: number) => React.ReactNode;
+  overscan?: number;
+}
+
+export interface TableBodyProps<T = unknown> extends React.HTMLAttributes<HTMLTableSectionElement> {
+  /** When set, children is ignored and rows render virtualized (windowed)
+   *  instead of all at once. Uses real <tr>/<td> elements repositioned via
+   *  display:flex + position:absolute (not ARIA-role divs) so the body
+   *  stays valid, foster-parenting-safe HTML nested inside <table>; the
+   *  display override needs role="rowgroup"/"row" restored explicitly
+   *  since overriding `display` on table elements drops their implicit
+   *  ARIA table roles in some browsers. */
+  virtualize?: TableVirtualizeConfig<T>;
+}
+
 export type TableFooterProps = React.HTMLAttributes<HTMLTableSectionElement>;
 
 export interface TableRowProps extends React.HTMLAttributes<HTMLTableRowElement> {

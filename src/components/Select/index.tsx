@@ -2,6 +2,7 @@ import * as RadixSelect from "@radix-ui/react-select";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
+import { popperTransition } from "../../lib/motion";
 import type {
   SelectContentProps,
   SelectGroupProps,
@@ -76,7 +77,7 @@ export const SelectTrigger = React.forwardRef<
       "px-3 py-2 text-sm",
       "transition-colors",
       "placeholder:text-fg-3",
-      "focus:outline-none focus:border-[color:var(--accent)] focus:ring-1 focus:ring-[color:var(--accent)]",
+      "focus:outline-none focus-visible:border-[color:var(--accent)] focus-visible:ring-1 focus-visible:ring-[color:var(--accent)]",
       "disabled:opacity-50 disabled:cursor-not-allowed",
       "data-[state=open]:border-[color:var(--accent)]",
       className,
@@ -85,7 +86,7 @@ export const SelectTrigger = React.forwardRef<
   >
     {children}
     <RadixSelect.Icon asChild>
-      <ChevronDown size={14} className="text-fg-3 flex-shrink-0 ml-2" aria-hidden="true" />
+      <ChevronDown size={14} className="text-fg-3 flex-shrink-0 ms-2" aria-hidden="true" />
     </RadixSelect.Icon>
   </RadixSelect.Trigger>
 ));
@@ -105,10 +106,8 @@ export const SelectContent = React.forwardRef<
         "bg-bg-card rounded-lg",
         "border border-[color:var(--line-1)]",
         "[box-shadow:var(--shadow-md)]",
-        "data-[state=open]:animate-in data-[state=closed]:animate-out",
-        "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-        "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-        "data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2",
+        "origin-[--radix-select-content-transform-origin]",
+        popperTransition,
         position === "popper" &&
           "data-[side=bottom]:translate-y-1 data-[side=top]:-translate-y-1 w-[var(--radix-select-trigger-width)]",
         className,
@@ -135,7 +134,7 @@ export const SelectItem = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex w-full cursor-default select-none items-center",
-      "rounded-md px-2 py-1.5 pl-8 text-sm text-fg-1",
+      "rounded-md px-2 py-1.5 ps-8 text-sm text-fg-1",
       "outline-none",
       "focus:bg-bg-sunken focus:text-fg-1",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
@@ -143,7 +142,7 @@ export const SelectItem = React.forwardRef<
     )}
     {...props}
   >
-    <span className="absolute left-2 flex size-3.5 items-center justify-center">
+    <span className="absolute start-2 flex size-3.5 items-center justify-center">
       <RadixSelect.ItemIndicator>
         <Check size={14} className="text-accent" aria-hidden="true" />
       </RadixSelect.ItemIndicator>

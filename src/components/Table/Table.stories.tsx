@@ -226,6 +226,55 @@ export const Dense: Story = {
   ),
 };
 
+export const Virtualized: Story = {
+  name: "Virtualized (large dataset)",
+  render: () => {
+    const manyRows = Array.from({ length: 5000 }, (_, i) => ({
+      id: `row-${i}`,
+      name: `Person ${i}`,
+      role: ["Designer", "Engineer", "PM"][i % 3],
+    }));
+    return (
+      <div style={{ padding: "24px" }}>
+        <p style={{ fontSize: "13px", color: "var(--fg-3)", marginBottom: "12px" }}>
+          {manyRows.length.toLocaleString()} rows — only the visible window is in the DOM. Columns
+          are fixed-width since virtualized rows use flex layout, not table layout.
+        </p>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead style={{ width: 240 }}>Name</TableHead>
+              <TableHead style={{ width: 160 }}>Role</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody
+            virtualize={{
+              rows: manyRows,
+              estimateRowHeight: 45,
+              renderRow: (row) => (
+                <>
+                  {/* biome-ignore lint/a11y/noRedundantRoles: parent <tr> is
+                      display:flex for windowing, dropping <td>'s implicit
+                      cell role in some browsers — role restores it. */}
+                  {/* biome-ignore lint/a11y/useSemanticElements: already <td>. */}
+                  <TableCell role="cell" style={{ width: 240 }}>
+                    {row.name}
+                  </TableCell>
+                  {/* biome-ignore lint/a11y/noRedundantRoles: see above. */}
+                  {/* biome-ignore lint/a11y/useSemanticElements: already <td>. */}
+                  <TableCell role="cell" style={{ width: 160, color: "var(--fg-2)" }}>
+                    {row.role}
+                  </TableCell>
+                </>
+              ),
+            }}
+          />
+        </Table>
+      </div>
+    );
+  },
+};
+
 export const EmptyState: Story = {
   name: "Empty state",
   render: () => (

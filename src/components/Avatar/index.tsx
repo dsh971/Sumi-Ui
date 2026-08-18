@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { cn } from "../../lib/cn";
+import { type VariantClassMap, variantClass } from "../../lib/variantClasses";
 import type { AvatarProps, AvatarSealProps, AvatarSize } from "./Avatar.types";
 
-const sizeClasses: Record<AvatarSize, string> = {
+const sizeClasses: VariantClassMap<AvatarSize> = {
   sm: "size-6 text-[var(--avatar-fallback-text-sm)]",
   md: "size-8 text-xs",
   lg: "size-10 text-sm",
@@ -32,7 +33,7 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
         className={cn(
           "relative inline-flex shrink-0 overflow-hidden rounded-full",
           "select-none",
-          sizeClasses[size],
+          variantClass(sizeClasses, size),
           className,
         )}
         {...props}
@@ -76,7 +77,7 @@ export const AvatarSeal = React.forwardRef<HTMLDivElement, AvatarSealProps>(
         <span
           aria-hidden="true"
           data-avatar-seal
-          className="absolute bottom-0 right-0 flex items-center justify-center"
+          className="absolute bottom-0 end-0 flex items-center justify-center"
           style={{
             width: px,
             height: px,

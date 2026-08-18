@@ -2,6 +2,7 @@ import * as Popover from "@radix-ui/react-popover";
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useCallback, useMemo, useState } from "react";
 import { cn } from "../../lib/cn";
+import { popperTransition } from "../../lib/motion";
 import type { DatePickerProps } from "./DatePicker.types";
 
 const DAY_LABELS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
@@ -151,13 +152,13 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(f
               "border border-[color:var(--line-2)] rounded-md",
               "px-3 py-2 text-sm",
               "transition-colors",
-              "focus:outline-none focus:border-[color:var(--accent)] focus:ring-1 focus:ring-[color:var(--accent)]",
+              "focus:outline-none focus-visible:border-[color:var(--accent)] focus-visible:ring-1 focus-visible:ring-[color:var(--accent)]",
               "disabled:opacity-50 disabled:cursor-not-allowed",
               !value && "text-fg-3",
             )}
           >
             <span>{value ? formatDisplay(value) : placeholder}</span>
-            <CalendarDays size={14} className="text-fg-3 flex-shrink-0 ml-2" aria-hidden="true" />
+            <CalendarDays size={14} className="text-fg-3 flex-shrink-0 ms-2" aria-hidden="true" />
           </button>
         </Popover.Trigger>
 
@@ -172,10 +173,8 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(f
               "bg-bg-card rounded-lg",
               "border border-[color:var(--line-1)]",
               "[box-shadow:var(--shadow-md)]",
-              "data-[state=open]:animate-in data-[state=closed]:animate-out",
-              "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-              "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-              "data-[side=bottom]:slide-in-from-top-2",
+              "origin-[--radix-popover-content-transform-origin]",
+              popperTransition,
             )}
           >
             {/* Month navigation header */}

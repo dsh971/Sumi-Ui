@@ -1,4 +1,4 @@
 {
   "title": "Foundation",
-  "pages": ["button", "input", "card", "badge", "dialog", "container", "grid"]
+  "pages": ["button", "input", "card", "badge", "dialog", "sheet", "popover", "container", "grid"]
 }

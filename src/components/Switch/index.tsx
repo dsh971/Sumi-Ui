@@ -11,7 +11,10 @@ export const Switch = React.forwardRef<React.ElementRef<typeof RadixSwitch.Root>
 
     return (
       <div className="flex flex-col gap-1">
-        <div className="flex items-start gap-3">
+        <label
+          htmlFor={switchId}
+          className={cn("flex items-start gap-3", (label ?? helperText) && "cursor-pointer")}
+        >
           <RadixSwitch.Root
             ref={ref}
             id={switchId}
@@ -43,23 +46,16 @@ export const Switch = React.forwardRef<React.ElementRef<typeof RadixSwitch.Root>
           </RadixSwitch.Root>
 
           {(label ?? helperText) && (
-            <div className="flex flex-col gap-0.5">
-              {label && (
-                <label
-                  htmlFor={switchId}
-                  className="text-sm text-fg-1 leading-snug cursor-pointer select-none"
-                >
-                  {label}
-                </label>
-              )}
+            <span className="flex flex-col gap-0.5">
+              {label && <span className="text-sm text-fg-1 leading-snug select-none">{label}</span>}
               {helperText && (
-                <p id={`${switchId}-helper`} className="text-xs text-fg-3">
+                <span id={`${switchId}-helper`} className="text-xs text-fg-3">
                   {helperText}
-                </p>
+                </span>
               )}
-            </div>
+            </span>
           )}
-        </div>
+        </label>
         {/* M-4 fix: error state follows same pattern as Input/Checkbox */}
         {errorText && (
           <p

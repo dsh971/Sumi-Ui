@@ -35,3 +35,9 @@ import {
 `DialogHeader` and `DialogFooter` are plain `<div>` layout wrappers.
 `DialogTitle` and `DialogDescription` mirror their Radix UI equivalents and
 carry the system's title/body typography.
+
+`DialogContent` is built on [`Sheet`](/docs/components/foundation/sheet)
+internally, so Dialog inherits Sheet's responsive behavior — it collapses
+into a bottom sheet below 640px. Reach for `Sheet` directly instead of
+`Dialog` when you don't need the confirm/prompt framing (header/footer,
+built-in close button).

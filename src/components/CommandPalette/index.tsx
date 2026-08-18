@@ -2,6 +2,7 @@ import * as RadixDialog from "@radix-ui/react-dialog";
 import { Search } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
+import { modalTransition, scrimTransition } from "../../lib/motion";
 import type { CommandGroup, CommandItem, CommandPaletteProps } from "./CommandPalette.types";
 
 function matches(item: CommandItem, query: string): boolean {
@@ -89,8 +90,7 @@ export const CommandPalette = React.forwardRef<HTMLDivElement, CommandPalettePro
               "fixed inset-0 z-50",
               "bg-[color:var(--bg-scrim)]",
               "backdrop-blur-[var(--dialog-backdrop-blur)]",
-              "data-[state=open]:animate-in data-[state=closed]:animate-out",
-              "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+              scrimTransition,
             )}
           />
           <RadixDialog.Content
@@ -104,10 +104,7 @@ export const CommandPalette = React.forwardRef<HTMLDivElement, CommandPalettePro
               "border border-[color:var(--line-1)]",
               "[box-shadow:var(--shadow-lg)]",
               "overflow-hidden",
-              "data-[state=open]:animate-in data-[state=closed]:animate-out",
-              "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-              "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-              "duration-150",
+              modalTransition,
             )}
           >
             <RadixDialog.Title className="sr-only">Command palette</RadixDialog.Title>

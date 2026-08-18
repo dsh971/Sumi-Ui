@@ -44,6 +44,38 @@ export type {
   DialogDescriptionProps,
 } from "./components/Dialog/Dialog.types";
 
+export {
+  Sheet,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+  SheetDescription,
+} from "./components/Sheet";
+export type {
+  SheetProps,
+  SheetTriggerProps,
+  SheetCloseProps,
+  SheetContentProps,
+  SheetTitleProps,
+  SheetDescriptionProps,
+} from "./components/Sheet/Sheet.types";
+
+export {
+  Popover,
+  PopoverTrigger,
+  PopoverAnchor,
+  PopoverClose,
+  PopoverContent,
+} from "./components/Popover";
+export type {
+  PopoverProps,
+  PopoverTriggerProps,
+  PopoverAnchorProps,
+  PopoverCloseProps,
+  PopoverContentProps,
+} from "./components/Popover/Popover.types";
+
 // Phase 3 — Form & Input components
 export {
   Select,
@@ -72,6 +104,12 @@ export type { RadioGroupProps, RadioItemProps } from "./components/Radio/Radio.t
 
 export { Switch } from "./components/Switch";
 export type { SwitchProps } from "./components/Switch/Switch.types";
+
+export { SegmentedControl, SegmentedControlItem } from "./components/SegmentedControl";
+export type {
+  SegmentedControlProps,
+  SegmentedControlItemProps,
+} from "./components/SegmentedControl/SegmentedControl.types";
 
 export { DatePicker } from "./components/DatePicker";
 export type { DatePickerProps } from "./components/DatePicker/DatePicker.types";

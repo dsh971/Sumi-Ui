@@ -1,4 +1,13 @@
 {
   "title": "Forms",
-  "pages": ["select", "checkbox", "radio", "switch", "date-picker", "file-upload", "combobox"]
+  "pages": [
+    "select",
+    "checkbox",
+    "radio",
+    "switch",
+    "segmented-control",
+    "date-picker",
+    "file-upload",
+    "combobox"
+  ]
 }

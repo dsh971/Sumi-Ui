@@ -2,11 +2,12 @@ import { Slot } from "@radix-ui/react-slot";
 import { Loader2 } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
+import { type VariantClassMap, variantClass } from "../../lib/variantClasses";
 import type { ButtonProps, ButtonSize, ButtonVariant } from "./Button.types";
 
 // BUG-003 fix: danger is outlined (transparent bg, cinnabar border/text) per spec
 // BUG-004 fix: focus ring uses --accent (malachite) per BUILD.md
-const variantClasses: Record<ButtonVariant, string> = {
+const variantClasses: VariantClassMap<ButtonVariant> = {
   primary: [
     "bg-accent",
     "text-[color:var(--fg-on-malachite)]",
@@ -34,7 +35,7 @@ const variantClasses: Record<ButtonVariant, string> = {
 // BUG-001 fix: border-radius is --radius-2 (4px = rounded-md), not 6px
 // BUG-002 fix: sm padding → py-1.5 (6px) matching spec; lg → py-[14px] px-[22px]
 // font-size: sm uses --text-sm (13px), md uses --text-base (15px), lg uses --text-md (17px)
-const sizeClasses: Record<ButtonSize, string> = {
+const sizeClasses: VariantClassMap<ButtonSize> = {
   sm: "px-3 py-1.5 text-[length:var(--text-sm)] gap-1.5",
   md: "px-4 py-2.5 text-[length:var(--text-base)] gap-2",
   lg: "px-[22px] py-[14px] text-[length:var(--text-md)] gap-2",
@@ -63,13 +64,15 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       className: cn(
         "inline-flex items-center justify-center",
         "font-medium leading-none select-none rounded-md",
-        "transition-colors",
+        // Fix: transform must be in the transitioned property list, or the
+        // active:translateY press feedback below snaps instead of animating.
+        "transition-[color,background-color,border-color,box-shadow,transform]",
         // BUG-004 fix: --accent (malachite) not --secondary (azurite)
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
         "disabled:pointer-events-none disabled:opacity-50",
         "active:[transform:translateY(1px)]",
-        variantClasses[variant],
-        sizeClasses[size],
+        variantClass(variantClasses, variant),
+        variantClass(sizeClasses, size),
         className,
       ),
       ...props,

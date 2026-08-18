@@ -1,8 +1,9 @@
 import React from "react";
 import { cn } from "../../lib/cn";
+import { type VariantClassMap, variantClass } from "../../lib/variantClasses";
 import type { BadgeProps, BadgeVariant } from "./Badge.types";
 
-const variantClasses: Record<BadgeVariant, string> = {
+const variantClasses: VariantClassMap<BadgeVariant> = {
   // BUG-011 fix: hairline border uses --line-1 (8% opacity) not --line-2 (14%)
   neutral: "bg-bg-sunken text-fg-2 border border-[color:var(--line-1)]",
   success:
@@ -14,14 +15,19 @@ const variantClasses: Record<BadgeVariant, string> = {
   info: "bg-[color:var(--status-info-bg)] text-[color:var(--status-info)] border border-[color:var(--azurite-200)]",
   jade: "bg-malachite-100 text-malachite-700 border border-malachite-200",
   clay: "bg-canvas-100 text-canvas-700 border border-canvas-200",
-  peach: "bg-cinnabar-100 text-cinnabar-700 border border-cinnabar-200",
+  // sienna and its deprecated alias peach must stay identical — Badge.test.tsx
+  // asserts they render the same classes. Previously both resolved to
+  // cinnabar-* (a copy-paste bug from peach's pre-migration name); sienna
+  // has its own token scale in tokens.css, matching the malachite/canvas
+  // sibling entries' -100/-700/-200 triad.
+  peach: "bg-sienna-100 text-sienna-700 border border-sienna-200",
   malachite: "bg-malachite-100 text-malachite-700 border border-malachite-200",
   canvas: "bg-canvas-100 text-canvas-700 border border-canvas-200",
-  sienna: "bg-cinnabar-100 text-cinnabar-700 border border-cinnabar-200",
+  sienna: "bg-sienna-100 text-sienna-700 border border-sienna-200",
   seal: "bg-[color:var(--highlight)] text-[color:var(--fg-on-cinnabar)] border-transparent",
 };
 
-const dotColorClasses: Record<BadgeVariant, string> = {
+const dotColorClasses: VariantClassMap<BadgeVariant> = {
   neutral: "bg-fg-3",
   success: "bg-[color:var(--status-success)]",
   warning: "bg-[color:var(--status-warning-bar)]",
@@ -29,10 +35,10 @@ const dotColorClasses: Record<BadgeVariant, string> = {
   info: "bg-[color:var(--status-info)]",
   jade: "bg-malachite-500",
   clay: "bg-canvas-500",
-  peach: "bg-cinnabar-500",
+  peach: "bg-sienna-500",
   malachite: "bg-malachite-500",
   canvas: "bg-canvas-500",
-  sienna: "bg-cinnabar-500",
+  sienna: "bg-sienna-500",
   seal: "bg-[color:var(--fg-on-cinnabar)]",
 };
 
@@ -47,7 +53,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         "rounded-full px-[10px] py-[3px]",
         "text-[11.5px] font-medium leading-none",
         "whitespace-nowrap",
-        variantClasses[variant],
+        variantClass(variantClasses, variant),
         className,
       )}
       {...props}
@@ -57,7 +63,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
           aria-hidden="true"
           className={cn(
             "block size-[var(--badge-dot-size)] rounded-full flex-shrink-0",
-            dotColorClasses[variant],
+            variantClass(dotColorClasses, variant),
           )}
         />
       )}

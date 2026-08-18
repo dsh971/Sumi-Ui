@@ -1,8 +1,9 @@
 import React from "react";
 import { cn } from "../../lib/cn";
+import { type VariantClassMap, variantClass } from "../../lib/variantClasses";
 import type { SkeletonProps, SkeletonVariant } from "./Skeleton.types";
 
-const variantClasses: Record<SkeletonVariant, string> = {
+const variantClasses: VariantClassMap<SkeletonVariant> = {
   text: "h-4 w-full rounded",
   circle: "rounded-full",
   rect: "rounded-md",
@@ -33,7 +34,7 @@ export const Skeleton = React.forwardRef<HTMLSpanElement, SkeletonProps>(
       <span
         ref={ref}
         aria-hidden="true"
-        className={cn("block sm-skeleton", variantClasses[variant], className)}
+        className={cn("block sm-skeleton", variantClass(variantClasses, variant), className)}
         style={inlineStyles}
         {...props}
       />

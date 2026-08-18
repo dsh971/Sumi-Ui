@@ -1,0 +1,29 @@
+---
+title: Popover
+description: A trigger-anchored overlay built on Radix UI's Popover primitive.
+---
+
+```tsx
+import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor, PopoverClose } from "@sumiui/react";
+```
+
+## Example
+
+<ComponentDemo name="popover/variants" />
+
+## Props
+
+`Popover` and `PopoverTrigger`/`PopoverAnchor`/`PopoverClose` mirror Radix
+UI's `Popover.Root`/`Popover.Trigger`/`Popover.Anchor`/`Popover.Close`
+props directly (`open`, `defaultOpen`, `onOpenChange`, `asChild`, etc.).
+
+`PopoverContent` extends Radix UI's `Popover.Content` props (`side`,
+`align`, `sideOffset`, `onOpenAutoFocus`, etc.) — `sideOffset` defaults
+to `6`.
+
+Content is trigger-anchored: it scales in from whichever side it opens
+on (top/bottom/left/right), not from a fixed center, matching every
+other popper-based overlay in the system (Tooltip, DropdownMenu, Select,
+Combobox, DatePicker). For a fully responsive overlay that becomes a
+bottom sheet on small viewports, use [`Sheet`](/docs/components/foundation/sheet)
+instead.

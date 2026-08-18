@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "../../lib/cn";
+import { type VariantClassMap, variantClass } from "../../lib/variantClasses";
 import type { InputProps, TextAreaProps } from "./Input.types";
 
 // BUG-006 fix: plain sentence-case label — no uppercase, no tracking-wide
@@ -15,15 +16,15 @@ const inputBaseClasses = [
   "border border-[color:var(--line-2)] rounded-md",
   "placeholder:text-fg-3",
   "transition-colors",
-  "focus:outline-none focus:border-[color:var(--accent)]",
-  "focus:[box-shadow:0_0_0_3px_var(--accent-soft)]",
+  "focus:outline-none focus-visible:border-[color:var(--accent)]",
+  "focus-visible:[box-shadow:0_0_0_3px_var(--accent-soft)]",
   "disabled:opacity-50 disabled:cursor-not-allowed",
 ].join(" ");
 
 const inputErrorClasses =
-  "border-[color:var(--status-danger)] focus:border-[color:var(--status-danger)] focus:[box-shadow:0_0_0_3px_var(--highlight-soft)]";
+  "border-[color:var(--status-danger)] focus-visible:border-[color:var(--status-danger)] focus-visible:[box-shadow:0_0_0_3px_var(--highlight-soft)]";
 
-const sizeClasses = {
+const sizeClasses: VariantClassMap<"sm" | "md" | "lg"> = {
   sm: "px-2.5 py-1.5 text-xs",
   md: "px-3 py-2 text-sm",
   lg: "px-3.5 py-2.5 text-base",
@@ -50,7 +51,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           }
           className={cn(
             inputBaseClasses,
-            sizeClasses[size],
+            variantClass(sizeClasses, size),
             hasError && inputErrorClasses,
             className,
           )}

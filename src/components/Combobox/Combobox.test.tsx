@@ -75,7 +75,49 @@ describe("Combobox", () => {
     render(<Combobox options={options} placeholder="Search" />);
     await user.click(screen.getByPlaceholderText("Search"));
     await user.type(screen.getByPlaceholderText("Search"), "zzz");
-    expect(screen.getByText('No matches for "zzz".')).toBeInTheDocument();
+    expect(screen.getByText("No matches for “zzz”.")).toBeInTheDocument();
+  });
+
+  it("virtualizes a large option list — renders far fewer rows than total", async () => {
+    const user = userEvent.setup();
+    const many: ComboboxOption[] = Array.from({ length: 500 }, (_, i) => ({
+      value: `opt-${i}`,
+      label: `Option ${i}`,
+    }));
+    render(<Combobox options={many} placeholder="Search" />);
+    await user.click(screen.getByPlaceholderText("Search"));
+    const rendered = screen.getAllByRole("option");
+    expect(rendered.length).toBeGreaterThan(0);
+    expect(rendered.length).toBeLessThan(many.length / 2);
+  });
+
+  it("keeps listbox/option ARIA structure intact while virtualized", async () => {
+    const user = userEvent.setup();
+    render(<Combobox options={options} placeholder="Search" />);
+    await user.click(screen.getByPlaceholderText("Search"));
+    expect(screen.getByRole("listbox")).toBeInTheDocument();
+    expect(screen.getAllByRole("option")).toHaveLength(options.length);
+  });
+
+  it("scrolls the active option into view when navigating with arrow keys", async () => {
+    const user = userEvent.setup();
+    const many: ComboboxOption[] = Array.from({ length: 60 }, (_, i) => ({
+      value: `opt-${i}`,
+      label: `Option ${i}`,
+    }));
+    render(<Combobox options={many} placeholder="Search" />);
+    const input = screen.getByPlaceholderText("Search");
+    await user.click(input);
+    for (let i = 0; i < 20; i++) {
+      await user.keyboard("{ArrowDown}");
+    }
+    // react-virtual's scrollToIndex schedules its scroll-reconcile check via
+    // requestAnimationFrame before the new range is committed — flush a
+    // couple of frames so the resulting re-render actually happens before
+    // asserting (see test-setup.ts for the scrollTo→scrollTop→"scroll"
+    // event polyfill this depends on).
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    expect(screen.getByText("Option 20")).toBeInTheDocument();
   });
 });
 

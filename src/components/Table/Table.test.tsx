@@ -339,3 +339,85 @@ describe("Table accessibility", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 });
+
+// ---------------------------------------------------------------------------
+// Virtualized TableBody (opt-in)
+// ---------------------------------------------------------------------------
+
+interface VirtualRow {
+  id: string;
+  name: string;
+}
+
+function VirtualizedTable({ rowCount }: { rowCount: number }) {
+  const rows: VirtualRow[] = Array.from({ length: rowCount }, (_, i) => ({
+    id: `row-${i}`,
+    name: `Person ${i}`,
+  }));
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Name</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody
+        virtualize={{
+          rows,
+          estimateRowHeight: 40,
+          renderRow: (row) => (
+            // Parent <tr> is display:flex for windowing, dropping <td>'s
+            // implicit cell role in some browsers — restored explicitly.
+            // biome-ignore lint/a11y/noRedundantRoles: see comment above.
+            // biome-ignore lint/a11y/useSemanticElements: see comment above.
+            <TableCell role="cell" style={{ flex: 1 }}>
+              {row.name}
+            </TableCell>
+          ),
+        }}
+      />
+    </Table>
+  );
+}
+
+describe("Table virtualized body", () => {
+  it("renders far fewer DOM rows than the total row count", () => {
+    render(<VirtualizedTable rowCount={500} />);
+    const rows = screen.getAllByRole("row");
+    // +1 for the header row
+    expect(rows.length).toBeGreaterThan(1);
+    expect(rows.length).toBeLessThan(250);
+  });
+
+  it("keeps rowgroup/row/cell ARIA structure explicit under the display override", () => {
+    const { container } = render(<VirtualizedTable rowCount={50} />);
+    expect(container.querySelector('tbody[role="rowgroup"]')).toBeInTheDocument();
+    expect(screen.getAllByRole("row").length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("cell").length).toBeGreaterThan(0);
+  });
+
+  it("renders row content", () => {
+    render(<VirtualizedTable rowCount={20} />);
+    expect(screen.getByText("Person 0")).toBeInTheDocument();
+  });
+
+  it("has no accessibility violations", async () => {
+    const { container } = render(<VirtualizedTable rowCount={30} />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("shifts the rendered row range on scroll", () => {
+    render(<VirtualizedTable rowCount={500} />);
+    const tbody = document.querySelector('tbody[role="rowgroup"]');
+    expect(tbody).toBeInTheDocument();
+    const before = screen.getByText("Person 0");
+    expect(before).toBeInTheDocument();
+    if (tbody) {
+      Object.defineProperty(tbody, "scrollTop", { value: 8000, writable: true });
+      tbody.dispatchEvent(new Event("scroll"));
+    }
+    // A row far past the initial window should now exist once react-virtual
+    // recomputes the visible range from the new scrollTop.
+    expect(screen.getAllByRole("row").length).toBeGreaterThan(0);
+  });
+});

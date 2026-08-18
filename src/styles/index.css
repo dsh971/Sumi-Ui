@@ -265,6 +265,28 @@
   --grid-template-columns-timeline-marker-content: 24px 1fr;
 }
 
+@theme {
+  /* ---- Overlay motion — see globals.css for the keyframe definitions and
+     lib/motion.ts for the shared class-string constants. Enter uses
+     --dur-2/--ease-out; exit uses --dur-1/--ease-in-out (faster than enter,
+     per design-engineering convention — the system responding reads better
+     snappy, the thing appearing reads better with a touch more ease). ---- */
+  --animate-sumi-fade-in: sumi-fade-in var(--dur-2) var(--ease-out) forwards;
+  --animate-sumi-fade-out: sumi-fade-out var(--dur-1) var(--ease-in-out) forwards;
+  --animate-sumi-modal-in: sumi-modal-in var(--dur-2) var(--ease-out) forwards;
+  --animate-sumi-modal-out: sumi-modal-out var(--dur-1) var(--ease-in-out) forwards;
+  --animate-sumi-dialog-in: sumi-dialog-in var(--dur-2) var(--ease-out) forwards;
+  --animate-sumi-dialog-out: sumi-dialog-out var(--dur-1) var(--ease-in-out) forwards;
+  --animate-sumi-sheet-in: sumi-sheet-in var(--dur-3) var(--ease-out) forwards;
+  --animate-sumi-sheet-out: sumi-sheet-out var(--dur-2) var(--ease-in-out) forwards;
+  --animate-sumi-popper-in-top: sumi-popper-in-top var(--dur-2) var(--ease-out) forwards;
+  --animate-sumi-popper-in-bottom: sumi-popper-in-bottom var(--dur-2) var(--ease-out) forwards;
+  --animate-sumi-popper-in-left: sumi-popper-in-left var(--dur-2) var(--ease-out) forwards;
+  --animate-sumi-popper-in-right: sumi-popper-in-right var(--dur-2) var(--ease-out) forwards;
+  --animate-sumi-toast-in: sumi-toast-in var(--dur-2) var(--ease-out) forwards;
+  --animate-sumi-toast-out: sumi-toast-out var(--dur-1) var(--ease-in-out) forwards;
+}
+
 @keyframes sumi-toast-timer {
   from {
     width: 100%;

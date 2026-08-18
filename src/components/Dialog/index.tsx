@@ -2,6 +2,7 @@ import * as RadixDialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
+import { SheetContent } from "../Sheet";
 import type {
   DialogCloseProps,
   DialogContentProps,
@@ -29,59 +30,43 @@ export const DialogClose = React.forwardRef<
 >((props, ref) => <RadixDialog.Close ref={ref} {...props} />);
 DialogClose.displayName = "DialogClose";
 
+// Dialog is Sumi's confirm/prompt archetype built on Sheet, the responsive
+// overlay primitive (centered modal >=640px, bottom sheet below) — see
+// Sheet/index.tsx. Dialog's own public API (props, sub-components) is
+// unchanged; only the internals now route through Sheet.
 export const DialogContent = React.forwardRef<
   React.ElementRef<typeof RadixDialog.Content>,
   DialogContentProps
 >(({ showClose = true, className, children, ...props }, ref) => (
-  <RadixDialog.Portal>
-    <RadixDialog.Overlay
-      className={cn(
-        "fixed inset-0 z-50",
-        "bg-[color:var(--bg-scrim)]",
-        "backdrop-blur-[var(--dialog-backdrop-blur)]",
-        "data-[state=open]:animate-in data-[state=closed]:animate-out",
-        "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-      )}
-    />
-    {/* BUG-018 fix: rounded-xl = --radius-xl = 10px per spec */}
-    <RadixDialog.Content
-      ref={ref}
-      className={cn(
-        "fixed left-1/2 top-1/2 z-50",
-        "-translate-x-1/2 -translate-y-1/2",
-        "w-[calc(100vw-2rem)] max-w-lg",
-        "bg-bg-card rounded-xl",
-        "border border-[color:var(--line-1)]",
-        "[box-shadow:var(--shadow-xl)]",
-        "p-0 overflow-hidden",
-        "data-[state=open]:animate-in data-[state=closed]:animate-out",
-        "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-        "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-        "data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%]",
-        "data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]",
-        "duration-200",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-      {showClose && (
-        <RadixDialog.Close
-          className={cn(
-            "absolute right-4 top-4",
-            "rounded-md p-1",
-            "text-fg-3 hover:text-fg-1",
-            "hover:bg-bg-sunken",
-            "transition-colors",
-            "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
-          )}
-          aria-label="Close"
-        >
-          <X size={16} aria-hidden="true" />
-        </RadixDialog.Close>
-      )}
-    </RadixDialog.Content>
-  </RadixDialog.Portal>
+  // BUG-018 fix: --radius-4 (10px, Sheet's own default desktop rounding)
+  // is the same value the old rounded-xl override resolved to — no
+  // Dialog-specific corner-radius override needed, and leaving it out
+  // lets Sheet's mobile rounded-t-[18px] form apply correctly too.
+  <SheetContent
+    ref={ref}
+    breakpoint={640}
+    desktopMaxWidth={512}
+    showHandle
+    className={cn("p-0 overflow-hidden", className)}
+    {...props}
+  >
+    {children}
+    {showClose && (
+      <RadixDialog.Close
+        className={cn(
+          "absolute end-4 top-4",
+          "rounded-md p-1",
+          "text-fg-3 hover:text-fg-1",
+          "hover:bg-bg-sunken",
+          "transition-colors",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
+        )}
+        aria-label="Close"
+      >
+        <X size={16} aria-hidden="true" />
+      </RadixDialog.Close>
+    )}
+  </SheetContent>
 ));
 DialogContent.displayName = "DialogContent";
 

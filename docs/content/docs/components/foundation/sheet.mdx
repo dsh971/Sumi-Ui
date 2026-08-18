@@ -1,0 +1,59 @@
+---
+title: Sheet
+description: The responsive overlay primitive — a centered modal at/above 640px, a bottom sheet below it. Dialog is built on this.
+---
+
+```tsx
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetTitle,
+  SheetDescription,
+  SheetClose,
+} from "@sumiui/react";
+```
+
+Sheet is Sumi's responsive overlay archetype — the same primitive
+[`Dialog`](/docs/components/foundation/dialog) is built on. Above the
+breakpoint it renders as a centered modal; below it, the same content
+collapses into a bottom sheet with a drag handle. Reach for `Sheet`
+directly when you need that responsive behavior without Dialog's
+confirm/prompt framing (header/footer, a built-in close button) — for a
+titled confirm/prompt dialog, use `Dialog` instead.
+
+## Example
+
+<ComponentDemo name="sheet/variants" />
+
+## Props
+
+`Sheet` and `SheetTrigger`/`SheetClose` mirror Radix UI's `Dialog.Root`/
+`Dialog.Trigger`/`Dialog.Close` props directly (`open`, `defaultOpen`,
+`onOpenChange`, `asChild`, etc.).
+
+`SheetContent` extends Radix UI's `Dialog.Content` props, plus:
+
+| Prop | Type | Default |
+|---|---|---|
+| `breakpoint` | `number` | `640` |
+| `desktopMaxWidth` | `number` | `420` |
+| `showHandle` | `boolean` | `true` |
+| `closeOnScrim` | `boolean` | `true` |
+
+`breakpoint` is the viewport width (px) below which Sheet switches from
+a centered modal to a bottom sheet. `desktopMaxWidth` caps the centered
+modal's width above the breakpoint. `showHandle` toggles the drag-handle
+affordance on the bottom-sheet form only — it never renders on desktop.
+`closeOnScrim` controls whether clicking the scrim dismisses the sheet.
+
+`SheetTitle` and `SheetDescription` mirror their Radix UI equivalents
+and carry the system's title/body typography — same as `DialogTitle`/
+`DialogDescription`.
+
+## Responsive behavior
+
+Resize the preview above below 640px (Sheet's default `breakpoint`) to
+see it collapse into a bottom sheet — full width, rounded top corners,
+and a drag handle. This switch is reactive: it re-evaluates on viewport
+resize even while the sheet is open, not just on mount.

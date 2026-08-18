@@ -1,11 +1,12 @@
 import { X } from "lucide-react";
 import React, { useCallback, useState } from "react";
 import { cn } from "../../lib/cn";
+import { type VariantClassMap, variantClass } from "../../lib/variantClasses";
 import type { AlertProps, AlertVariant } from "./Alert.types";
 
 // BUG-015 fix: danger is inverse cinnabar fill (dark bg, silk text) per spec
 // BUG-016 fix: each alert has a 4px left accent bar colored per variant
-const variantClasses: Record<AlertVariant, string> = {
+const variantClasses: VariantClassMap<AlertVariant> = {
   info: ["bg-[color:var(--status-info-bg)]", "border-[color:var(--azurite-200)]", "text-fg-1"].join(
     " ",
   ),
@@ -27,21 +28,21 @@ const variantClasses: Record<AlertVariant, string> = {
   ].join(" "),
 };
 
-const titleClasses: Record<AlertVariant, string> = {
+const titleClasses: VariantClassMap<AlertVariant> = {
   info: "text-[color:var(--status-info)]",
   success: "text-[color:var(--status-success)]",
   warning: "text-[color:var(--status-warning)]",
   danger: "text-[color:var(--silk-50)]",
 };
 
-const bodyClasses: Record<AlertVariant, string> = {
+const bodyClasses: VariantClassMap<AlertVariant> = {
   info: "text-fg-2",
   success: "text-fg-2",
   warning: "text-fg-2",
   danger: "text-[color:rgba(247,244,235,0.85)]",
 };
 
-const dismissClasses: Record<AlertVariant, string> = {
+const dismissClasses: VariantClassMap<AlertVariant> = {
   info: "text-fg-3 hover:text-fg-1 hover:bg-bg-pressed",
   success: "text-fg-3 hover:text-fg-1 hover:bg-bg-pressed",
   warning: "text-fg-3 hover:text-fg-1 hover:bg-bg-pressed",
@@ -77,8 +78,8 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         aria-live={variant === "danger" || variant === "warning" ? "assertive" : "polite"}
         className={cn(
           "relative flex gap-3 rounded-lg border px-4 py-3",
-          "animate-in fade-in-0 slide-in-from-top-1 duration-200",
-          variantClasses[variant],
+          "animate-sumi-toast-in",
+          variantClass(variantClasses, variant),
           className,
         )}
         {...props}
@@ -92,10 +93,14 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
         <div className="flex-1 min-w-0">
           {title && (
-            <p className={cn("text-sm font-medium mb-0.5", titleClasses[variant])}>{title}</p>
+            <p className={cn("text-sm font-medium mb-0.5", variantClass(titleClasses, variant))}>
+              {title}
+            </p>
           )}
           {children && (
-            <div className={cn("text-sm leading-snug", bodyClasses[variant])}>{children}</div>
+            <div className={cn("text-sm leading-snug", variantClass(bodyClasses, variant))}>
+              {children}
+            </div>
           )}
         </div>
 
@@ -105,10 +110,10 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             onClick={handleDismiss}
             aria-label="Dismiss alert"
             className={cn(
-              "flex-shrink-0 rounded p-2 -mr-1.5 -mt-1.5",
+              "flex-shrink-0 rounded p-2 -me-1.5 -mt-1.5",
               "transition-colors",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
-              dismissClasses[variant],
+              variantClass(dismissClasses, variant),
             )}
           >
             <X size={14} aria-hidden="true" />

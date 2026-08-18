@@ -74,6 +74,12 @@ describe("CommandPalette", () => {
     await user.keyboard("{Escape}");
     expect(screen.queryByText("New piece")).not.toBeInTheDocument();
   });
+
+  it("content element carries a real (non-dead) enter animation class when open", () => {
+    render(<Harness />);
+    const content = screen.getByRole("dialog");
+    expect(content.className).toMatch(/animate-sumi/);
+  });
 });
 
 describe("CommandPalette accessibility", () => {

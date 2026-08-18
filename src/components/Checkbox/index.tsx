@@ -15,7 +15,12 @@ export const Checkbox = React.forwardRef<
 
   return (
     <div className="flex flex-col gap-1">
-      <div className="flex items-start gap-2.5">
+      {/* Wrapping label (not a separate <label> next to the control) so the
+          gap between control and text is part of the click/tap target. */}
+      <label
+        htmlFor={checkId}
+        className={cn("flex items-start gap-2.5", label && "cursor-pointer")}
+      >
         <RadixCheckbox.Root
           ref={ref}
           id={checkId}
@@ -47,27 +52,20 @@ export const Checkbox = React.forwardRef<
           </RadixCheckbox.Indicator>
         </RadixCheckbox.Root>
 
-        {label && (
-          <label
-            htmlFor={checkId}
-            className="text-sm text-fg-1 leading-snug cursor-pointer select-none"
-          >
-            {label}
-          </label>
-        )}
-      </div>
+        {label && <span className="text-sm text-fg-1 leading-snug select-none">{label}</span>}
+      </label>
 
       {errorText && (
         <p
           id={`${checkId}-error`}
           role="alert"
-          className="text-xs text-[color:var(--status-danger)] pl-6.5"
+          className="text-xs text-[color:var(--status-danger)] ps-6.5"
         >
           {errorText}
         </p>
       )}
       {!errorText && helperText && (
-        <p id={`${checkId}-helper`} className="text-xs text-fg-3 pl-6.5">
+        <p id={`${checkId}-helper`} className="text-xs text-fg-3 ps-6.5">
           {helperText}
         </p>
       )}

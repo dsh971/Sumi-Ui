@@ -58,6 +58,15 @@ describe("Alert", () => {
     render(<Alert ref={ref}>Message</Alert>);
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
+
+  it("inherits dir from an RTL ancestor (logical-property classes mirror for free)", () => {
+    render(
+      <div dir="rtl">
+        <Alert onDismiss={vi.fn()}>Message</Alert>
+      </div>,
+    );
+    expect(screen.getByRole("status").closest("[dir]")).toHaveAttribute("dir", "rtl");
+  });
 });
 
 describe("Alert accessibility", () => {

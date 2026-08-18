@@ -22,9 +22,14 @@ import GridVariants, { code as gridVariantsCode } from "./grid/variants";
 import InputVariants, { code as inputVariantsCode } from "./input/variants";
 import LogoVariants, { code as logoVariantsCode } from "./logo/variants";
 import PaginationVariants, { code as paginationVariantsCode } from "./pagination/variants";
+import PopoverVariants, { code as popoverVariantsCode } from "./popover/variants";
 import RadioVariants, { code as radioVariantsCode } from "./radio/variants";
 import SealVariants, { code as sealVariantsCode } from "./seal/variants";
+import SegmentedControlVariants, {
+  code as segmentedControlVariantsCode,
+} from "./segmented-control/variants";
 import SelectBasic, { code as selectBasicCode } from "./select/basic";
+import SheetVariants, { code as sheetVariantsCode } from "./sheet/variants";
 import SkeletonVariants, { code as skeletonVariantsCode } from "./skeleton/variants";
 import StepperVariants, { code as stepperVariantsCode } from "./stepper/variants";
 import SwitchVariants, { code as switchVariantsCode } from "./switch/variants";
@@ -60,9 +65,15 @@ export const demoRegistry: Record<string, { Component: ComponentType; code: stri
   "input/variants": { Component: InputVariants, code: inputVariantsCode },
   "logo/variants": { Component: LogoVariants, code: logoVariantsCode },
   "pagination/variants": { Component: PaginationVariants, code: paginationVariantsCode },
+  "popover/variants": { Component: PopoverVariants, code: popoverVariantsCode },
   "radio/variants": { Component: RadioVariants, code: radioVariantsCode },
   "seal/variants": { Component: SealVariants, code: sealVariantsCode },
+  "segmented-control/variants": {
+    Component: SegmentedControlVariants,
+    code: segmentedControlVariantsCode,
+  },
   "select/basic": { Component: SelectBasic, code: selectBasicCode },
+  "sheet/variants": { Component: SheetVariants, code: sheetVariantsCode },
   "skeleton/variants": { Component: SkeletonVariants, code: skeletonVariantsCode },
   "stepper/variants": { Component: StepperVariants, code: stepperVariantsCode },
   "switch/variants": { Component: SwitchVariants, code: switchVariantsCode },

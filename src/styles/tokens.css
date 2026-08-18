@@ -287,20 +287,34 @@
   --radius-5: 14px;
   --radius-full: 999px;
 
-  /* ---- Spacing scale (4px base) ------------------------------------------ */
+  /* ---- Spacing scale — named (8px base: value = number/100 * 8px) -------- */
   --space-0: 0;
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-7: 32px;
-  --space-8: 40px;
-  --space-9: 56px;
-  --space-10: 72px;
-  --space-11: 96px;
-  --space-12: 128px;
+  --space-050: 4px;
+  --space-100: 8px;
+  --space-150: 12px;
+  --space-200: 16px;
+  --space-250: 20px;
+  --space-300: 24px;
+  --space-400: 32px;
+  --space-500: 40px;
+  --space-700: 56px;
+  --space-900: 72px;
+  --space-1200: 96px;
+  --space-1600: 128px;
+
+  /* DEPRECATED numeric aliases — migrate to the named scale above */
+  --space-1: var(--space-050);
+  --space-2: var(--space-100);
+  --space-3: var(--space-150);
+  --space-4: var(--space-200);
+  --space-5: var(--space-250);
+  --space-6: var(--space-300);
+  --space-7: var(--space-400);
+  --space-8: var(--space-500);
+  --space-9: var(--space-700);
+  --space-10: var(--space-900);
+  --space-11: var(--space-1200);
+  --space-12: var(--space-1600);
 
   /* ---- Layout — containers ----------------------------------------------- */
   --container-sm: 640px;

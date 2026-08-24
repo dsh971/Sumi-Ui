@@ -204,13 +204,24 @@
   --color-line-3: var(--line-3);
   --color-line-ink: var(--line-ink);
 
-  /* ---- Shadows — literal values to avoid same-name collision ------------ */
-  --shadow-xs: 0 1px 0 rgba(28, 27, 26, 0.04);
-  --shadow-sm: 0 1px 2px rgba(28, 27, 26, 0.06), 0 1px 1px rgba(28, 27, 26, 0.04);
-  --shadow-md: 0 4px 12px -2px rgba(28, 27, 26, 0.1), 0 2px 4px rgba(28, 27, 26, 0.05);
-  --shadow-lg: 0 12px 32px -8px rgba(28, 27, 26, 0.16), 0 4px 8px rgba(28, 27, 26, 0.05);
-  --shadow-xl: 0 24px 56px -16px rgba(28, 27, 26, 0.22), 0 8px 16px rgba(28, 27, 26, 0.07);
-  --shadow-seal: 0 0 0 1px rgba(166, 43, 43, 0.4), 0 6px 16px -4px rgba(166, 43, 43, 0.28);
+  /* ---- Shadows — aliased to tokens.css's --sumi-shadow-* (single source of
+     truth, theme-aware via .theme-dark's re-declared aliases below in
+     tokens.css) instead of a hardcoded literal copy. The literal-copy
+     approach previously here didn't actually "avoid collision" as its
+     comment claimed: @theme output always compiles into @layer theme,
+     which unlayered CSS always beats regardless of what's written here —
+     so the literal was silently inert, shadowed by tokens.css's old
+     unlayered --shadow-* the whole time (decisions log, 2026-08-24). ----- */
+  --shadow-xs: var(--sumi-shadow-xs);
+  --shadow-sm: var(--sumi-shadow-sm);
+  --shadow-md: var(--sumi-shadow-md);
+  --shadow-lg: var(--sumi-shadow-lg);
+  --shadow-xl: var(--sumi-shadow-xl);
+  --shadow-seal: var(--sumi-shadow-seal);
+  /* --shadow-inset doesn't vary by theme (no dark override in tokens.css),
+     so unlike its siblings above it needs no re-declared alias in
+     .theme-dark — this one declaration is correct in both themes. */
+  --shadow-inset: var(--sumi-shadow-inset);
 
   /* ---- Radii — sumi values, modest ------------------------------------ */
   --radius-none: 0;
@@ -219,7 +230,7 @@
   --radius-lg: 6px;
   --radius-xl: 10px;
   --radius-2xl: 14px;
-  --radius-full: 999px;
+  --radius-full: var(--sumi-radius-full);
 
   /* ---- Spacing — sumi 4px-base scale ---------------------------------- */
   --spacing-px: 1px;
@@ -237,12 +248,19 @@
   --spacing-11: 96px;
   --spacing-12: 128px;
 
-  /* ---- Font families ---------------------------------------------------- */
+  /* ---- Font families -------------------------------------------------------
+     --font-mono and --font-display are aliased to tokens.css's --sumi-
+     font-mono/--sumi-font-display (single source of truth) rather than a
+     hardcoded literal copy — the literal --font-display copy here had
+     already drifted (missing "Songti SC") from tokens.css's version before
+     this fix, masked because tokens.css's old unlayered value always won
+     anyway (decisions log, 2026-08-24). --font-sans/--font-serif have no
+     tokens.css counterpart (Tailwind-only names), so stay literal. -------- */
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC",
     sans-serif;
   --font-serif: "Cormorant Garamond", "Noto Serif SC", Georgia, serif;
-  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
-  --font-display: "Cormorant Garamond", "Noto Serif SC", Georgia, serif;
+  --font-mono: var(--sumi-font-mono);
+  --font-display: var(--sumi-font-display);
 
   /* ---- Breakpoints — sumi breakpoint scale overrides Tailwind defaults -- */
   --breakpoint-sm: 640px;
@@ -268,23 +286,23 @@
 @theme {
   /* ---- Overlay motion — see globals.css for the keyframe definitions and
      lib/motion.ts for the shared class-string constants. Enter uses
-     --dur-2/--ease-out; exit uses --dur-1/--ease-in-out (faster than enter,
+     --dur-2/--sumi-ease-out; exit uses --dur-1/--sumi-ease-in-out (faster than enter,
      per design-engineering convention — the system responding reads better
      snappy, the thing appearing reads better with a touch more ease). ---- */
-  --animate-sumi-fade-in: sumi-fade-in var(--dur-2) var(--ease-out) forwards;
-  --animate-sumi-fade-out: sumi-fade-out var(--dur-1) var(--ease-in-out) forwards;
-  --animate-sumi-modal-in: sumi-modal-in var(--dur-2) var(--ease-out) forwards;
-  --animate-sumi-modal-out: sumi-modal-out var(--dur-1) var(--ease-in-out) forwards;
-  --animate-sumi-dialog-in: sumi-dialog-in var(--dur-2) var(--ease-out) forwards;
-  --animate-sumi-dialog-out: sumi-dialog-out var(--dur-1) var(--ease-in-out) forwards;
-  --animate-sumi-sheet-in: sumi-sheet-in var(--dur-3) var(--ease-out) forwards;
-  --animate-sumi-sheet-out: sumi-sheet-out var(--dur-2) var(--ease-in-out) forwards;
-  --animate-sumi-popper-in-top: sumi-popper-in-top var(--dur-2) var(--ease-out) forwards;
-  --animate-sumi-popper-in-bottom: sumi-popper-in-bottom var(--dur-2) var(--ease-out) forwards;
-  --animate-sumi-popper-in-left: sumi-popper-in-left var(--dur-2) var(--ease-out) forwards;
-  --animate-sumi-popper-in-right: sumi-popper-in-right var(--dur-2) var(--ease-out) forwards;
-  --animate-sumi-toast-in: sumi-toast-in var(--dur-2) var(--ease-out) forwards;
-  --animate-sumi-toast-out: sumi-toast-out var(--dur-1) var(--ease-in-out) forwards;
+  --animate-sumi-fade-in: sumi-fade-in var(--dur-2) var(--sumi-ease-out) forwards;
+  --animate-sumi-fade-out: sumi-fade-out var(--dur-1) var(--sumi-ease-in-out) forwards;
+  --animate-sumi-modal-in: sumi-modal-in var(--dur-2) var(--sumi-ease-out) forwards;
+  --animate-sumi-modal-out: sumi-modal-out var(--dur-1) var(--sumi-ease-in-out) forwards;
+  --animate-sumi-dialog-in: sumi-dialog-in var(--dur-2) var(--sumi-ease-out) forwards;
+  --animate-sumi-dialog-out: sumi-dialog-out var(--dur-1) var(--sumi-ease-in-out) forwards;
+  --animate-sumi-sheet-in: sumi-sheet-in var(--dur-3) var(--sumi-ease-out) forwards;
+  --animate-sumi-sheet-out: sumi-sheet-out var(--dur-2) var(--sumi-ease-in-out) forwards;
+  --animate-sumi-popper-in-top: sumi-popper-in-top var(--dur-2) var(--sumi-ease-out) forwards;
+  --animate-sumi-popper-in-bottom: sumi-popper-in-bottom var(--dur-2) var(--sumi-ease-out) forwards;
+  --animate-sumi-popper-in-left: sumi-popper-in-left var(--dur-2) var(--sumi-ease-out) forwards;
+  --animate-sumi-popper-in-right: sumi-popper-in-right var(--dur-2) var(--sumi-ease-out) forwards;
+  --animate-sumi-toast-in: sumi-toast-in var(--dur-2) var(--sumi-ease-out) forwards;
+  --animate-sumi-toast-out: sumi-toast-out var(--dur-1) var(--sumi-ease-in-out) forwards;
 }
 
 @keyframes sumi-toast-timer {

@@ -82,25 +82,25 @@ light/dark automatically; raw scale values are not.
 ```css
 /* Families */
 --font-display:  "Cormorant Garamond", "Noto Serif SC", Georgia, serif;
---font-body:     "Inter", -apple-system, sans-serif;
+--sumi-font-body:     "Inter", -apple-system, sans-serif;
 --font-mono:     "JetBrains Mono", ui-monospace, monospace;
---font-han:      "Noto Serif SC", "Songti SC", serif;
+--sumi-font-han:      "Noto Serif SC", "Songti SC", serif;
 
 /* Scale (px) */
---text-xs: 12px   --text-sm: 13px   --text-base: 15px   --text-md: 17px
---text-lg: 20px   --text-xl: 24px   --text-2xl: 30px    --text-3xl: 38px
+--sumi-text-xs: 12px   --sumi-text-sm: 13px   --sumi-text-base: 15px   --sumi-text-md: 17px
+--sumi-text-lg: 20px   --sumi-text-xl: 24px   --sumi-text-2xl: 30px    --sumi-text-3xl: 38px
 
 /* Weights */
 --weight-light: 300   --weight-normal: 400   --weight-medium: 500
 --weight-semi: 600    --weight-bold: 700
 
 /* Line heights */
---leading-tight: 1.12   --leading-snug: 1.28
---leading-body: 1.55    --leading-loose: 1.72
+--sumi-leading-tight: 1.12   --sumi-leading-snug: 1.28
+--sumi-leading-body: 1.55    --sumi-leading-loose: 1.72
 ```
 
 Titles and display headings use `--font-display` (Cormorant Garamond). Body
-copy and UI labels use `--font-body` (Inter). Code uses `--font-mono`
+copy and UI labels use `--sumi-font-body` (Inter). Code uses `--font-mono`
 (JetBrains Mono).
 
 ## Spacing scale
@@ -149,8 +149,8 @@ than hard-coded pixel values.
 | `--dur-1` | 120ms | Micro-interactions |
 | `--dur-2` | 200ms | Standard transitions |
 | `--dur-3` | 320ms | Larger enter/exit |
-| `--ease-out` | `cubic-bezier(0.22, 0.61, 0.36, 1)` | Enter animations |
-| `--ease-in-out` | `cubic-bezier(0.65, 0.05, 0.36, 1)` | State transitions |
+| `--sumi-ease-out` | `cubic-bezier(0.22, 0.61, 0.36, 1)` | Enter animations |
+| `--sumi-ease-in-out` | `cubic-bezier(0.65, 0.05, 0.36, 1)` | State transitions |
 
 ## Writing custom CSS with tokens
 
@@ -164,7 +164,7 @@ Reference any token directly in your own CSS:
   box-shadow: var(--shadow-md);
   padding: var(--space-5);
   color: var(--fg-1);
-  font-family: var(--font-body);
+  font-family: var(--sumi-font-body);
 }
 
 .my-card:focus-visible {

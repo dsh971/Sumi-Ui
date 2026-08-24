@@ -34,11 +34,11 @@ const variantClasses: VariantClassMap<ButtonVariant> = {
 
 // BUG-001 fix: border-radius is --radius-2 (4px = rounded-md), not 6px
 // BUG-002 fix: sm padding → py-1.5 (6px) matching spec; lg → py-[14px] px-[22px]
-// font-size: sm uses --text-sm (13px), md uses --text-base (15px), lg uses --text-md (17px)
+// font-size: sm uses --sumi-text-sm (13px), md uses --sumi-text-base (15px), lg uses --sumi-text-md (17px)
 const sizeClasses: VariantClassMap<ButtonSize> = {
-  sm: "px-3 py-1.5 text-[length:var(--text-sm)] gap-1.5",
-  md: "px-4 py-2.5 text-[length:var(--text-base)] gap-2",
-  lg: "px-[22px] py-[14px] text-[length:var(--text-md)] gap-2",
+  sm: "px-3 py-1.5 text-[length:var(--sumi-text-sm)] gap-1.5",
+  md: "px-4 py-2.5 text-[length:var(--sumi-text-base)] gap-2",
+  lg: "px-[22px] py-[14px] text-[length:var(--sumi-text-md)] gap-2",
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

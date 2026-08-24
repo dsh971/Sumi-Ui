@@ -23,10 +23,10 @@ export default function ContainerVariants() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
       <Container size="sm">
-        <Swatch label='size="sm"' token="--container-sm (640px)" />
+        <Swatch label='size="sm"' token="--sumi-container-sm (640px)" />
       </Container>
       <Container size="md">
-        <Swatch label='size="md"' token="--container-md (768px)" />
+        <Swatch label='size="md"' token="--sumi-container-md (768px)" />
       </Container>
       <Container size="read">
         <Swatch label='size="read"' token="--measure-read (680px, long-form)" />

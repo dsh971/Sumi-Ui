@@ -18,9 +18,9 @@ body {
   margin: 0;
   background: var(--bg-0);
   color: var(--fg-1);
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  line-height: var(--leading-body);
+  font-family: var(--sumi-font-body);
+  font-size: var(--sumi-text-base);
+  line-height: var(--sumi-leading-body);
   font-weight: var(--weight-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -32,8 +32,8 @@ body {
 .h-display {
   font-family: var(--font-display);
   font-weight: var(--weight-light);
-  font-size: clamp(var(--text-4xl), 6vw, var(--text-6xl));
-  line-height: var(--leading-tight);
+  font-size: clamp(var(--sumi-text-4xl), 6vw, var(--sumi-text-6xl));
+  line-height: var(--sumi-leading-tight);
   letter-spacing: var(--track-tight);
   color: var(--fg-1);
   margin: 0;
@@ -43,8 +43,8 @@ h1,
 .h1 {
   font-family: var(--font-display);
   font-weight: var(--weight-normal);
-  font-size: var(--text-4xl);
-  line-height: var(--leading-tight);
+  font-size: var(--sumi-text-4xl);
+  line-height: var(--sumi-leading-tight);
   letter-spacing: var(--track-tight);
   color: var(--fg-1);
   margin: 0 0 var(--space-4);
@@ -54,8 +54,8 @@ h2,
 .h2 {
   font-family: var(--font-display);
   font-weight: var(--weight-normal);
-  font-size: var(--text-3xl);
-  line-height: var(--leading-snug);
+  font-size: var(--sumi-text-3xl);
+  line-height: var(--sumi-leading-snug);
   letter-spacing: var(--track-tight);
   color: var(--fg-1);
   margin: 0 0 var(--space-4);
@@ -65,28 +65,28 @@ h3,
 .h3 {
   font-family: var(--font-display);
   font-weight: var(--weight-medium);
-  font-size: var(--text-2xl);
-  line-height: var(--leading-snug);
+  font-size: var(--sumi-text-2xl);
+  line-height: var(--sumi-leading-snug);
   color: var(--fg-1);
   margin: 0 0 var(--space-3);
 }
 
 h4,
 .h4 {
-  font-family: var(--font-body);
+  font-family: var(--sumi-font-body);
   font-weight: var(--weight-semi);
-  font-size: var(--text-lg);
-  line-height: var(--leading-snug);
+  font-size: var(--sumi-text-lg);
+  line-height: var(--sumi-leading-snug);
   color: var(--fg-1);
   margin: 0 0 var(--space-2);
 }
 
 h5,
 .h5 {
-  font-family: var(--font-body);
+  font-family: var(--sumi-font-body);
   font-weight: var(--weight-semi);
-  font-size: var(--text-md);
-  line-height: var(--leading-snug);
+  font-size: var(--sumi-text-md);
+  line-height: var(--sumi-leading-snug);
   color: var(--fg-1);
   margin: 0 0 var(--space-2);
 }
@@ -94,9 +94,9 @@ h5,
 h6,
 .h6,
 .eyebrow {
-  font-family: var(--font-body);
+  font-family: var(--sumi-font-body);
   font-weight: var(--weight-medium);
-  font-size: var(--text-xs);
+  font-size: var(--sumi-text-xs);
   line-height: 1;
   letter-spacing: var(--track-eyebrow);
   text-transform: uppercase;
@@ -106,9 +106,9 @@ h6,
 
 p,
 .p {
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  line-height: var(--leading-body);
+  font-family: var(--sumi-font-body);
+  font-size: var(--sumi-text-base);
+  line-height: var(--sumi-leading-body);
   color: var(--fg-1);
   margin: 0 0 var(--space-4);
   text-wrap: pretty;
@@ -116,19 +116,19 @@ p,
 
 .lead {
   font-weight: var(--weight-light);
-  font-size: var(--text-lg);
-  line-height: var(--leading-loose);
+  font-size: var(--sumi-text-lg);
+  line-height: var(--sumi-leading-loose);
   color: var(--fg-2);
 }
 
 small,
 .small {
-  font-size: var(--text-sm);
+  font-size: var(--sumi-text-sm);
   color: var(--fg-2);
 }
 
 .caption {
-  font-size: var(--text-xs);
+  font-size: var(--sumi-text-xs);
   line-height: 1.4;
   color: var(--fg-3);
   letter-spacing: 0.01em;
@@ -139,8 +139,8 @@ blockquote,
   font-family: var(--font-display);
   font-weight: var(--weight-light);
   font-style: italic;
-  font-size: var(--text-xl);
-  line-height: var(--leading-loose);
+  font-size: var(--sumi-text-xl);
+  line-height: var(--sumi-leading-loose);
   color: var(--fg-1);
   border-left: 1px solid var(--line-ink);
   padding: var(--space-2) 0 var(--space-2) var(--space-5);
@@ -161,8 +161,8 @@ samp {
 
 pre {
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  line-height: var(--leading-snug);
+  font-size: var(--sumi-text-sm);
+  line-height: var(--sumi-leading-snug);
   background: var(--bg-1);
   color: var(--fg-1);
   border: 1px solid var(--line-1);
@@ -181,7 +181,8 @@ a {
   text-decoration-color: var(--line-2);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
-  transition: text-decoration-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out);
+  transition: text-decoration-color var(--dur-2) var(--sumi-ease-out), color var(--dur-2)
+    var(--sumi-ease-out);
 }
 a:hover {
   text-decoration-color: currentColor;
@@ -352,7 +353,7 @@ hr {
     var(--canvas-100) 100%
   );
   background-size: 200% 100%;
-  animation: sm-shimmer var(--duration-skeleton) var(--ease-in-out) infinite;
+  animation: sm-shimmer var(--duration-skeleton) var(--sumi-ease-in-out) infinite;
 }
 
 /* No dark-mode shimmer in the design system spec (preview/skeleton.html has

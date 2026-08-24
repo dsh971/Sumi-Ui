@@ -28,24 +28,32 @@ const swatch = (label: string, token: string) => (
 );
 
 export const Sm: Story = {
-  render: () => <Container size="sm">{swatch('size="sm"', "--container-sm (640px)")}</Container>,
+  render: () => (
+    <Container size="sm">{swatch('size="sm"', "--sumi-container-sm (640px)")}</Container>
+  ),
 };
 
 export const Md: Story = {
-  render: () => <Container size="md">{swatch('size="md"', "--container-md (768px)")}</Container>,
+  render: () => (
+    <Container size="md">{swatch('size="md"', "--sumi-container-md (768px)")}</Container>
+  ),
 };
 
 export const Lg: Story = {
-  render: () => <Container size="lg">{swatch('size="lg"', "--container-lg (1024px)")}</Container>,
+  render: () => (
+    <Container size="lg">{swatch('size="lg"', "--sumi-container-lg (1024px)")}</Container>
+  ),
 };
 
 export const Xl: Story = {
-  render: () => <Container size="xl">{swatch('size="xl"', "--container-xl (1200px)")}</Container>,
+  render: () => (
+    <Container size="xl">{swatch('size="xl"', "--sumi-container-xl (1200px)")}</Container>
+  ),
 };
 
 export const TwoXl: Story = {
   render: () => (
-    <Container size="2xl">{swatch('size="2xl"', "--container-2xl (1440px)")}</Container>
+    <Container size="2xl">{swatch('size="2xl"', "--sumi-container-2xl (1440px)")}</Container>
   ),
 };
 

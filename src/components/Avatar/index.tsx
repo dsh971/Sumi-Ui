@@ -93,7 +93,7 @@ export const AvatarSeal = React.forwardRef<HTMLDivElement, AvatarSealProps>(
             height: px,
             background: "var(--cinnabar-400)",
             fontSize: px * 0.55,
-            fontFamily: "var(--font-han)",
+            fontFamily: "var(--sumi-font-han)",
             color: "var(--fg-on-ink)",
             lineHeight: 1,
             borderRadius: "var(--radius-2)",

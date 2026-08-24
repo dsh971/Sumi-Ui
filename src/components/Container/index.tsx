@@ -3,11 +3,11 @@ import { cn } from "../../lib/cn";
 import type { ContainerProps, ContainerSize } from "./Container.types";
 
 const maxWidthByContainerSize: Record<ContainerSize, string> = {
-  sm: "var(--container-sm)",
-  md: "var(--container-md)",
-  lg: "var(--container-lg)",
-  xl: "var(--container-xl)",
-  "2xl": "var(--container-2xl)",
+  sm: "var(--sumi-container-sm)",
+  md: "var(--sumi-container-md)",
+  lg: "var(--sumi-container-lg)",
+  xl: "var(--sumi-container-xl)",
+  "2xl": "var(--sumi-container-2xl)",
   read: "var(--measure-read)",
   app: "var(--measure-app)",
 };

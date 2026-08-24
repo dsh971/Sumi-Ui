@@ -39,7 +39,7 @@ describe("Avatar", () => {
   });
 
   it("fallback text has leading-none so it centers within the circle", () => {
-    // Without an explicit line-height, the ambient --leading-body (1.55) on
+    // Without an explicit line-height, the ambient --sumi-leading-body (1.55) on
     // the fallback span pushes font-display's glyphs above true center in
     // a flex-centered box — regression guard for that fix.
     const { container } = render(<Avatar fallback="AB" />);

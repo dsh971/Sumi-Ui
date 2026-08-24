@@ -269,23 +269,34 @@
   --line-3: rgba(28, 27, 26, 0.26);
   --line-ink: var(--ink-800);
 
-  /* ---- Shadows — paper on paper ------------------------------------------ */
-  --shadow-xs: 0 1px 0 rgba(28, 27, 26, 0.04);
-  --shadow-sm: 0 1px 2px rgba(28, 27, 26, 0.06), 0 1px 1px rgba(28, 27, 26, 0.04);
-  --shadow-md: 0 4px 12px -2px rgba(28, 27, 26, 0.1), 0 2px 4px rgba(28, 27, 26, 0.05);
-  --shadow-lg: 0 12px 32px -8px rgba(28, 27, 26, 0.16), 0 4px 8px rgba(28, 27, 26, 0.05);
-  --shadow-xl: 0 24px 56px -16px rgba(28, 27, 26, 0.22), 0 8px 16px rgba(28, 27, 26, 0.07);
-  --shadow-inset: inset 0 1px 0 rgba(28, 27, 26, 0.06);
-  --shadow-seal: 0 0 0 1px rgba(166, 43, 43, 0.4), 0 6px 16px -4px rgba(166, 43, 43, 0.28);
+  /* ---- Shadows — paper on paper -------------------------------------------
+     Prefixed --sumi-shadow-* (not --shadow-*): Tailwind v4 reserves
+     --shadow-* to back the shadow-xs/sm/md/lg/xl utilities. index.css's
+     @theme block re-exposes these under the unprefixed --shadow-* names via
+     var(--sumi-shadow-*) — the same alias-indirection pattern already used
+     for --color-* — so the shadow-* Tailwind utilities and internal
+     var(--shadow-*) usage both resolve to this single source of truth
+     instead of an unlayered duplicate that silently wins the cascade
+     (decisions log, 2026-08-24). ------------------------------------------- */
+  --sumi-shadow-xs: 0 1px 0 rgba(28, 27, 26, 0.04);
+  --sumi-shadow-sm: 0 1px 2px rgba(28, 27, 26, 0.06), 0 1px 1px rgba(28, 27, 26, 0.04);
+  --sumi-shadow-md: 0 4px 12px -2px rgba(28, 27, 26, 0.1), 0 2px 4px rgba(28, 27, 26, 0.05);
+  --sumi-shadow-lg: 0 12px 32px -8px rgba(28, 27, 26, 0.16), 0 4px 8px rgba(28, 27, 26, 0.05);
+  --sumi-shadow-xl: 0 24px 56px -16px rgba(28, 27, 26, 0.22), 0 8px 16px rgba(28, 27, 26, 0.07);
+  --sumi-shadow-inset: inset 0 1px 0 rgba(28, 27, 26, 0.06);
+  --sumi-shadow-seal: 0 0 0 1px rgba(166, 43, 43, 0.4), 0 6px 16px -4px rgba(166, 43, 43, 0.28);
 
-  /* ---- Radii — modest, paper folds --------------------------------------- */
+  /* ---- Radii — modest, paper folds -----------------------------------------
+     --sumi-radius-full (not --radius-full): collides with Tailwind's
+     reserved --radius-full otherwise; --radius-0..5 below don't collide
+     (Tailwind's own scale uses -sm/-md/-lg/-xl/-2xl/-3xl, not numbers). --- */
   --radius-0: 0;
   --radius-1: 2px;
   --radius-2: 4px;
   --radius-3: 6px;
   --radius-4: 10px;
   --radius-5: 14px;
-  --radius-full: 999px;
+  --sumi-radius-full: 999px;
 
   /* ---- Spacing scale — named (8px base: value = number/100 * 8px) -------- */
   --space-0: 0;
@@ -316,14 +327,20 @@
   --space-11: var(--space-1200);
   --space-12: var(--space-1600);
 
-  /* ---- Layout — containers ----------------------------------------------- */
-  --container-sm: 640px;
-  --container-md: 768px;
-  --container-lg: 1024px;
-  --container-xl: 1200px;
-  --container-2xl: 1440px;
+  /* ---- Layout — containers -------------------------------------------------
+     Prefixed --sumi-container-* (not --container-*): Tailwind v4 generates
+     its own --container-* custom properties at :root to back the max-w-*
+     utilities (e.g. --container-2xl: 42rem). An unprefixed name here would
+     sit at the same :root specificity and silently win the cascade by load
+     order, corrupting every max-w-* utility for consumers (decisions log,
+     2026-08-24). ------------------------------------------------------------ */
+  --sumi-container-sm: 640px;
+  --sumi-container-md: 768px;
+  --sumi-container-lg: 1024px;
+  --sumi-container-xl: 1200px;
+  --sumi-container-2xl: 1440px;
   --measure-read: 680px; /* long-form reading column max */
-  --measure-app: 1200px; /* app-shell content max (alias of --container-xl) */
+  --measure-app: 1200px; /* app-shell content max (alias of --sumi-container-xl) */
 
   /* ---- Breakpoints (min-width reference values) -------------------------- */
   /* CSS vars cannot drive @media queries directly — use these as reference
@@ -340,35 +357,54 @@
   --gutter-desktop: 56px; /* --space-9  · ≥ lg */
   --grid-gutter: 24px; /* --space-6  · default 12-column gap */
 
-  /* ---- Motion — quiet, no bounce ----------------------------------------- */
-  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1.0);
-  --ease-in-out: cubic-bezier(0.65, 0.05, 0.36, 1.0);
-  --ease-stand: cubic-bezier(0.4, 0.0, 0.2, 1);
+  /* ---- Motion — quiet, no bounce -------------------------------------------
+     Prefixed --sumi-ease-* (not --ease-*): --ease-out/--ease-in-out collide
+     with Tailwind's reserved --ease-* namespace with different values —
+     unlike shadows/fonts, this was never meant to override Tailwind's own
+     ease-out/ease-in-out utilities for consumers, so there's no @theme
+     wiring here, only a rename (decisions log, 2026-08-24). ----------------- */
+  --sumi-ease-out: cubic-bezier(0.22, 0.61, 0.36, 1.0);
+  --sumi-ease-in-out: cubic-bezier(0.65, 0.05, 0.36, 1.0);
+  --sumi-ease-stand: cubic-bezier(0.4, 0.0, 0.2, 1);
   --dur-1: 120ms;
   --dur-2: 200ms;
   --dur-3: 320ms;
   --dur-4: 520ms;
   --duration-skeleton: 1500ms; /* shimmer — longer than UI transitions by design */
 
-  /* ---- Type families ----------------------------------------------------- */
-  --font-display: "Cormorant Garamond", "Noto Serif SC", "Songti SC", Georgia, serif;
-  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC",
+  /* ---- Type families -------------------------------------------------------
+     Prefixed --sumi-font-* throughout: --font-mono and --font-display
+     collide with Tailwind's reserved --font-* namespace (font-sans/-serif/
+     -mono utilities, plus this file's own --font-display usage). index.css's
+     @theme block re-exposes --font-mono/--font-display via var(--sumi-
+     font-mono)/var(--sumi-font-display) — same alias-indirection used for
+     --color-* and --shadow-* below. --font-body/--font-han don't collide with
+     Tailwind but are renamed too for scale consistency; they have no @theme
+     entry — decisions log, 2026-08-24. --------------------------------------- */
+  --sumi-font-display: "Cormorant Garamond", "Noto Serif SC", "Songti SC", Georgia, serif;
+  --sumi-font-body: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC",
     sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
-  --font-han: "Noto Serif SC", "Songti SC", serif;
+  --sumi-font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --sumi-font-han: "Noto Serif SC", "Songti SC", serif;
 
-  /* ---- Type scale -------------------------------------------------------- */
-  --text-xs: 12px;
-  --text-sm: 13px;
-  --text-base: 15px;
-  --text-md: 17px;
-  --text-lg: 20px;
-  --text-xl: 24px;
-  --text-2xl: 30px;
-  --text-3xl: 38px;
-  --text-4xl: 48px;
-  --text-5xl: 64px;
-  --text-6xl: 84px;
+  /* ---- Type scale ------------------------------------------------------
+     Prefixed --sumi-text-* (not --text-*): collides with Tailwind's
+     reserved --text-* font-size scale (backs text-xs..text-6xl) with
+     different values — same unlayered-:root-beats-@layer-theme mechanism
+     as the --container-* case, just for typography. No
+     @theme wiring — Tailwind's own text-* utilities should keep resolving
+     to Tailwind's own scale for consumers (decisions log, 2026-08-24). --- */
+  --sumi-text-xs: 12px;
+  --sumi-text-sm: 13px;
+  --sumi-text-base: 15px;
+  --sumi-text-md: 17px;
+  --sumi-text-lg: 20px;
+  --sumi-text-xl: 24px;
+  --sumi-text-2xl: 30px;
+  --sumi-text-3xl: 38px;
+  --sumi-text-4xl: 48px;
+  --sumi-text-5xl: 64px;
+  --sumi-text-6xl: 84px;
 
   /* ---- Weights ----------------------------------------------------------- */
   --weight-light: 300;
@@ -383,11 +419,13 @@
   --track-wide: 0.04em;
   --track-eyebrow: 0.18em;
 
-  /* ---- Line heights ------------------------------------------------------ */
-  --leading-tight: 1.12;
-  --leading-snug: 1.28;
-  --leading-body: 1.55;
-  --leading-loose: 1.72;
+  /* ---- Line heights — --sumi-leading-* to avoid colliding with Tailwind's
+     reserved --leading-* scale (leading-tight/-snug/-loose), same rationale
+     as --sumi-text-* and --sumi-ease-* above. ------------------------------ */
+  --sumi-leading-tight: 1.12;
+  --sumi-leading-snug: 1.28;
+  --sumi-leading-body: 1.55;
+  --sumi-leading-loose: 1.72;
 
   /* ---- Component-scoped one-offs — deliberate values with no shared
      scale step to reuse (same idea as --duration-skeleton above) ----------- */
@@ -449,12 +487,12 @@
   --line-3: rgba(238, 231, 214, 0.22);
   --line-ink: var(--silk-100);
 
-  --shadow-xs: 0 1px 0 rgba(0, 0, 0, 0.3);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 1px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 12px 32px -8px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.35);
-  --shadow-xl: 0 24px 56px -16px rgba(0, 0, 0, 0.7), 0 8px 16px rgba(0, 0, 0, 0.4);
-  --shadow-seal: 0 0 0 1px rgba(213, 133, 121, 0.35), 0 6px 16px -4px rgba(0, 0, 0, 0.5);
+  --sumi-shadow-xs: 0 1px 0 rgba(0, 0, 0, 0.3);
+  --sumi-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 1px rgba(0, 0, 0, 0.3);
+  --sumi-shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.35);
+  --sumi-shadow-lg: 0 12px 32px -8px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.35);
+  --sumi-shadow-xl: 0 24px 56px -16px rgba(0, 0, 0, 0.7), 0 8px 16px rgba(0, 0, 0, 0.4);
+  --sumi-shadow-seal: 0 0 0 1px rgba(213, 133, 121, 0.35), 0 6px 16px -4px rgba(0, 0, 0, 0.5);
 
   /* Re-assert the @theme aliases from index.css (--color-bg-card, etc.).
      Those are declared once, on :root, so their var() substitution is
@@ -463,7 +501,10 @@
      alias that was never re-declared on this selector. Any component
      styled via Tailwind classes (bg-bg-card, text-fg-1, etc, i.e. nearly
      everything) needs the alias itself re-declared here, not just the
-     token it points to, or .theme-dark silently does nothing for it. */
+     token it points to, or .theme-dark silently does nothing for it. Same
+     requirement applies to the --shadow-* aliases (--sumi-shadow-* above
+     already varies by theme; the unprefixed --shadow-* alias that exposes
+     it to Tailwind's shadow-* utilities needs re-declaring here too). */
   --color-bg-page: var(--bg-0);
   --color-bg-card: var(--bg-1);
   --color-bg-sunken: var(--bg-2);
@@ -501,5 +542,11 @@
   --color-line-1: var(--line-1);
   --color-line-2: var(--line-2);
   --color-line-3: var(--line-3);
+  --shadow-xs: var(--sumi-shadow-xs);
+  --shadow-sm: var(--sumi-shadow-sm);
+  --shadow-md: var(--sumi-shadow-md);
+  --shadow-lg: var(--sumi-shadow-lg);
+  --shadow-xl: var(--sumi-shadow-xl);
+  --shadow-seal: var(--sumi-shadow-seal);
   --color-line-ink: var(--line-ink);
 }

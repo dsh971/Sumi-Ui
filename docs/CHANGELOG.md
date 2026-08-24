@@ -1,5 +1,12 @@
 # @sumiui/docs
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [acc3f66]
+  - @sumiui/react@2.1.2
+
 ## 1.0.2
 
 ### Patch Changes

@@ -27,6 +27,7 @@ Fresh Silk identity refresh: a near-white ground, a Song display face and real b
 
 ### Additions
 
+- `@sumiui/react/theme.css`: Sumi's Tailwind v4 theme for your own Tailwind build (`@import "tailwindcss"; @import "@sumiui/react/theme.css";`). Every Sumi utility (`text-ink-jiao`, `bg-bg-page`, `shadow-md`, `grid-cols-shell-sidebar-content`, …) then generates on demand; the precompiled `styles` only contains the utilities SumiUi's own components use. It is `@theme inline`, so utilities point straight at the tokens and follow dark mode.
 - `"use client"` banner on both bundles, so the components import directly into React Server Component trees (Next.js App Router).
 - CommonJS type declarations (`dist/index.d.cts`, `exports.require.types`): TypeScript CommonJS projects using `node16`/`nodenext` no longer hit TS1479.
 - `DatePicker`: full keyboard grid (arrows by day/week, Home/End, PageUp/PageDown by month, Shift+Page by year), focus lands on the selected day, the view re-syncs to `value` on open, out-of-range days are `aria-disabled` but reachable, and a `locale` prop (defaults to the runtime locale) drives the trigger, month title, weekday headers and day labels.
@@ -40,6 +41,7 @@ Fresh Silk identity refresh: a near-white ground, a Song display face and real b
 
 ### Fixes
 
+- Text selection is a malachite wash (`--accent-soft`) that keeps the text's own colour, instead of cinnabar; the skeleton shimmer stops under `prefers-reduced-motion`, and its dark sweep applies under `data-theme="dark"` as well as `.theme-dark`.
 - `Select` and `DatePicker` now forward `ref` to their trigger (it was always `null`), so form libraries can focus them.
 - Fields without a label no longer point `aria-describedby` at `undefined-error`.
 - `Pagination`'s current page and `Tooltip` use theme-flipping ink, so they stay visible in dark mode.

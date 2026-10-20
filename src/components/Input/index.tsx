@@ -8,7 +8,8 @@ const labelClasses = "block text-xs font-medium text-fg-2 mb-1.5";
 const helperClasses = "mt-1 text-xs text-fg-3";
 const errorClasses = "mt-1 text-xs text-[color:var(--status-danger)]";
 
-// BUG-005 fix: bg-bg-page (--bg-0) not bg-bg-card (--bg-1) — inputs sit on the page surface
+// Fields use bg-bg-page (--bg-0): on the page they sit flush, on white cards they
+// read as inset wells. Select, DatePicker and Combobox triggers match (decision 004).
 // BUG-007 fix: focus uses --accent (malachite) + 3px ring/shadow to match spec
 const inputBaseClasses = [
   "block w-full",
@@ -32,7 +33,10 @@ const sizeClasses: VariantClassMap<"sm" | "md" | "lg"> = {
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ label, helperText, errorText, id, size = "md", className, ...props }, ref) => {
-    const inputId = id ?? (label ? `input-${label.toLowerCase().replace(/\s+/g, "-")}` : undefined);
+    // useId, not a label slug: two fields with the same label (or none) must
+    // still get unique ids for label/aria-describedby wiring.
+    const autoId = React.useId();
+    const inputId = id ?? `input-${autoId}`;
     const hasError = Boolean(errorText);
 
     return (
@@ -75,8 +79,10 @@ Input.displayName = "Input";
 
 export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ({ label, helperText, errorText, id, rows = 4, className, ...props }, ref) => {
-    const inputId =
-      id ?? (label ? `textarea-${label.toLowerCase().replace(/\s+/g, "-")}` : undefined);
+    // useId, not a label slug: two fields with the same label (or none) must
+    // still get unique ids for label/aria-describedby wiring.
+    const autoId = React.useId();
+    const inputId = id ?? `textarea-${autoId}`;
     const hasError = Boolean(errorText);
 
     return (

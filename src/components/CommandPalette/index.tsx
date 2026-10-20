@@ -116,8 +116,15 @@ export const CommandPalette = React.forwardRef<HTMLDivElement, CommandPalettePro
                 value={query}
                 placeholder={placeholder}
                 role="combobox"
+                aria-label={placeholder}
                 aria-expanded
                 aria-controls={listboxId}
+                aria-autocomplete="list"
+                // Focus stays in the input; the highlighted command is announced
+                // through aria-activedescendant (WAI-ARIA combobox pattern).
+                aria-activedescendant={
+                  visibleItems[activeIndex] ? `${listboxId}-opt-${activeIndex}` : undefined
+                }
                 className="min-w-0 flex-1 bg-transparent text-sm text-fg-1 placeholder:text-fg-3 focus:outline-none"
                 onChange={(e) => {
                   setQuery(e.target.value);
@@ -131,7 +138,9 @@ export const CommandPalette = React.forwardRef<HTMLDivElement, CommandPalettePro
             </div>
             <div id={listboxId} role="listbox" className="max-h-80 overflow-y-auto p-2">
               {visibleItems.length === 0 ? (
-                <div className="px-3 py-6 text-center text-sm text-fg-3">{emptyMessage}</div>
+                <div role="status" className="px-3 py-6 text-center text-sm text-fg-3">
+                  {emptyMessage}
+                </div>
               ) : (
                 (() => {
                   let itemIndex = -1;
@@ -142,10 +151,14 @@ export const CommandPalette = React.forwardRef<HTMLDivElement, CommandPalettePro
                       </div>
                       {group.items.map((item) => {
                         itemIndex += 1;
-                        const active = itemIndex === activeIndex;
+                        // Capture this item's index: the handlers below must not close
+                        // over the shared counter, which ends at the last item.
+                        const index = itemIndex;
+                        const active = index === activeIndex;
                         return (
                           <div
                             key={item.id}
+                            id={`${listboxId}-opt-${index}`}
                             role="option"
                             aria-selected={active}
                             aria-disabled={item.disabled}
@@ -154,7 +167,7 @@ export const CommandPalette = React.forwardRef<HTMLDivElement, CommandPalettePro
                               active && "bg-bg-sunken",
                               item.disabled && "pointer-events-none opacity-50",
                             )}
-                            onMouseEnter={() => setActiveIndex(itemIndex)}
+                            onMouseEnter={() => setActiveIndex(index)}
                             onClick={() => commit(item)}
                           >
                             <span>{item.label}</span>

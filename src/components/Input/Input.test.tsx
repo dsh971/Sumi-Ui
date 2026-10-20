@@ -78,3 +78,37 @@ describe("Input accessibility", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 });
+
+describe("Input — generated ids (useId)", () => {
+  it("gives two fields with the same label distinct ids, each wired to its own label", () => {
+    render(
+      <>
+        <Input label="Email" />
+        <Input label="Email" />
+        <TextArea label="Notes" />
+        <TextArea label="Notes" />
+      </>,
+    );
+    const inputs = screen.getAllByLabelText("Email");
+    expect(inputs).toHaveLength(2);
+    expect(inputs[0]?.id).not.toBe(inputs[1]?.id);
+    const areas = screen.getAllByLabelText("Notes");
+    expect(areas[0]?.id).not.toBe(areas[1]?.id);
+  });
+
+  it("points aria-describedby at a real error element when there is no label", () => {
+    const { container } = render(<Input aria-label="Code" errorText="Required" />);
+    const describedBy = screen.getByRole("textbox").getAttribute("aria-describedby");
+    expect(describedBy).not.toMatch(/^undefined/);
+    expect(container.querySelector(`[id="${describedBy}"]`)).toHaveTextContent("Required");
+  });
+});
+
+describe("TextArea — unlabelled error wiring", () => {
+  it("points aria-describedby at the rendered error, never undefined-*", () => {
+    render(<TextArea aria-label="Notes" errorText="Too short" />);
+    const id = screen.getByRole("textbox").getAttribute("aria-describedby") ?? "";
+    expect(id).not.toMatch(/^undefined/);
+    expect(document.getElementById(id)).toHaveTextContent("Too short");
+  });
+});

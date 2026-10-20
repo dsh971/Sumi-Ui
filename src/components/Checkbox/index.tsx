@@ -9,8 +9,10 @@ export const Checkbox = React.forwardRef<
   CheckboxProps
   // H-2 fix: destructure `checked` before spread so icon selection uses a stable reference
 >(({ label, helperText, errorText, id, checked, className, ...props }, ref) => {
-  const checkId =
-    id ?? (label ? `checkbox-${label.toLowerCase().replace(/\s+/g, "-")}` : undefined);
+  // useId, not a label slug: two fields with the same label (or none) must
+  // still get unique ids for label/aria-describedby wiring.
+  const autoId = React.useId();
+  const checkId = id ?? `checkbox-${autoId}`;
   const hasError = Boolean(errorText);
 
   return (

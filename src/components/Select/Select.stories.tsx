@@ -66,7 +66,7 @@ export const WithGroups: Story = {
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Display</SelectLabel>
-            <SelectItem value="cormorant">Cormorant Garamond</SelectItem>
+            <SelectItem value="noto-serif">Noto Serif SC</SelectItem>
             <SelectItem value="playfair">Playfair Display</SelectItem>
           </SelectGroup>
           <SelectSeparator />

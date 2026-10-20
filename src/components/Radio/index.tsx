@@ -13,7 +13,10 @@ RadioGroup.displayName = "RadioGroup";
 
 export const RadioItem = React.forwardRef<React.ElementRef<typeof RadixRadio.Item>, RadioItemProps>(
   ({ label, id, className, ...props }, ref) => {
-    const itemId = id ?? (label ? `radio-${label.toLowerCase().replace(/\s+/g, "-")}` : undefined);
+    // useId, not a label slug: two fields with the same label (or none) must
+    // still get unique ids for label/aria-describedby wiring.
+    const autoId = React.useId();
+    const itemId = id ?? `radio-${autoId}`;
 
     return (
       <label

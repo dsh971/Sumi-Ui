@@ -194,9 +194,11 @@ hr {
   margin: var(--space-7) 0;
 }
 
+/* Selection: a malachite wash that keeps the text its own ink, in both
+   themes. Cinnabar is reserved for the seal (decision 004). */
 ::selection {
-  background: var(--cinnabar-200);
-  color: var(--ink-800);
+  background: var(--accent-soft); /* no color-mix: no solid-fill fallback in older browsers */
+  color: inherit;
 }
 
 /* ink-em — emphasis by ink density (焦墨), not colour or slant. Song type has
@@ -364,7 +366,16 @@ hr {
    lighter") — same structural relationship as bg-2/bg-1 in
    light mode, without the near-white flash that would break dark mode's
    palette. */
+:root[data-theme="dark"] .sm-skeleton,
 .theme-dark .sm-skeleton {
   background: linear-gradient(90deg, var(--bg-2) 0%, var(--bg-3) 50%, var(--bg-2) 100%);
   background-size: 200% 100%;
+}
+
+/* After the skeleton rules so it wins: under reduced motion the skeleton holds
+   a still bar instead of sweeping. */
+@media (prefers-reduced-motion: reduce) {
+  .sm-skeleton {
+    animation: none;
+  }
 }

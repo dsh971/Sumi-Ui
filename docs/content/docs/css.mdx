@@ -29,12 +29,16 @@ light/dark automatically; raw scale values are not.
 
 | Token | Light | Dark | Use for |
 |---|---|---|---|
-| `--bg-0` | silk-100 | #161514 | Page background |
-| `--bg-1` | silk-200 | #1f1e1c | Card / panel surfaces |
-| `--bg-2` | silk-300 | #2a2825 | Sunken / input backgrounds |
-| `--bg-3` | canvas-200 | #34312c | Pressed / active states |
+| `--bg-0` | silk-100 `#f9f8f4` | #161514 | Page background (Fresh Silk) — also form fields |
+| `--bg-1` | silk-50 `#ffffff` | #1f1e1c | Card / panel / overlay surfaces |
+| `--bg-2` | silk-200 `#f1f0eb` | #2a2825 | Sunken wash, hover, table header |
+| `--bg-3` | silk-300 `#e4e2db` | #34312c | Pressed / selected states |
 | `--bg-overlay` | ink rgba 32% | black 55% | Modal backdrop |
 | `--bg-scrim` | ink rgba 55% | black 72% | Full-screen scrim |
+| `--knockout` | `var(--bg-0)` | `var(--bg-0)` | Ring/fill that cuts a marker out of the surface it sits on — set to `var(--bg-1)` inside white containers |
+
+In light mode cards are **lighter** than the page: white paper laid on fresh
+silk. Elevation reads by lifting, not by shadow.
 
 ### Foregrounds (text)
 
@@ -48,6 +52,19 @@ light/dark automatically; raw scale values are not.
 | `--fg-on-azurite` | Text on azurite fill |
 | `--fg-on-cinnabar` | Text on cinnabar fill |
 | `--fg-on-ink` | Text on ink fill |
+
+### Ink tones (墨分五色)
+
+`--fg-1..4` take their values from five ink tones, so hierarchy comes from ink
+density rather than from boxes or tinted tiles. On dark the scale inverts.
+
+| Token | Light | Use for |
+|---|---|---|
+| `--ink-jiao` 焦 | ink-900 | The one emphasised headline word (`.ink-em`) |
+| `--ink-nong` 浓 | ink-800 | Headings, body (`--fg-1`), the brush rule |
+| `--ink-zhong` 重 | ink-500 | Secondary text (`--fg-2`) |
+| `--ink-dan` 淡 | ink-400 | Meta, captions, placeholders (`--fg-3`) |
+| `--ink-qing` 清 | ink-200 | Disabled, faint washes (`--fg-4`) |
 
 ### Accent (primary brand — malachite green)
 
@@ -81,7 +98,7 @@ light/dark automatically; raw scale values are not.
 
 ```css
 /* Families */
---font-display:  "Cormorant Garamond", "Noto Serif SC", Georgia, serif;
+--font-display:  "Noto Serif SC", "Songti SC", "Source Han Serif", Georgia, serif;
 --sumi-font-body:     "Inter", -apple-system, sans-serif;
 --font-mono:     "JetBrains Mono", ui-monospace, monospace;
 --sumi-font-han:      "Noto Serif SC", "Songti SC", serif;
@@ -99,7 +116,7 @@ light/dark automatically; raw scale values are not.
 --sumi-leading-body: 1.55    --sumi-leading-loose: 1.72
 ```
 
-Titles and display headings use `--font-display` (Cormorant Garamond). Body
+Titles and display headings use `--font-display` (Noto Serif SC, a Song/宋体 face). Body
 copy and UI labels use `--sumi-font-body` (Inter). Code uses `--font-mono`
 (JetBrains Mono).
 
@@ -129,8 +146,7 @@ than hard-coded pixel values.
 | `--radius-2` | 4px | Buttons, inputs |
 | `--radius-3` | 6px | Small panels |
 | `--radius-4` | 10px | Cards, dialogs |
-| `--radius-5` | 14px | Large modals |
-| `--radius-full` | 999px | Pills, avatars |
+| `--radius-full` | 999px | True circles only — avatars, dots. Never badges, tabs or buttons. |
 
 ## Shadows
 
@@ -140,7 +156,6 @@ than hard-coded pixel values.
 | `--shadow-sm` | Buttons, inputs |
 | `--shadow-md` | Dropdowns, popovers |
 | `--shadow-lg` | Dialogs, command palette |
-| `--shadow-xl` | Full-screen sheets |
 
 ## Motion
 
@@ -245,7 +260,7 @@ further down the tree:
 .my-dark-pane {
   --bg-0: #161514;
   --bg-1: #1f1e1c;
-  --fg-1: #eee7d6;
+  --fg-1: #eceae5;
   --accent: var(--malachite-400);   /* lighter step for dark surfaces */
   /* … re-declare all semantic tokens you use */
 }

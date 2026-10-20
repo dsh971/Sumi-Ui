@@ -24,5 +24,23 @@ import { DatePicker } from "@sumiui/react";
 | `errorText` | `string` | — |
 | `min` | `string` (ISO `"YYYY-MM-DD"`) | — |
 | `max` | `string` (ISO `"YYYY-MM-DD"`) | — |
+| `locale` | `string` (BCP 47, e.g. `"zh-CN"`) | runtime locale |
 
 When `errorText` is set, it replaces `helperText`.
+
+## Keyboard
+
+The calendar follows the WAI-ARIA date picker dialog pattern. Opening it focuses the selected day (or today) and shows that month.
+
+| Key | Action |
+|---|---|
+| `←` / `→` | Previous / next day |
+| `↑` / `↓` | Same day last / next week |
+| `Home` / `End` | First / last day of the week |
+| `PageUp` / `PageDown` | Same day last / next month (`Shift` for a year) |
+| `Enter` / `Space` | Select the focused day |
+| `Esc` | Close without selecting |
+
+Days outside `min`/`max` stay reachable with the arrows but can't be selected.
+
+When server-rendering, pass `locale` explicitly: without it the server and the browser may format the trigger text in different locales and the hydrated markup will not match.

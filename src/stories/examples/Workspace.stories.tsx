@@ -328,7 +328,7 @@ function TopBar({ title, onOpenPalette }: { title: string; onOpenPalette: () => 
       <div className="flex-1" />
       <Badge variant="neutral">Draft</Badge>
       <span className="text-xs text-fg-3">Saved just now</span>
-      <Button variant="secondary" size="sm" onClick={onOpenPalette}>
+      <Button variant="secondary" size="sm" className="whitespace-nowrap" onClick={onOpenPalette}>
         Quick action <kbd className={kbdClasses}>⌘K</kbd>
       </Button>
       <Button variant="ink" size="sm">
@@ -432,7 +432,7 @@ function AppShell({
             <button
               type="button"
               aria-label="Close sidebar"
-              className="fixed inset-0 z-30 bg-black/40 md:hidden"
+              className="fixed inset-0 z-30 bg-[color:var(--bg-overlay)] md:hidden"
               onClick={() => setSidebarOpen(false)}
             />
           )}
@@ -537,9 +537,7 @@ function DashboardContent() {
     <div className="flex-1 overflow-y-auto p-6">
       <header className="mb-6 flex items-start justify-between gap-4">
         <div>
-          <Badge variant="info" dot className="mb-2">
-            3 drafts open · 1 piece in review
-          </Badge>
+          <div className="eyebrow mb-2">3 drafts open · 1 in review</div>
           <h1 className="font-display text-[28px] font-medium leading-tight text-fg-1">
             Welcome back, Lin.
           </h1>
@@ -702,7 +700,7 @@ function PropertiesPanel() {
   ];
 
   return (
-    <aside className="flex h-full flex-col gap-6 overflow-y-auto border-t border-[color:var(--line-1)] bg-bg-card p-4 md:border-t-0 md:border-l">
+    <aside className="flex h-full flex-col gap-6 overflow-y-auto border-t border-[color:var(--line-1)] bg-bg-card p-4 [--knockout:var(--bg-1)] md:border-t-0 md:border-l">
       <div>
         <div className="mb-2 text-xs uppercase tracking-wide text-fg-3">Properties</div>
         <div className="flex flex-col gap-2 text-sm">

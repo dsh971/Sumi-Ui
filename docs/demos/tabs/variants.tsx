@@ -6,16 +6,10 @@ export default function TabsVariants() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
       <Tabs defaultValue="overview">
-        <TabsList variant="underline">
-          <TabsTrigger value="overview" variant="underline">
-            Overview
-          </TabsTrigger>
-          <TabsTrigger value="activity" variant="underline">
-            Activity
-          </TabsTrigger>
-          <TabsTrigger value="settings" variant="underline">
-            Settings
-          </TabsTrigger>
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="activity">Activity</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
           <p style={{ fontSize: "14px", color: "var(--fg-2)" }}>
@@ -33,29 +27,6 @@ export default function TabsVariants() {
           </p>
         </TabsContent>
       </Tabs>
-
-      <Tabs defaultValue="day">
-        <TabsList variant="segmented">
-          <TabsTrigger value="day" variant="segmented">
-            Day
-          </TabsTrigger>
-          <TabsTrigger value="week" variant="segmented">
-            Week
-          </TabsTrigger>
-          <TabsTrigger value="month" variant="segmented">
-            Month
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="day">
-          <p style={{ fontSize: "14px", color: "var(--fg-2)" }}>Daily view.</p>
-        </TabsContent>
-        <TabsContent value="week">
-          <p style={{ fontSize: "14px", color: "var(--fg-2)" }}>Weekly view.</p>
-        </TabsContent>
-        <TabsContent value="month">
-          <p style={{ fontSize: "14px", color: "var(--fg-2)" }}>Monthly view.</p>
-        </TabsContent>
-      </Tabs>
     </div>
   );
 }
@@ -65,9 +36,9 @@ export const code = `import { Tabs, TabsContent, TabsList, TabsTrigger } from "@
 export function TabsVariants() {
   return (
     <Tabs defaultValue="overview">
-      <TabsList variant="underline">
-        <TabsTrigger value="overview" variant="underline">Overview</TabsTrigger>
-        <TabsTrigger value="activity" variant="underline">Activity</TabsTrigger>
+      <TabsList>
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="activity">Activity</TabsTrigger>
       </TabsList>
       <TabsContent value="overview">Overview content…</TabsContent>
       <TabsContent value="activity">Activity feed…</TabsContent>

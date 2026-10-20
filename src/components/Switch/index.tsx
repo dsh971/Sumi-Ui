@@ -5,8 +5,10 @@ import type { SwitchProps } from "./Switch.types";
 
 export const Switch = React.forwardRef<React.ElementRef<typeof RadixSwitch.Root>, SwitchProps>(
   ({ label, helperText, errorText, id, className, ...props }, ref) => {
-    const switchId =
-      id ?? (label ? `switch-${label.toLowerCase().replace(/\s+/g, "-")}` : undefined);
+    // useId, not a label slug: two fields with the same label (or none) must
+    // still get unique ids for label/aria-describedby wiring.
+    const autoId = React.useId();
+    const switchId = id ?? `switch-${autoId}`;
     const hasError = Boolean(errorText);
 
     return (
@@ -24,7 +26,7 @@ export const Switch = React.forwardRef<React.ElementRef<typeof RadixSwitch.Root>
             }
             className={cn(
               "peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center",
-              "rounded-full border-2 border-transparent",
+              "rounded-[var(--radius-2)] border-2 border-transparent",
               "transition-colors",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
               "disabled:opacity-50 disabled:cursor-not-allowed",
@@ -36,7 +38,8 @@ export const Switch = React.forwardRef<React.ElementRef<typeof RadixSwitch.Root>
           >
             <RadixSwitch.Thumb
               className={cn(
-                "pointer-events-none block size-4 rounded-full",
+                "pointer-events-none block size-4 rounded-[var(--radius-1)]",
+                // Paper-white in both themes on purpose: the thumb is a sheet laid on the track.
                 "bg-[color:var(--silk-50)]",
                 "[box-shadow:var(--shadow-sm)]",
                 "transition-transform",

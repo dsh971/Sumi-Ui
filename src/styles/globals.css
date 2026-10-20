@@ -16,7 +16,8 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg-0);
+  background-color: var(--bg-0);
+  background-image: var(--paper-grain);
   color: var(--fg-1);
   font-family: var(--sumi-font-body);
   font-size: var(--sumi-text-base);
@@ -27,7 +28,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Heading scale — display uses serif (Cormorant), body headings use Inter */
+/* Heading scale — display uses Song serif (Noto Serif SC), body headings use Inter */
 .display,
 .h-display {
   font-family: var(--font-display);
@@ -138,7 +139,6 @@ blockquote,
 .quote {
   font-family: var(--font-display);
   font-weight: var(--weight-light);
-  font-style: italic;
   font-size: var(--sumi-text-xl);
   line-height: var(--sumi-leading-loose);
   color: var(--fg-1);
@@ -194,29 +194,34 @@ hr {
   margin: var(--space-7) 0;
 }
 
+/* Selection: a malachite wash that keeps the text its own ink, in both
+   themes. Cinnabar is reserved for the seal (decision 004). */
 ::selection {
-  background: var(--cinnabar-200);
-  color: var(--ink-800);
+  background: var(--accent-soft); /* no color-mix: no solid-fill fallback in older browsers */
+  color: inherit;
 }
 
-/* accent-em — the hybrid voice's italic-tinted headline word */
-.accent-em {
-  font-style: italic;
-  color: var(--cinnabar-600);
-  font-family: inherit;
-}
-:root[data-theme="dark"] .accent-em,
-.theme-dark .accent-em {
-  color: var(--cinnabar-300);
+/* ink-em — emphasis by ink density (焦墨), not colour or slant. Song type has
+   no italic, and cinnabar is reserved for the seal (decision 004). */
+.ink-em {
+  font-weight: var(--weight-semi);
+  color: var(--ink-jiao);
+  font-style: normal;
 }
 
-/* brush-rule — ink stroke section divider */
+/* brush-rule — tapered ink stroke section divider */
 .brush-rule {
-  height: 1px;
+  /* One stroke, pressed at the head and lifted to a point (藏锋 → 出锋): the
+     ink colour shows through a tapered mask, so it stays themeable. */
+  height: 3px;
   width: 56px;
   background: var(--line-ink);
   border: 0;
   margin: var(--space-5) 0;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 4' preserveAspectRatio='none'%3E%3Cpath d='M1 2C1 .7 2.2.2 4 .4L55.6 1.8 4 3.6C2.2 3.8 1 3.3 1 2Z'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 4' preserveAspectRatio='none'%3E%3Cpath d='M1 2C1 .7 2.2.2 4 .4L55.6 1.8 4 3.6C2.2 3.8 1 3.3 1 2Z'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
 }
 
 /* ---- Overlay motion — real enter/exit keyframes wired to the --dur-N and
@@ -344,29 +349,33 @@ hr {
   }
 }
 
-/* BUG-021 fix: warm canvas shimmer — canvas-100 (warm mid) → canvas-50 (near-white warm) per spec */
+/* Fresh Silk shimmer — bg-2 (secondary wash) bars with a bg-1 (white) sweep. Semantic surface tokens, so the
+   shimmer follows the ground instead of the warm canvas family (decision 004, 2026-10-17). */
 .sm-skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--canvas-100) 0%,
-    var(--canvas-50) 50%,
-    var(--canvas-100) 100%
-  );
+  background: linear-gradient(90deg, var(--bg-2) 0%, var(--bg-1) 50%, var(--bg-2) 100%);
   background-size: 200% 100%;
   animation: sm-shimmer var(--duration-skeleton) var(--sumi-ease-in-out) infinite;
 }
 
 /* No dark-mode shimmer in the design system spec (preview/skeleton.html has
    no dark variant, unlike dark-snapshot.html's other components) — logged
-   as a decision in documentation/decisions/003-component-gaps.md. canvas-50/
-   canvas-100 are raw scale tokens that don't flip under .theme-dark, so
-   without this override the light warm-paper shimmer would render as-is
-   against a dark page. --bg-2/--bg-3 are the dark theme's own adjacent
+   as a decision in documentation/decisions/003-component-gaps.md. In dark
+   mode bg-0 is the darkest step, so a bg-2 → bg-1 sweep would read as a
+   dark flash; the override sweeps lighter instead. --bg-2/--bg-3 are the dark theme's own adjacent
    "pigment step" tokens (tokens.css: "page is charcoal; pigments step
-   lighter") — same structural relationship as canvas-100/canvas-50 in
+   lighter") — same structural relationship as bg-2/bg-1 in
    light mode, without the near-white flash that would break dark mode's
    palette. */
+:root[data-theme="dark"] .sm-skeleton,
 .theme-dark .sm-skeleton {
   background: linear-gradient(90deg, var(--bg-2) 0%, var(--bg-3) 50%, var(--bg-2) 100%);
   background-size: 200% 100%;
+}
+
+/* After the skeleton rules so it wins: under reduced motion the skeleton holds
+   a still bar instead of sweeping. */
+@media (prefers-reduced-motion: reduce) {
+  .sm-skeleton {
+    animation: none;
+  }
 }

@@ -1,5 +1,5 @@
 import * as Popover from "@radix-ui/react-popover";
-import { useVirtualizer } from "@tanstack/react-virtual";
+import { type Range, defaultRangeExtractor, useVirtualizer } from "@tanstack/react-virtual";
 import { Check, ChevronDown, Search, X } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
@@ -46,7 +46,7 @@ function HighlightedLabel({ label, query }: { label: string; query: string }) {
 function AvatarBadge({ avatar }: { avatar: NonNullable<ComboboxOption["avatar"]> }) {
   return (
     <span
-      className="flex size-[22px] flex-none items-center justify-center rounded-full text-[10.5px] font-semibold text-[color:var(--silk-50)]"
+      className="flex size-[22px] flex-none items-center justify-center rounded-full text-[10.5px] font-semibold text-[color:var(--fg-on-ink)]"
       style={{ background: avatar.color }}
       aria-hidden="true"
     >
@@ -57,6 +57,11 @@ function AvatarBadge({ avatar }: { avatar: NonNullable<ComboboxOption["avatar"]>
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
+/** Stable DOM id for the option at `flatIndex`, referenced by aria-activedescendant. */
+function optionId(listboxId: string, flatIndex: number): string {
+  return `${listboxId}-opt-${flatIndex}`;
+}
+
 interface MultiTriggerProps {
   selectedValues: string[];
   allOptions: ComboboxOption[];
@@ -66,6 +71,7 @@ interface MultiTriggerProps {
   placeholder: string;
   labelId: string | undefined;
   listboxId: string;
+  activeDescendant: string | undefined;
   inputRef: React.RefObject<HTMLInputElement | null>;
   onQueryChange: (q: string) => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -81,6 +87,7 @@ function MultiTrigger({
   placeholder,
   labelId,
   listboxId,
+  activeDescendant,
   inputRef,
   onQueryChange,
   onKeyDown,
@@ -119,6 +126,10 @@ function MultiTrigger({
         aria-expanded={open}
         role="combobox"
         aria-controls={listboxId}
+        aria-autocomplete="list"
+        // Focus stays in the input; the highlighted option is announced through
+        // aria-activedescendant (WAI-ARIA combobox pattern).
+        aria-activedescendant={activeDescendant}
         placeholder={selectedValues.length === 0 ? placeholder : ""}
         className="min-w-[60px] flex-1 bg-transparent text-fg-1 placeholder:text-fg-3 focus:outline-none"
         onChange={(e) => onQueryChange(e.target.value)}
@@ -136,6 +147,7 @@ interface SingleTriggerProps {
   placeholder: string;
   labelId: string | undefined;
   listboxId: string;
+  activeDescendant: string | undefined;
   inputRef: React.RefObject<HTMLInputElement | null>;
   onQueryChange: (q: string) => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -149,6 +161,7 @@ function SingleTrigger({
   placeholder,
   labelId,
   listboxId,
+  activeDescendant,
   inputRef,
   onQueryChange,
   onKeyDown,
@@ -169,6 +182,10 @@ function SingleTrigger({
         aria-expanded={open}
         role="combobox"
         aria-controls={listboxId}
+        aria-autocomplete="list"
+        // Focus stays in the input; the highlighted option is announced through
+        // aria-activedescendant (WAI-ARIA combobox pattern).
+        aria-activedescendant={activeDescendant}
         placeholder={selectedSingle ? selectedSingle.label : placeholder}
         className={cn(
           "min-w-0 flex-1 bg-transparent focus:outline-none",
@@ -190,6 +207,7 @@ interface OptionListProps {
   query: string;
   activeIndex: number;
   listboxId: string;
+  multiple: boolean;
   isSelected: (value: string) => boolean;
   onHover: (index: number) => void;
   onCommit: (option: ComboboxOption) => void;
@@ -227,14 +245,29 @@ function OptionList({
   query,
   activeIndex,
   listboxId,
+  multiple,
   isSelected,
   onHover,
   onCommit,
 }: OptionListProps) {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const rows = React.useMemo(() => buildRows(groups), [groups]);
+  const activeRowIndex = rows.findIndex((r) => r.type === "option" && r.flatIndex === activeIndex);
+
+  // Always render the active option's row, even when the list is scrolled away
+  // from it, so the input's aria-activedescendant never points at a missing id.
+  const rangeExtractor = React.useCallback(
+    (range: Range) => {
+      const indexes = defaultRangeExtractor(range);
+      return activeRowIndex === -1 || indexes.includes(activeRowIndex)
+        ? indexes
+        : [...indexes, activeRowIndex].sort((a, b) => a - b);
+    },
+    [activeRowIndex],
+  );
 
   const virtualizer = useVirtualizer({
+    rangeExtractor,
     count: rows.length,
     getScrollElement: () => scrollRef.current,
     estimateSize: (index) =>
@@ -246,13 +279,12 @@ function OptionList({
   // (handleKeyDown in the parent has no visibility into scroll position) —
   // keep the active row scrolled into view whenever it changes.
   React.useEffect(() => {
-    const rowIndex = rows.findIndex((r) => r.type === "option" && r.flatIndex === activeIndex);
-    if (rowIndex !== -1) virtualizer.scrollToIndex(rowIndex, { align: "auto" });
-  }, [activeIndex, rows, virtualizer.scrollToIndex]);
+    if (activeRowIndex !== -1) virtualizer.scrollToIndex(activeRowIndex, { align: "auto" });
+  }, [activeRowIndex, virtualizer.scrollToIndex]);
 
   if (loading) {
     return (
-      <div className="px-3 py-[18px] text-center text-sm text-fg-3">
+      <div role="status" className="px-3 py-[18px] text-center text-sm text-fg-3">
         <span
           className="me-2 inline-block size-4 animate-spin rounded-full border-2 border-[color:var(--line-2)] border-t-[color:var(--accent)] align-[-3px]"
           aria-hidden="true"
@@ -264,12 +296,20 @@ function OptionList({
 
   if (visibleOptions.length === 0) {
     return (
-      <div className="px-3 py-[18px] text-center text-sm text-fg-3">No matches for “{query}”.</div>
+      <div role="status" className="px-3 py-[18px] text-center text-sm text-fg-3">
+        No matches for “{query}”.
+      </div>
     );
   }
 
   return (
-    <div ref={scrollRef} id={listboxId} role="listbox" className="max-h-[320px] overflow-y-auto">
+    <div
+      ref={scrollRef}
+      id={listboxId}
+      role="listbox"
+      aria-multiselectable={multiple || undefined}
+      className="max-h-[320px] overflow-y-auto"
+    >
       <div style={{ height: virtualizer.getTotalSize(), position: "relative" }}>
         {virtualizer.getVirtualItems().map((virtualRow) => {
           const row = rows[virtualRow.index];
@@ -306,6 +346,7 @@ function OptionList({
               key={row.key}
               ref={virtualizer.measureElement}
               data-index={virtualRow.index}
+              id={optionId(listboxId, flatIndex)}
               role="option"
               aria-selected={selected}
               style={rowStyle}
@@ -447,6 +488,10 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
     };
 
     const showClear = !multiple && Boolean(selectedSingle);
+    const activeDescendant =
+      open && !disabled && !loading && visibleOptions[activeIndex] !== undefined
+        ? optionId(listboxId, activeIndex)
+        : undefined;
 
     return (
       <div ref={ref} className={cn("relative w-full", className)}>
@@ -483,6 +528,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
                   placeholder={placeholder}
                   labelId={labelId}
                   listboxId={listboxId}
+                  activeDescendant={activeDescendant}
                   inputRef={inputRef}
                   onQueryChange={handleQueryChange}
                   onKeyDown={handleKeyDown}
@@ -497,6 +543,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
                   placeholder={placeholder}
                   labelId={labelId}
                   listboxId={listboxId}
+                  activeDescendant={activeDescendant}
                   inputRef={inputRef}
                   onQueryChange={handleQueryChange}
                   onKeyDown={handleKeyDown}
@@ -525,7 +572,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
               sideOffset={6}
               onOpenAutoFocus={(e) => e.preventDefault()}
               className={cn(
-                "z-50 w-[var(--radix-popover-anchor-width)]",
+                "z-50 w-[var(--radix-popover-trigger-width)]",
                 "bg-[color:var(--bg-1)] border border-[color:var(--line-1)] rounded-lg",
                 "[box-shadow:var(--shadow-lg)] p-[5px]",
                 "origin-[--radix-popover-content-transform-origin]",
@@ -539,6 +586,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
                 query={query}
                 activeIndex={activeIndex}
                 listboxId={listboxId}
+                multiple={multiple}
                 isSelected={isSelected}
                 onHover={setActiveIndex}
                 onCommit={commit}

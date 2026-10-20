@@ -24,9 +24,12 @@ Import the CSS once at your app root — it provides all design tokens and
 base styles:
 
 ```tsx
-// main.tsx or _app.tsx
+// main.tsx (Vite) or app/layout.tsx (Next.js App Router)
 import "@sumiui/react/styles";
 ```
+
+Components can be imported directly into Next.js Server Components — the
+package is marked `"use client"`, so they render as client components.
 
 ## Render a component
 
@@ -68,6 +71,9 @@ import { TooltipProvider } from "@sumiui/react";
 
 ## Next
 
-- **[Installation](/docs/installation)** — package manager details and peer
-  dependency notes.
+- **[Installation](/docs/installation)** — package manager details, framework
+  notes, and the optional Tailwind theme (`@sumiui/react/theme.css`).
 - **[Theming & Tokens](/docs/theming)** — dark mode and customizing tokens.
+- **[CSS classes & recipes](/docs/css-classes)** — the shipped typography
+  classes and layout recipes.
+- **[Upgrading to 3.0](/docs/upgrading)** — moving from 2.x.

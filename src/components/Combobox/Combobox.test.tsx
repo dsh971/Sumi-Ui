@@ -127,3 +127,26 @@ describe("Combobox accessibility", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 });
+
+describe("Combobox — active descendant (screen readers)", () => {
+  it("points aria-activedescendant at the highlighted option as the arrow keys move", async () => {
+    const user = userEvent.setup();
+    render(<Combobox options={options} label="Reviewer" />);
+    const input = screen.getByRole("combobox", { name: "Reviewer" });
+    expect(input).toHaveAttribute("aria-autocomplete", "list");
+    await user.click(input);
+    await user.keyboard("{ArrowDown}");
+    const id = input.getAttribute("aria-activedescendant");
+    expect(id).toBeTruthy();
+    const active = document.getElementById(id ?? "");
+    expect(active).toHaveAttribute("role", "option");
+    expect(active).toHaveTextContent("Marcus Reed");
+  });
+
+  it("marks the listbox multiselectable in multiple mode", async () => {
+    const user = userEvent.setup();
+    render(<Combobox multiple options={options} value={[]} label="Reviewers" />);
+    await user.click(screen.getByRole("combobox", { name: "Reviewers" }));
+    expect(screen.getByRole("listbox")).toHaveAttribute("aria-multiselectable", "true");
+  });
+});

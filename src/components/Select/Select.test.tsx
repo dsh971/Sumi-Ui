@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import React from "react";
 import { describe, expect, it } from "vitest";
 import { axe } from "../../test-setup";
 import { Select, SelectContent, SelectItem } from "./index";
@@ -72,5 +73,34 @@ describe("Select accessibility", () => {
   it("has no violations", async () => {
     const { container } = render(<TestSelect />);
     expect(await axe(container)).toHaveNoViolations();
+  });
+});
+
+describe("Select — ref and ids", () => {
+  it("forwards its ref to the trigger button", () => {
+    const ref = React.createRef<HTMLButtonElement>();
+    render(<Select ref={ref} label="Fruit" />);
+    expect(ref.current).toBeInstanceOf(HTMLButtonElement);
+    expect(ref.current).toBe(screen.getByRole("combobox", { name: "Fruit" }));
+  });
+
+  it("gives two selects with the same label distinct ids", () => {
+    render(
+      <>
+        <Select label="Fruit" />
+        <Select label="Fruit" />
+      </>,
+    );
+    const triggers = screen.getAllByRole("combobox", { name: "Fruit" });
+    expect(triggers[0]?.id).not.toBe(triggers[1]?.id);
+  });
+});
+
+describe("Select — unlabelled error wiring", () => {
+  it("points aria-describedby at the rendered error, never undefined-*", () => {
+    render(<Select aria-label="Fruit" errorText="Required" />);
+    const id = screen.getByRole("combobox").getAttribute("aria-describedby") ?? "";
+    expect(id).not.toMatch(/^undefined/);
+    expect(document.getElementById(id)).toHaveTextContent("Required");
   });
 });

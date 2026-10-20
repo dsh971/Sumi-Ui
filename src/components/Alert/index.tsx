@@ -24,7 +24,7 @@ const variantClasses: VariantClassMap<AlertVariant> = {
   danger: [
     "bg-[color:var(--cinnabar-600)]",
     "border-[color:var(--cinnabar-700)]",
-    "text-[color:var(--silk-50)]",
+    "text-[color:var(--fg-on-cinnabar)]",
   ].join(" "),
 };
 
@@ -32,23 +32,23 @@ const titleClasses: VariantClassMap<AlertVariant> = {
   info: "text-[color:var(--status-info)]",
   success: "text-[color:var(--status-success)]",
   warning: "text-[color:var(--status-warning)]",
-  danger: "text-[color:var(--silk-50)]",
+  danger: "text-[color:var(--fg-on-cinnabar)]",
 };
 
 const bodyClasses: VariantClassMap<AlertVariant> = {
   info: "text-fg-2",
   success: "text-fg-2",
   warning: "text-fg-2",
-  danger: "text-[color:rgba(247,244,235,0.85)]",
+  danger: "text-[color:color-mix(in_srgb,var(--fg-on-cinnabar)_85%,transparent)]",
 };
 
 const dismissClasses: VariantClassMap<AlertVariant> = {
   info: "text-fg-3 hover:text-fg-1 hover:bg-bg-pressed",
   success: "text-fg-3 hover:text-fg-1 hover:bg-bg-pressed",
   warning: "text-fg-3 hover:text-fg-1 hover:bg-bg-pressed",
-  // On cinnabar bg, use translucent silk hover
+  // On cinnabar bg, use translucent on-cinnabar hover
   danger:
-    "text-[color:rgba(247,244,235,0.7)] hover:text-[color:var(--silk-50)] hover:bg-[rgba(247,244,235,0.12)]",
+    "text-[color:color-mix(in_srgb,var(--fg-on-cinnabar)_70%,transparent)] hover:text-[color:var(--fg-on-cinnabar)] hover:bg-[color:color-mix(in_srgb,var(--fg-on-cinnabar)_12%,transparent)]",
 };
 
 // Left accent bar colors per variant
@@ -87,7 +87,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         {/* BUG-016: left accent bar — 4px wide, self-stretching */}
         <span
           aria-hidden="true"
-          className="flex-none w-1 self-stretch rounded-full"
+          className="flex-none w-[3px] self-stretch"
           style={{ background: barColors[variant] }}
         />
 

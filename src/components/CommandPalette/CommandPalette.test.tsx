@@ -88,3 +88,23 @@ describe("CommandPalette accessibility", () => {
     expect(await axe(document.body)).toHaveNoViolations();
   });
 });
+
+describe("CommandPalette — active descendant and hover", () => {
+  it("points aria-activedescendant at the highlighted command", async () => {
+    const user = userEvent.setup();
+    render(<Harness />);
+    const input = screen.getByRole("combobox");
+    await user.keyboard("{ArrowDown}");
+    const active = document.getElementById(input.getAttribute("aria-activedescendant") ?? "");
+    expect(active).toHaveTextContent("Publish current");
+  });
+
+  it("highlights the hovered command, not the last one", async () => {
+    const user = userEvent.setup();
+    render(<Harness />);
+    await user.hover(screen.getByText("Publish current"));
+    const input = screen.getByRole("combobox");
+    const active = document.getElementById(input.getAttribute("aria-activedescendant") ?? "");
+    expect(active).toHaveTextContent("Publish current");
+  });
+});

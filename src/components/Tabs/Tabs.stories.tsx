@@ -10,21 +10,15 @@ const meta: Meta<typeof Tabs> = {
 export default meta;
 type Story = StoryObj<typeof Tabs>;
 
-// "underline" is the spec primary (default) variant
+// Tabs have one look: an ink underline under the active label
 export const Underline: Story = {
   render: () => (
     <div style={{ padding: "24px" }}>
       <Tabs defaultValue="overview">
-        <TabsList variant="underline">
-          <TabsTrigger value="overview" variant="underline">
-            Overview
-          </TabsTrigger>
-          <TabsTrigger value="activity" variant="underline">
-            Activity
-          </TabsTrigger>
-          <TabsTrigger value="settings" variant="underline">
-            Settings
-          </TabsTrigger>
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="activity">Activity</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
           <p style={{ fontSize: "14px", color: "var(--fg-2)", lineHeight: 1.7 }}>
@@ -46,42 +40,13 @@ export const Underline: Story = {
   ),
 };
 
-export const Segmented: Story = {
-  render: () => (
-    <div style={{ padding: "24px" }}>
-      <Tabs defaultValue="day">
-        <TabsList variant="segmented">
-          <TabsTrigger value="day" variant="segmented">
-            Day
-          </TabsTrigger>
-          <TabsTrigger value="week" variant="segmented">
-            Week
-          </TabsTrigger>
-          <TabsTrigger value="month" variant="segmented">
-            Month
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="day">
-          <p style={{ fontSize: "14px", color: "var(--fg-2)" }}>Daily view.</p>
-        </TabsContent>
-        <TabsContent value="week">
-          <p style={{ fontSize: "14px", color: "var(--fg-2)" }}>Weekly view.</p>
-        </TabsContent>
-        <TabsContent value="month">
-          <p style={{ fontSize: "14px", color: "var(--fg-2)" }}>Monthly view.</p>
-        </TabsContent>
-      </Tabs>
-    </div>
-  ),
-};
-
 export const ManyTabs: Story = {
   render: () => (
     <div style={{ padding: "24px" }}>
       <Tabs defaultValue="all">
-        <TabsList variant="underline">
+        <TabsList>
           {["All", "Drafts", "Published", "Archived", "Scheduled"].map((t) => (
-            <TabsTrigger key={t} value={t.toLowerCase()} variant="underline">
+            <TabsTrigger key={t} value={t.toLowerCase()}>
               {t}
             </TabsTrigger>
           ))}
@@ -102,14 +67,10 @@ export const WithDisabled: Story = {
   render: () => (
     <div style={{ padding: "24px" }}>
       <Tabs defaultValue="account">
-        <TabsList variant="underline">
-          <TabsTrigger value="account" variant="underline">
-            Account
-          </TabsTrigger>
-          <TabsTrigger value="billing" variant="underline">
-            Billing
-          </TabsTrigger>
-          <TabsTrigger value="team" variant="underline" disabled>
+        <TabsList>
+          <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="billing">Billing</TabsTrigger>
+          <TabsTrigger value="team" disabled>
             Team (Pro only)
           </TabsTrigger>
         </TabsList>

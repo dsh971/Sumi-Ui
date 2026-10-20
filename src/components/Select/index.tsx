@@ -23,10 +23,12 @@ const errorClasses = "mt-1 text-xs text-[color:var(--status-danger)]";
  */
 export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(function Select(
   { label, helperText, errorText, placeholder, id, triggerClassName, children, ...props },
-  _ref,
+  ref,
 ) {
-  const triggerId =
-    id ?? (label ? `select-${label.toLowerCase().replace(/\s+/g, "-")}` : undefined);
+  // useId, not a label slug: two fields with the same label (or none) must
+  // still get unique ids for label/aria-describedby wiring.
+  const autoId = React.useId();
+  const triggerId = id ?? `select-${autoId}`;
   const hasError = Boolean(errorText);
 
   return (
@@ -38,6 +40,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(function 
       )}
       <RadixSelect.Root {...props}>
         <SelectTrigger
+          ref={ref}
           id={triggerId}
           aria-invalid={hasError || undefined}
           aria-describedby={
@@ -72,7 +75,7 @@ export const SelectTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       "flex w-full items-center justify-between",
-      "bg-bg-card text-fg-1",
+      "bg-bg-page text-fg-1",
       "border border-[color:var(--line-2)] rounded-md",
       "px-3 py-2 text-sm",
       "transition-colors",

@@ -1,6 +1,6 @@
 ---
 title: Card
-description: A bordered surface composed from CardHeader, CardBody, and CardFooter.
+description: A content region composed from CardHeader, CardBody, and CardFooter — space-led by default, bordered when it must read as an object.
 ---
 
 ```tsx
@@ -15,8 +15,14 @@ import { Card, CardHeader, CardBody, CardFooter } from "@sumiui/react";
 
 | Prop | Type | Default |
 |---|---|---|
-| `variant` | `"default" \| "elevated"` | `"default"` |
+| `variant` | `"plain" \| "bordered"` | `"plain"` |
 | `asChild` | `boolean` | `false` |
+
+`plain` sets the content under a single hairline with no fill or box.
+`bordered` is a white sheet with a hairline edge for dense app UI. Cards never
+carry a shadow; the `default` and `elevated` variants were removed in 3.0.0.
+
+`CardHeader`, `CardBody` and `CardFooter` take their side padding from the variant: flush (`px-0`) in `plain`, inset (`px-5`) in `bordered`. Your own `px-*` on a section overrides it.
 
 `CardHeader`, `CardBody`, and `CardFooter` each accept every native `<div>`
 attribute — they're layout-only, no required props.

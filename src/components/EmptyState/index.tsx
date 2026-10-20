@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "../../lib/cn";
 import type { EmptyStateProps } from "./EmptyState.types";
 
-// BUG-023 fix: title uses font-display (Cormorant Garamond) at 20px per spec
+// BUG-023 fix: title uses font-display (Noto Serif SC) at 20px per spec
 
 export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
   ({ title, description, action, closingBeat, icon, className }, ref) => (
@@ -30,7 +30,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
 
       {action && <div className="mt-2">{action}</div>}
 
-      {closingBeat && <p className="text-xs text-fg-3 italic mt-1">{closingBeat}</p>}
+      {closingBeat && <p className="text-xs text-fg-3 mt-1">{closingBeat}</p>}
     </div>
   ),
 );

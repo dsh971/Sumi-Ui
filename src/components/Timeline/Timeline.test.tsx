@@ -51,7 +51,7 @@ describe("Timeline", () => {
     expect(
       container.querySelector(".bg-\\[color\\:var\\(--malachite-500\\)\\]"),
     ).toBeInTheDocument();
-    expect(container.querySelector(".border-\\[color\\:var\\(--ink-800\\)\\]")).toBeInTheDocument();
+    expect(container.querySelector(".border-\\[color\\:var\\(--fg-1\\)\\]")).toBeInTheDocument();
     expect(container.querySelector(".bg-\\[color\\:var\\(--azurite-500\\)\\]")).toBeInTheDocument();
   });
 
@@ -269,5 +269,24 @@ describe("Timeline accessibility", () => {
   it("has no violations", async () => {
     const { container } = render(<Timeline items={items} />);
     expect(await axe(container)).toHaveNoViolations();
+  });
+});
+
+describe("Timeline — selected row", () => {
+  it("marks the selected row with a sunken wash and an ink bar, not the pressed fill", () => {
+    render(
+      <Timeline
+        items={[
+          { id: "a", title: "First" },
+          { id: "b", title: "Second" },
+        ]}
+        selectedId="b"
+      />,
+    );
+    const selected = screen.getByRole("button", { name: "Second" });
+    expect(selected).toHaveClass("bg-bg-sunken");
+    expect(selected.className).toContain("inset_2px_0_0_var(--line-ink)");
+    expect(selected).not.toHaveClass("bg-bg-pressed");
+    expect(screen.getByRole("button", { name: "First" }).className).not.toContain("inset_2px");
   });
 });

@@ -10,43 +10,131 @@ property, not a JS theme object. There's nothing to import to use a token;
 `@sumiui/react/styles` defines them all on `:root`, and every component
 already references them internally.
 
-Token families: `--silk-*` · `--canvas-*` · `--ink-*` · `--malachite-*` ·
+**Raw scales:** `--silk-*` · `--canvas-*` · `--ink-*` · `--malachite-*` ·
 `--azurite-*` · `--teal-*` · `--cinnabar-*` · `--persimmon-*` · `--sienna-*`
 · `--slate-*` · `--steel-*`
 
-Semantic aliases sit on top of those scales and are what components
-actually use day to day: `--accent` · `--secondary` · `--highlight` ·
-`--status-*` · `--bg-*` · `--fg-*`.
+**Semantic aliases** sit on top of those scales and are what components use
+day to day. They flip in dark mode; raw scale steps do not.
+
+| Family | Tokens | What they are |
+|---|---|---|
+| Surfaces | `--bg-0` … `--bg-3`, `--bg-overlay`, `--bg-scrim` | Page (Fresh Silk), card (white), sunken wash, pressed |
+| Text | `--fg-1` … `--fg-4`, `--fg-on-*` | Primary → disabled, and text on pigment fills |
+| Ink tones | `--ink-jiao` · `--ink-nong` · `--ink-zhong` · `--ink-dan` · `--ink-qing` | The five ink densities (焦浓重淡清) behind `--fg-*` and `--line-ink` |
+| Brand | `--accent` · `--secondary` · `--highlight` (+ `-soft`, `-strong`) | Malachite, azurite, cinnabar roles |
+| Status | `--status-{success,warning,danger,info}` (+ `-bg`) | Status text and its tint |
+| Lines | `--line-1` … `--line-3`, `--line-ink` | Hairlines and the ink rule |
+| Knockout | `--knockout` | The surface a marker ring cuts out of (see below) |
+| Paper | `--paper-grain` | Faint silk-fibre texture on the light page |
+
+See **[CSS & Styling](/docs/css)** for every value, and
+**[CSS classes & recipes](/docs/css-classes)** for the shipped classes.
 
 ## Dark mode
 
-Toggle dark mode by setting `data-theme="dark"` on the `<html>` element (or
-any ancestor):
+Turn dark mode on for the whole page with either a `data-theme` attribute or
+the `.theme-dark` class on `<html>`. Only the class also works on an inner
+element — `data-theme` is matched on the root (`:root[data-theme="dark"]`):
 
 ```tsx
 document.documentElement.setAttribute("data-theme", "dark");
+// or
+document.documentElement.classList.add("theme-dark");
 ```
+
+Put it on `<html>` rather than an inner wrapper: overlays (Dialog, Popover,
+Toast, Tooltip) render in a portal under `<body>`, so they only pick up a theme
+set at the root.
+
+To follow the operating system setting, keep the attribute in sync with
+`prefers-color-scheme`:
+
+```tsx
+const media = window.matchMedia("(prefers-color-scheme: dark)");
+const apply = () =>
+  document.documentElement.setAttribute("data-theme", media.matches ? "dark" : "light");
+apply();
+media.addEventListener("change", apply);
+```
+
+Dark mode also sets `color-scheme: dark`, so native controls (checkboxes,
+scrollbars, date inputs) render dark too, and turns `--paper-grain` off.
 
 <ComponentDemo name="button/variants" />
 
+## Knockout rings
+
+Timeline dots, Stepper nodes and the Avatar seal badge draw a ring in
+`--knockout` to cut themselves out of the surface beneath. It defaults to the
+page (`--bg-0`); white containers (bordered `Card`, `Sheet`, `Popover`) set it
+to `--bg-1`. Set it yourself on any custom white panel that hosts those
+markers:
+
+```css
+.my-panel {
+  background: var(--bg-1);
+  --knockout: var(--bg-1);
+}
+```
+
+## Paper grain
+
+`--paper-grain` is a fixed-seed noise tile laid over the page background —
+about 0.5% ink on average, felt rather than seen. The library applies it to
+`body`; use it on a full-bleed plate of your own the same way:
+
+```css
+.hero-plate {
+  background-color: var(--bg-0);
+  background-image: var(--paper-grain);
+}
+```
+
+It resolves to `none` in dark mode and under `prefers-contrast: more`. Never
+put it on cards.
+
 ## Customizing tokens
 
-Override the custom properties at `:root` to theme the library without
-touching component code:
+Override the semantic tokens at `:root` to theme the library without touching
+component code. Stay inside the Sumi pigments so contrast holds — for example,
+make azurite the primary accent:
 
 ```css
 /* your-theme.css — import AFTER @sumiui/react/styles */
 :root {
-  /* Example: swap the primary brand colour */
-  --accent: #2563eb;
+  --accent: var(--azurite-600);
+  --accent-strong: var(--azurite-700);
+  --accent-soft: var(--azurite-50);
+  --accent-on: var(--fg-on-azurite);
+}
+
+/* Dark: a lighter step with dark text on it (8.8:1). Re-declare every
+   override here — `.theme-dark` has the same specificity as `:root`, so a
+   light value imported later would otherwise win in dark mode too. */
+:root[data-theme="dark"],
+.theme-dark {
+  --accent: var(--azurite-200);
+  --accent-strong: var(--azurite-100);
+  --accent-soft: rgba(165, 182, 198, 0.14); /* azurite-200 at 14%; also the selection wash */
+  --accent-on: var(--bg-0);
 }
 ```
 
-If you're authoring a *scoped* dark-mode toggle (applying it to something
-other than `<html>` — a nested container, a preview pane, etc.), re-declare
-the semantic `--color-*` aliases at that same selector too, not just the
-raw tokens underneath them. CSS resolves `var()` at the point a custom
+Check any override against the contrast rules in
+**[Accessibility](/docs/accessibility)**: text tokens must reach 4.5:1 on
+`--bg-0`, `--bg-1` and `--bg-2` in both themes.
+
+For a dark subtree inside a light page, put the `.theme-dark` class on that
+container — it re-declares every token and alias for the subtree (see the
+[scoped dark pane recipe](/docs/css-classes#scoped-dark-pane)).
+
+If you author your *own* scoped theme selector instead, re-declare the
+semantic `--color-*` aliases at that same selector too, not just the raw
+tokens underneath them. CSS resolves `var()` at the point a custom
 property is *declared*, not at the point it's inherited, so an alias
 declared once at `:root` stays pinned to whatever the raw token resolved to
 there — redefining the raw token further down the tree doesn't retroactively
-change an alias that was never re-declared at that same level.
+change an alias that was never re-declared at that same level. (Utilities
+generated from [`@sumiui/react/theme.css`](/docs/css-classes#tailwind-utilities)
+point at the tokens directly and don't have this problem.)

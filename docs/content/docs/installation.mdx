@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: Package manager options and peer dependency requirements.
+description: Package manager options, peer dependencies, framework notes and the optional Tailwind theme.
 ---
 
 ## Package manager
@@ -37,16 +37,80 @@ SumiUi requires React 19 or later:
 npm install react react-dom
 ```
 
+Radix UI, lucide-react, clsx, tailwind-merge and TanStack Virtual are regular
+dependencies. They install with the package and are **not** bundled into it, so
+if your app uses them too, your bundler keeps a single copy.
+
 ## What you get
 
-- ESM + CJS dual build, fully typed (`.d.ts` included)
-- A single CSS file (`@sumiui/react/styles`) with all design tokens and base
-  styles — import it once at your app root
-- No required peer dependency on a CSS framework — components ship their
-  own styles via the token layer, you don't need Tailwind in your own app to
-  use them
+| Export | What it is |
+|---|---|
+| `@sumiui/react` | The components. ESM and CommonJS builds, fully typed (`.d.ts` for `import`, `.d.cts` for `require`) |
+| `@sumiui/react/styles` | One stylesheet: design tokens, base typography, the shipped CSS classes and the component styles. Import it once at your app root |
+| `@sumiui/react/theme.css` | Optional. Sumi's Tailwind v4 theme for your own Tailwind build (see below) |
+
+You don't need Tailwind in your own app to use the components.
+
+## Frameworks
+
+**Next.js App Router / React Server Components.** The bundle is marked
+`"use client"`, so you can import components straight into a Server Component
+file; they render as client components. Import the stylesheet in your root
+layout:
+
+```tsx
+// app/layout.tsx
+import "@sumiui/react/styles";
+```
+
+**Vite, Remix, CRA and others.** Import the stylesheet once in your entry file
+(`main.tsx`). Both `import` and `require` resolve with matching types,
+including TypeScript's `node16` / `nodenext` module resolution.
+
+## Using Sumi utilities in your own Tailwind (optional)
+
+`@sumiui/react/styles` is precompiled, so it only contains the Tailwind
+utilities SumiUi's own components use. To write Sumi utilities in your own
+markup — `text-ink-jiao`, `bg-bg-page`, `shadow-md`, `grid-cols-shell-sidebar-content` —
+add the theme to your Tailwind v4 entry:
+
+```css
+/* app.css */
+@import "tailwindcss";
+@import "@sumiui/react/theme.css";
+```
+
+Keep `@sumiui/react/styles` as well — the utilities point at the tokens it
+defines — and **load it after your Tailwind stylesheet**. Both files put element
+styles in `@layer base`, so whichever loads last wins; if your app CSS loads
+last, Tailwind's reset wipes Sumi's headings, links and code styles.
+
+```tsx
+// app/layout.tsx (Next.js) or main.tsx (Vite) — order matters
+import "./app.css";              // your Tailwind entry with theme.css
+import "@sumiui/react/styles";   // after it
+```
+
+What the theme changes in your Tailwind:
+
+- **Colours:** adds Sumi's semantic and pigment colours. Tailwind's own
+  palettes stay, except `slate-*` and `teal-*`, which become Sumi's.
+- **Spacing:** steps `1`–`12` follow Sumi's scale, so existing markup shifts —
+  `p-7` is 32px and `w-10` is 72px.
+- **Radius, shadow, fonts, breakpoints:** Sumi's values. Tailwind's
+  `shadow-xl` and `rounded-2xl` keep their defaults.
+- **Text sizes:** unchanged (`text-lg` is still Tailwind's 18px).
+
+See **[CSS classes & recipes](/docs/css-classes#tailwind-utilities)** for examples.
+
+## Fonts
+
+The stylesheet loads Inter, Noto Serif SC and JetBrains Mono from Google Fonts
+with an `@import`, so it needs network access at runtime. Self-hosted font
+files aren't shipped yet; if you can't reach Google Fonts, the type falls back
+to the system serif and sans stacks.
 
 ## Next
 
 **[Getting Started](/docs/getting-started)** walks through rendering your
-first component.
+first component. Upgrading from 2.x? See **[Upgrading to 3.0](/docs/upgrading)**.

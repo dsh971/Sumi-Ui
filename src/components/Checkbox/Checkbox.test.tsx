@@ -56,3 +56,26 @@ describe("Checkbox accessibility", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 });
+
+describe("Checkbox — generated ids (useId)", () => {
+  it("gives two checkboxes with the same label distinct ids", () => {
+    render(
+      <>
+        <Checkbox label="Remember me" />
+        <Checkbox label="Remember me" />
+      </>,
+    );
+    const boxes = screen.getAllByRole("checkbox", { name: "Remember me" });
+    expect(boxes).toHaveLength(2);
+    expect(boxes[0]?.id).not.toBe(boxes[1]?.id);
+  });
+});
+
+describe("Checkbox — unlabelled error wiring", () => {
+  it("points aria-describedby at the rendered error, never undefined-*", () => {
+    render(<Checkbox aria-label="Accept" errorText="Required" />);
+    const id = screen.getByRole("checkbox").getAttribute("aria-describedby") ?? "";
+    expect(id).not.toMatch(/^undefined/);
+    expect(document.getElementById(id)).toHaveTextContent("Required");
+  });
+});

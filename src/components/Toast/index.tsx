@@ -19,53 +19,55 @@ const ToastVariantContext = React.createContext<ToastVariant>("info");
 const useToastVariant = () => React.useContext(ToastVariantContext);
 
 const rootClasses: VariantClassMap<ToastVariant> = {
-  success: "border-l-[color:var(--malachite-500)]",
-  info: "border-l-[color:var(--azurite-500)]",
-  warning: "border-l-[color:var(--persimmon-500)]",
+  success: "border-l-[color:var(--status-success)]",
+  info: "border-l-[color:var(--status-info)]",
+  warning: "border-l-[color:var(--status-warning-bar)]",
   danger:
     "bg-[color:var(--cinnabar-600)] border-[color:var(--cinnabar-700)] border-l-[color:var(--cinnabar-200)]",
 };
 
 const iconClasses: VariantClassMap<ToastVariant> = {
-  success: "text-[color:var(--malachite-600)]",
-  info: "text-[color:var(--azurite-500)]",
-  warning: "text-[color:var(--persimmon-600)]",
-  danger: "text-[color:var(--silk-50)]",
+  success: "text-[color:var(--status-success)]",
+  info: "text-[color:var(--status-info)]",
+  warning: "text-[color:var(--status-warning)]",
+  danger: "text-[color:var(--fg-on-cinnabar)]",
 };
 
 const timerClasses: VariantClassMap<ToastVariant> = {
   success: "bg-[color:var(--malachite-400)]",
   info: "bg-[color:var(--azurite-400)]",
   warning: "bg-[color:var(--persimmon-400)]",
-  danger: "bg-[color:rgba(247,244,235,0.55)]",
+  danger: "bg-[color:color-mix(in_srgb,var(--fg-on-cinnabar)_55%,transparent)]",
 };
 
 const actionClasses: VariantClassMap<ToastVariant> = {
-  success: "text-[color:var(--malachite-700)]",
-  info: "text-[color:var(--azurite-600)]",
-  warning: "text-[color:var(--persimmon-700)]",
-  danger: "text-[color:var(--silk-50)] underline",
+  success: "text-[color:var(--status-success)]",
+  info: "text-[color:var(--status-info)]",
+  warning: "text-[color:var(--status-warning)]",
+  danger: "text-[color:var(--fg-on-cinnabar)] underline",
 };
 
 const titleClasses: VariantClassMap<ToastVariant> = {
   success: "text-fg-1",
   info: "text-fg-1",
   warning: "text-fg-1",
-  danger: "text-[color:var(--silk-50)]",
+  danger: "text-[color:var(--fg-on-cinnabar)]",
 };
 
 const descriptionClasses: VariantClassMap<ToastVariant> = {
   success: "text-fg-2",
   info: "text-fg-2",
   warning: "text-fg-2",
-  danger: "text-[color:rgba(247,244,235,0.82)]",
+  // 90% keeps AA on cinnabar in dark (4.99:1); guarded in tokens.contrast.test.ts.
+  danger: "text-[color:color-mix(in_srgb,var(--fg-on-cinnabar)_90%,transparent)]",
 };
 
 const dismissClasses: VariantClassMap<ToastVariant> = {
   success: "text-fg-2 hover:bg-bg-sunken",
   info: "text-fg-2 hover:bg-bg-sunken",
   warning: "text-fg-2 hover:bg-bg-sunken",
-  danger: "text-[color:var(--silk-50)] hover:bg-[color:rgba(247,244,235,0.14)]",
+  danger:
+    "text-[color:var(--fg-on-cinnabar)] hover:bg-[color:color-mix(in_srgb,var(--fg-on-cinnabar)_14%,transparent)]",
 };
 
 const variantIcons: Record<
@@ -121,7 +123,7 @@ export const Toast = React.forwardRef<React.ElementRef<typeof RadixToast.Root>, 
           >
             <Icon size={19} />
           </span>
-          <div className="flex-1 min-w-0">{children}</div>
+          <div className="flex-1 min-w-0 pe-6">{children}</div>
           <span
             aria-hidden="true"
             className={cn(
@@ -210,7 +212,8 @@ export const ToastClose = React.forwardRef<
       ref={ref}
       aria-label={ariaLabel}
       className={cn(
-        "flex-none flex items-center justify-center min-w-[36px] min-h-[36px] -me-[10px] -mt-[10px]",
+        // Pinned to the top-right corner regardless of where it sits among the children.
+        "absolute top-[2px] end-[2px] flex items-center justify-center min-w-[36px] min-h-[36px]",
         "bg-transparent border-0 cursor-pointer rounded opacity-55 hover:opacity-100",
         "transition-opacity",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",

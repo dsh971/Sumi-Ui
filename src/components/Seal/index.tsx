@@ -15,22 +15,29 @@ const sizePx: Record<SealSize, number> = {
  *
  * The seal color (--pigment-cinnabar) is brand-locked and cannot be overridden.
  * Passing a `color` prop logs a development warning and is ignored.
+ *
+ * A seal is pressed into the paper, not floated above it: flat pigment, a
+ * near-square 1-unit corner, and a worn paste edge from a fixed-seed
+ * turbulence displacement (deterministic, so every render matches).
  */
 export const Seal = React.forwardRef<SVGSVGElement, SealProps>(
   (
     { glyph = "墨", size = "md", "aria-label": ariaLabel = "Sumi seal", className, ...props },
     ref,
   ) => {
-    if (process.env.NODE_ENV !== "production" && "color" in props) {
-      console.warn(
-        "[Seal] The seal color is locked to sumi cinnabar (#A62B2B) per brand guidelines. " +
-          "The `color` prop is ignored.",
-      );
-    }
+    const hasColorProp = "color" in props;
+    // Warn once when the prop appears, not on every re-render.
+    React.useEffect(() => {
+      if (process.env.NODE_ENV !== "production" && hasColorProp) {
+        console.warn(
+          "[Seal] The seal color is locked to sumi cinnabar (#A62B2B) per brand guidelines. " +
+            "The `color` prop is ignored.",
+        );
+      }
+    }, [hasColorProp]);
 
+    const wornEdgeId = `sumi-seal-worn-${React.useId().replace(/:/g, "")}`;
     const px = sizePx[size];
-    const fontSize = Math.round(px * 0.54);
-    const textY = Math.round(px * 0.69);
 
     return (
       <svg
@@ -46,30 +53,33 @@ export const Seal = React.forwardRef<SVGSVGElement, SealProps>(
       >
         <title>{ariaLabel}</title>
 
-        {/* Cinnabar background — brand-locked, references --pigment-cinnabar */}
-        <rect x="2" y="2" width="44" height="44" rx="4" fill="var(--pigment-cinnabar)" />
+        <defs>
+          <filter id={wornEdgeId} x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" />
+            <feDisplacementMap in="SourceGraphic" scale="1.2" />
+          </filter>
+        </defs>
 
-        {/* Subtle inner stroke — --cinnabar-800 at 40% opacity */}
+        {/* Cinnabar background — brand-locked, references --pigment-cinnabar */}
         <rect
           x="2"
           y="2"
           width="44"
           height="44"
-          rx="4"
-          fill="none"
-          stroke="var(--cinnabar-800)"
-          strokeOpacity="0.4"
+          rx="1"
+          fill="var(--pigment-cinnabar)"
+          filter={`url(#${wornEdgeId})`}
         />
 
-        {/* Hanzi glyph — --silk-50 text */}
+        {/* Hanzi glyph — --fg-on-cinnabar text */}
         <text
           x="24"
-          y={textY}
+          y="33"
           textAnchor="middle"
           fontFamily="'Noto Serif SC', 'Songti SC', serif"
           fontWeight="500"
-          fontSize={fontSize}
-          fill="var(--silk-50)"
+          fontSize="26"
+          fill="var(--fg-on-cinnabar)"
         >
           {glyph}
         </text>

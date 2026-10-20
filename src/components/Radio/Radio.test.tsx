@@ -58,3 +58,21 @@ describe("RadioGroup accessibility", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 });
+
+describe("RadioItem — generated ids (useId)", () => {
+  it("gives same-label items in different groups distinct ids", () => {
+    render(
+      <>
+        <RadioGroup aria-label="A">
+          <RadioItem value="x" label="Other" />
+        </RadioGroup>
+        <RadioGroup aria-label="B">
+          <RadioItem value="x" label="Other" />
+        </RadioGroup>
+      </>,
+    );
+    const radios = screen.getAllByRole("radio", { name: "Other" });
+    expect(radios).toHaveLength(2);
+    expect(radios[0]?.id).not.toBe(radios[1]?.id);
+  });
+});

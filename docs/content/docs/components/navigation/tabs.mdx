@@ -1,13 +1,13 @@
 ---
 title: Tabs
-description: A Radix-based tab bar with underline (default) and segmented variants.
+description: A Radix-based tab bar with an ink underline on the active tab.
 ---
 
 ```tsx
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@sumiui/react";
 ```
 
-## Variants
+## Example
 
 <ComponentDemo name="tabs/variants" />
 
@@ -16,10 +16,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@sumiui/react";
 `Tabs` mirrors Radix UI's `Tabs.Root` props (`defaultValue`, `value`,
 `onValueChange`, etc.). `TabsContent` mirrors `Tabs.Content` directly.
 
-`TabsList` and `TabsTrigger` extend their Radix UI equivalents, plus:
-
-| Prop | Type | Default |
-|---|---|---|
-| `variant` | `"underline" \| "segmented"` | `"underline"` |
-
-`"underline"` is the spec primary variant.
+`TabsList` and `TabsTrigger` mirror their Radix UI equivalents. Tabs have one
+look — an ink underline under the active label. For a compact segmented
+switch, use [`SegmentedControl`](../forms/segmented-control). The
+`variant` prop was removed in 3.0.0.

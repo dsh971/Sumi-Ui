@@ -87,7 +87,7 @@ export const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeader
     return (
       <thead
         ref={ref}
-        // BUG-013 fix: header always bg-bg-sunken (--bg-2 = Hemp Canvas) per spec
+        // BUG-013 fix: header always bg-bg-sunken (--bg-2 = silk-200 wash) per spec
         className={cn(
           "bg-bg-sunken",
           stickyHeader && "sticky top-0 z-10 [box-shadow:var(--shadow-xs)]",
@@ -100,6 +100,8 @@ export const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeader
 );
 TableHeader.displayName = "TableHeader";
 
+// `ref` arrives as an ordinary prop: React 19 passes it through to function
+// components (the package's peer floor), so no forwardRef wrapper is needed.
 function VirtualizedTableBody<T>({
   className,
   virtualize,
@@ -388,7 +390,7 @@ export const TableSelectHead = React.forwardRef<HTMLTableCellElement, TableSelec
           }}
           onChange={handleChange}
           aria-label="Select all rows"
-          className="size-4 rounded accent-[color:var(--accent)] cursor-pointer"
+          className="block size-4 rounded accent-[color:var(--accent)] cursor-pointer"
         />
       </th>
     );
@@ -425,7 +427,7 @@ export const TableSelectCell = React.forwardRef<HTMLTableCellElement, TableSelec
           checked={checked}
           onChange={handleChange}
           aria-label={`Select row ${rowId}`}
-          className="size-4 rounded accent-[color:var(--accent)] cursor-pointer"
+          className="block size-4 rounded accent-[color:var(--accent)] cursor-pointer"
         />
       </td>
     );

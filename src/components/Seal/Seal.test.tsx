@@ -47,6 +47,27 @@ describe("Seal", () => {
     expect(bg?.getAttribute("fill")).toBe("var(--pigment-cinnabar)");
   });
 
+  it("is pressed flat: near-square corner, worn edge filter, no halo", () => {
+    const { container } = render(<Seal />);
+    const bg = container.querySelector("rect");
+    expect(bg?.getAttribute("rx")).toBe("1");
+    const filterRef = bg?.getAttribute("filter") ?? "";
+    const id = filterRef.match(/^url\(#(.+)\)$/)?.[1];
+    expect(id).toBeTruthy();
+    expect(container.querySelector(`filter[id="${id}"] feDisplacementMap`)).toBeInTheDocument();
+  });
+
+  it("gives each instance its own filter id", () => {
+    const { container } = render(
+      <>
+        <Seal />
+        <Seal />
+      </>,
+    );
+    const ids = Array.from(container.querySelectorAll("filter")).map((f) => f.id);
+    expect(new Set(ids).size).toBe(2);
+  });
+
   it("warns in dev when color prop is passed", () => {
     const spy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     // @ts-expect-error — intentionally testing a forbidden prop
@@ -70,5 +91,17 @@ describe("Seal accessibility", () => {
   it("has no violations", async () => {
     const { container } = render(<Seal />);
     expect(await axe(container)).toHaveNoViolations();
+  });
+});
+
+describe("Seal — colour warning", () => {
+  it("warns once, not on every re-render", () => {
+    const spy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    // @ts-expect-error — intentionally testing a forbidden prop
+    const { rerender } = render(<Seal color="red" />);
+    // @ts-expect-error — intentionally testing a forbidden prop
+    rerender(<Seal color="red" size="lg" />);
+    expect(spy).toHaveBeenCalledTimes(1);
+    spy.mockRestore();
   });
 });

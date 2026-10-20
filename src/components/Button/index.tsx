@@ -22,13 +22,19 @@ const variantClasses: VariantClassMap<ButtonVariant> = {
     "active:bg-bg-pressed",
   ].join(" "),
   ghost: ["text-fg-1", "hover:bg-bg-sunken", "active:bg-bg-pressed"].join(" "),
-  ink: ["bg-ink-800", "text-[color:var(--silk-50)]", "hover:bg-ink-700"].join(" "),
-  // Outlined danger: transparent bg, cinnabar border + text, soft fill on hover
+  // Ink tones flip with the theme: thick ink on silk in light, pale ink on charcoal in dark.
+  ink: [
+    "bg-[color:var(--ink-nong)]",
+    "text-[color:var(--bg-0)]",
+    "hover:bg-[color:var(--ink-jiao)]",
+  ].join(" "),
+  // Outlined danger: transparent bg, cinnabar border + text, soft fill on hover.
+  // Status tokens step lighter in dark mode, so the text keeps AA on charcoal.
   danger: [
     "bg-transparent",
-    "border border-[color:var(--cinnabar-200)]",
-    "text-[color:var(--cinnabar-600)]",
-    "hover:bg-[color:var(--cinnabar-50)]",
+    "border border-[color:color-mix(in_srgb,var(--status-danger)_35%,transparent)]",
+    "text-[color:var(--status-danger)]",
+    "hover:bg-[color:var(--status-danger-bg)]",
   ].join(" "),
 };
 

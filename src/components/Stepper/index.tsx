@@ -17,8 +17,8 @@ const nodeBase =
 const nodeStateClass: Record<NodeState, string> = {
   done: "bg-[color:var(--accent)] text-[color:var(--accent-on)]",
   current:
-    "border-2 border-[color:var(--ink-800)] shadow-[0_0_0_4px_var(--accent-soft)] bg-[color:var(--bg-0)] text-fg-1",
-  todo: "border border-[color:var(--line-3)] bg-[color:var(--bg-0)] text-fg-3",
+    "border-2 border-[color:var(--fg-1)] shadow-[0_0_0_4px_var(--accent-soft)] bg-[color:var(--knockout)] text-fg-1",
+  todo: "border border-[color:var(--line-3)] bg-[color:var(--knockout)] text-fg-3",
 };
 
 function StepNode({ index, state }: { index: number; state: NodeState }) {
@@ -147,19 +147,18 @@ function CompactStepper({
         </span>
         {current ? <span className="text-fg-3">{current.label}</span> : null}
       </div>
+      {/* A progressbar is a read-only status widget (WAI-ARIA), not a control:
+          giving it a tab stop would add an empty stop to the keyboard order. */}
+      {/* biome-ignore lint/a11y/useFocusableInteractive: progressbar is non-interactive per WAI-ARIA */}
       <div
-        className="h-[5px] rounded-full bg-[color:var(--bg-2)] overflow-hidden"
+        className="h-[3px] bg-[color:var(--bg-2)] overflow-hidden"
         role="progressbar"
-        tabIndex={0}
         aria-valuemin={1}
         aria-valuemax={total}
         aria-valuenow={currentStep + 1}
         aria-label={`Step ${currentStep + 1} of ${total}${current ? `: ${current.label}` : ""}`}
       >
-        <div
-          className="h-full rounded-full bg-[color:var(--accent)]"
-          style={{ width: `${fillPercent}%` }}
-        />
+        <div className="h-full bg-[color:var(--accent)]" style={{ width: `${fillPercent}%` }} />
       </div>
     </div>
   );

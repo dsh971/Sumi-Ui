@@ -47,7 +47,7 @@ export const PopoverContent = React.forwardRef<
       sideOffset={sideOffset}
       className={cn(
         "z-50 min-w-[8rem]",
-        "bg-[color:var(--bg-1)] border border-[color:var(--line-1)] rounded-lg",
+        "bg-[color:var(--bg-1)] border border-[color:var(--line-1)] rounded-lg [--knockout:var(--bg-1)]",
         "[box-shadow:var(--shadow-lg)] p-[5px]",
         "outline-none",
         "origin-[--radix-popover-content-transform-origin]",

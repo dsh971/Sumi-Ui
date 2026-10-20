@@ -11,8 +11,8 @@ All values are CSS custom properties defined in `dist/sumi.css`. Import `@sumiui
 ## Surfaces
 
 <ColorPalette>
-  <ColorItem title="Background" subtitle="Page surfaces" colors={{ "bg-0 · page": "#f7f4eb", "bg-1 · card": "#f1ecdd", "bg-2 · sunken": "#ebe5d8", "bg-3 · pressed": "#dcd2ba" }} />
-  <ColorItem title="Overlay" subtitle="Modal scrims" colors={{ "bg-overlay": "rgba(28,27,26,0.32)", "bg-scrim": "rgba(28,27,26,0.55)" }} />
+  <ColorItem title="Background" subtitle="Page surfaces" colors={{ "bg-0 · page": "var(--bg-0)", "bg-1 · card": "var(--bg-1)", "bg-2 · sunken": "var(--bg-2)", "bg-3 · pressed": "var(--bg-3)" }} />
+  <ColorItem title="Overlay" subtitle="Modal scrims" colors={{ "bg-overlay": "var(--bg-overlay)", "bg-scrim": "var(--bg-scrim)" }} />
 </ColorPalette>
 
 ---
@@ -20,7 +20,11 @@ All values are CSS custom properties defined in `dist/sumi.css`. Import `@sumiui
 ## Foregrounds
 
 <ColorPalette>
-  <ColorItem title="Text" subtitle="Ink hierarchy" colors={{ "fg-1 · primary": "#1c1b1a", "fg-2 · secondary": "#5c564e", "fg-3 · tertiary": "#9a9184", "fg-4 · quaternary": "#c4bcb2" }} />
+  <ColorItem title="Ink tones" subtitle="焦浓重淡清 — hierarchy by ink density" colors={{ "ink-jiao · 焦": "var(--ink-jiao)", "ink-nong · 浓": "var(--ink-nong)", "ink-zhong · 重": "var(--ink-zhong)", "ink-dan · 淡": "var(--ink-dan)", "ink-qing · 清": "var(--ink-qing)" }} />
+</ColorPalette>
+
+<ColorPalette>
+  <ColorItem title="Text" subtitle="Ink hierarchy" colors={{ "fg-1 · primary": "var(--fg-1)", "fg-2 · secondary": "var(--fg-2)", "fg-3 · tertiary": "var(--fg-3)", "fg-4 · quaternary": "var(--fg-4)" }} />
 </ColorPalette>
 
 ---
@@ -28,9 +32,9 @@ All values are CSS custom properties defined in `dist/sumi.css`. Import `@sumiui
 ## Semantic Accents
 
 <ColorPalette>
-  <ColorItem title="Primary" subtitle="--accent family" colors={{ accent: "#1e4d2b", "accent-hover": "#1f6357", "accent-strong": "#163821" }} />
-  <ColorItem title="Secondary" subtitle="--secondary family" colors={{ secondary: "#1c3b57", "secondary-soft": "#e8f0f7", "secondary-strong": "#132840" }} />
-  <ColorItem title="Highlight" subtitle="--highlight family (cinnabar)" colors={{ highlight: "#a62b2b", "highlight-soft": "#fdf0f0", "highlight-strong": "#862020" }} />
+  <ColorItem title="Primary" subtitle="--accent family" colors={{ accent: "var(--accent)", "accent-hover": "var(--accent-hover)", "accent-strong": "var(--accent-strong)" }} />
+  <ColorItem title="Secondary" subtitle="--secondary family" colors={{ secondary: "var(--secondary)", "secondary-soft": "var(--secondary-soft)", "secondary-strong": "var(--secondary-strong)" }} />
+  <ColorItem title="Highlight" subtitle="--highlight family (cinnabar)" colors={{ highlight: "var(--highlight)", "highlight-soft": "var(--highlight-soft)", "highlight-strong": "var(--highlight-strong)" }} />
 </ColorPalette>
 
 ---
@@ -38,10 +42,10 @@ All values are CSS custom properties defined in `dist/sumi.css`. Import `@sumiui
 ## Status
 
 <ColorPalette>
-  <ColorItem title="Success" colors={{ "status-success": "#1e4d2b", "status-success-bg": "#eaf2ec" }} />
-  <ColorItem title="Warning" colors={{ "status-warning": "#9f5217", "status-warning-bg": "#fff8ec" }} />
-  <ColorItem title="Danger" colors={{ "status-danger": "#a62b2b", "status-danger-bg": "#fdf0f0" }} />
-  <ColorItem title="Info" colors={{ "status-info": "#1c3b57", "status-info-bg": "#e8f0f7" }} />
+  <ColorItem title="Success" colors={{ "status-success": "var(--status-success)", "status-success-bg": "var(--status-success-bg)" }} />
+  <ColorItem title="Warning" colors={{ "status-warning": "var(--status-warning)", "status-warning-bg": "var(--status-warning-bg)" }} />
+  <ColorItem title="Danger" colors={{ "status-danger": "var(--status-danger)", "status-danger-bg": "var(--status-danger-bg)" }} />
+  <ColorItem title="Info" colors={{ "status-info": "var(--status-info)", "status-info-bg": "var(--status-info-bg)" }} />
 </ColorPalette>
 
 ---
@@ -49,12 +53,12 @@ All values are CSS custom properties defined in `dist/sumi.css`. Import `@sumiui
 ## Color Scales
 
 <ColorPalette>
-  <ColorItem title="Malachite 翠" subtitle="Primary brand" colors={{ 50: "#eaf2ec", 100: "#d0e5d4", 200: "#a8ccaf", 300: "#78ae83", 400: "#4f9060", 500: "#336d49", 600: "#265436", 700: "#1e4d2b", 800: "#163821", 900: "#0e2416" }} />
-  <ColorItem title="Azurite 藍" subtitle="Secondary brand" colors={{ 50: "#e8f0f7", 100: "#ccdae9", 200: "#99b5d3", 300: "#6690bd", 400: "#3d6fa0", 500: "#2a5683", 600: "#1f4166", 700: "#1c3b57", 800: "#132840", 900: "#0b1a2a" }} />
-  <ColorItem title="Cinnabar 朱" subtitle="Seal · danger" colors={{ 50: "#fdf0f0", 100: "#fadada", 200: "#f4b4b4", 300: "#eb8888", 400: "#de5a5a", 500: "#ce3535", 600: "#a62b2b", 700: "#862020", 800: "#641717", 900: "#420f0f" }} />
-  <ColorItem title="Ink 墨" subtitle="Text · rules" colors={{ 50: "#f4f3f2", 100: "#e4e2df", 200: "#c9c5c0", 300: "#aaa49c", 400: "#8a837a", 500: "#6e665c", 600: "#5c564e", 700: "#47423c", 800: "#1c1b1a", 900: "#0e0d0c" }} />
-  <ColorItem title="Silk 絹" subtitle="Light backgrounds" colors={{ 50: "#fdfcf8", 100: "#f7f4eb", 200: "#efe9d5", 300: "#e5dbbf", 400: "#d8cbaa", 500: "#c8b892", 600: "#b09f78", 700: "#937f59", 800: "#71603e", 900: "#4b3f27" }} />
-  <ColorItem title="Persimmon 柿" subtitle="Warning" colors={{ 50: "#fff8ec", 100: "#ffeece", 200: "#ffd896", 300: "#ffbe5c", 400: "#ffa343", 500: "#f08020", 600: "#d9620a", 700: "#9f5217", 800: "#7a3d12", 900: "#52280c" }} />
+  <ColorItem title="Malachite 翠" subtitle="Primary brand" colors={{ 50: "var(--malachite-50)", 100: "var(--malachite-100)", 200: "var(--malachite-200)", 300: "var(--malachite-300)", 400: "var(--malachite-400)", 500: "var(--malachite-500)", 600: "var(--malachite-600)", 700: "var(--malachite-700)", 800: "var(--malachite-800)", 900: "var(--malachite-900)" }} />
+  <ColorItem title="Azurite 藍" subtitle="Secondary brand" colors={{ 50: "var(--azurite-50)", 100: "var(--azurite-100)", 200: "var(--azurite-200)", 300: "var(--azurite-300)", 400: "var(--azurite-400)", 500: "var(--azurite-500)", 600: "var(--azurite-600)", 700: "var(--azurite-700)", 800: "var(--azurite-800)", 900: "var(--azurite-900)" }} />
+  <ColorItem title="Cinnabar 朱" subtitle="Seal · danger" colors={{ 50: "var(--cinnabar-50)", 100: "var(--cinnabar-100)", 200: "var(--cinnabar-200)", 300: "var(--cinnabar-300)", 400: "var(--cinnabar-400)", 500: "var(--cinnabar-500)", 600: "var(--cinnabar-600)", 700: "var(--cinnabar-700)", 800: "var(--cinnabar-800)", 900: "var(--cinnabar-900)" }} />
+  <ColorItem title="Ink 墨" subtitle="Text · rules" colors={{ 50: "var(--ink-50)", 100: "var(--ink-100)", 200: "var(--ink-200)", 300: "var(--ink-300)", 400: "var(--ink-400)", 500: "var(--ink-500)", 600: "var(--ink-600)", 700: "var(--ink-700)", 800: "var(--ink-800)", 900: "var(--ink-900)" }} />
+  <ColorItem title="Silk 絹" subtitle="Light backgrounds" colors={{ 50: "var(--silk-50)", 100: "var(--silk-100)", 200: "var(--silk-200)", 300: "var(--silk-300)", 400: "var(--silk-400)", 500: "var(--silk-500)", 600: "var(--silk-600)", 700: "var(--silk-700)", 800: "var(--silk-800)", 900: "var(--silk-900)" }} />
+  <ColorItem title="Persimmon 柿" subtitle="Warning" colors={{ 50: "var(--persimmon-50)", 100: "var(--persimmon-100)", 200: "var(--persimmon-200)", 300: "var(--persimmon-300)", 400: "var(--persimmon-400)", 500: "var(--persimmon-500)", 600: "var(--persimmon-600)", 700: "var(--persimmon-700)", 800: "var(--persimmon-800)", 900: "var(--persimmon-900)" }} />
 </ColorPalette>
 
 ---
@@ -65,7 +69,7 @@ All values are CSS custom properties defined in `dist/sumi.css`. Import `@sumiui
   fontSizes={[12, 13, 15, 17, 20, 24, 30, 38, 48]}
   fontWeight={300}
   sampleText="A quiet place to write."
-  fontFamily='"Cormorant Garamond", Georgia, serif'
+  fontFamily='"Noto Serif SC", "Songti SC", Georgia, serif'
 />
 
 <Typeset
@@ -84,7 +88,7 @@ All values are CSS custom properties defined in `dist/sumi.css`. Import `@sumiui
 
 | Token | Value |
 |---|---|
-| `--font-display` | Cormorant Garamond, Noto Serif SC, Georgia, serif |
+| `--font-display` | Noto Serif SC, Songti SC, Source Han Serif, Georgia, serif |
 | `--sumi-font-body` | Inter, -apple-system, Helvetica Neue, sans-serif |
 | `--font-mono` | JetBrains Mono, ui-monospace, Menlo, monospace |
 | `--sumi-font-han` | Noto Serif SC, Songti SC, serif |
@@ -133,8 +137,7 @@ All values are CSS custom properties defined in `dist/sumi.css`. Import `@sumiui
 | `--radius-2` | 4px | Inputs, buttons |
 | `--radius-3` | 6px | Cards (default) |
 | `--radius-4` | 10px | Modals, popovers |
-| `--radius-5` | 14px | Large cards |
-| `--radius-full` | 999px | Avatars, pills, toggle thumbs |
+| `--radius-full` | 999px | Avatars, radio/step dots, toggle thumbs — never badges or buttons |
 
 ---
 
@@ -146,9 +149,7 @@ All values are CSS custom properties defined in `dist/sumi.css`. Import `@sumiui
 | `--shadow-sm` | Card on hover |
 | `--shadow-md` | Dropdown, popover |
 | `--shadow-lg` | Modal |
-| `--shadow-xl` | Overlay panel |
 | `--shadow-inset` | Pressed / sunken input |
-| `--shadow-seal` | Highlighted / sealed item |
 
 ---
 

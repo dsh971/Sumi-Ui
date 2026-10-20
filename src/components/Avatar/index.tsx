@@ -47,7 +47,7 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
             className="aspect-square size-full object-cover"
           />
         )}
-        {/* BUG-026 fix: fallback text uses font-display (Cormorant Garamond) per spec */}
+        {/* BUG-026 fix: fallback text uses font-display (Noto Serif SC) per spec */}
         <span
           aria-hidden="true"
           className={cn(
@@ -74,13 +74,13 @@ export const AvatarSeal = React.forwardRef<HTMLDivElement, AvatarSealProps>(
       <div ref={ref} className="relative inline-flex">
         <Avatar size={size} className={className} {...rest} />
         {/* Cinnabar seal badge — color is locked, intentionally no override.
-            Square with a modest corner radius per the design system's own
+            Near-square (--radius-1) per the design system's own
             .seal utility (colors_and_type.css) — a literal reference to a
             Chinese chop/seal (印章), which is historically square, never
-            round; --radius-full is deliberately reserved for avatars,
-            pills, and toggle thumbs (UI_GUIDE.md), not the seal. The
-            box-shadow layers the DS's --shadow-seal halo with a solid
-            page-background ring (matching the avatar-stack separation
+            round; --radius-full is deliberately reserved for true circles
+            (avatars, dots, toggle thumbs — UI_GUIDE.md), not the seal. The
+            box-shadow is only a solid --knockout ring (a seal is
+            pressed flat, so no halo) (matching the avatar-stack separation
             technique in Sumi-Design-System/preview/avatar-seal.html) so
             the badge reads as a distinct layered element, not a stray
             square notch. */}
@@ -91,13 +91,13 @@ export const AvatarSeal = React.forwardRef<HTMLDivElement, AvatarSealProps>(
           style={{
             width: px,
             height: px,
-            background: "var(--cinnabar-400)",
+            background: "var(--pigment-cinnabar)",
             fontSize: px * 0.55,
             fontFamily: "var(--sumi-font-han)",
-            color: "var(--fg-on-ink)",
+            color: "var(--fg-on-cinnabar)",
             lineHeight: 1,
-            borderRadius: "var(--radius-2)",
-            boxShadow: "0 0 0 2px var(--bg-0), var(--shadow-seal)",
+            borderRadius: "var(--radius-1)",
+            boxShadow: "0 0 0 2px var(--knockout)",
           }}
         >
           {sealGlyph}

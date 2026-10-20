@@ -70,10 +70,10 @@ describe("AvatarSeal", () => {
   it("uses the design system's seal tokens, not ad hoc values", () => {
     const { container } = render(<AvatarSeal fallback="JD" />);
     const seal = container.querySelector("[data-avatar-seal]") as HTMLElement;
-    expect(seal.style.background).toBe("var(--cinnabar-400)");
-    expect(seal.style.color).toBe("var(--fg-on-ink)");
-    expect(seal.style.borderRadius).toBe("var(--radius-2)");
-    expect(seal.style.boxShadow).toContain("var(--shadow-seal)");
+    expect(seal.style.background).toBe("var(--pigment-cinnabar)");
+    expect(seal.style.color).toBe("var(--fg-on-cinnabar)");
+    expect(seal.style.borderRadius).toBe("var(--radius-1)");
+    expect(seal.style.boxShadow).toBe("0 0 0 2px var(--knockout)");
   });
 });
 

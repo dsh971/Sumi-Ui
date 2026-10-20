@@ -23,7 +23,7 @@ export default meta;
 type Story = StoryObj<typeof EmptyState>;
 
 /**
- * The title uses Cormorant Garamond (font-display) at 20px per design spec.
+ * The title uses Noto Serif SC (font-display) at 20px per design spec.
  * This is intentional — the display serif creates contrast against body text.
  */
 export const Default: Story = {

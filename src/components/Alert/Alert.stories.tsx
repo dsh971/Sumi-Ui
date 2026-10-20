@@ -37,7 +37,7 @@ export const Warning: Story = {
 };
 
 /**
- * Danger uses an inverse cinnabar fill (dark cinnabar-600 background, silk-50 text)
+ * Danger uses an inverse cinnabar fill (dark cinnabar-600 background, fg-on-cinnabar text)
  * with a lighter cinnabar-200 left accent bar — the highest severity level in the system.
  */
 export const Danger: Story = {
@@ -64,7 +64,7 @@ export const WithTitle: Story = {
       <Alert variant="warning" title="Storage almost full">
         You&apos;re using 92% of your storage. Upgrade to avoid service interruption.
       </Alert>
-      {/* Danger: cinnabar-600 bg (dark fill) + silk-50 text — most assertive variant */}
+      {/* Danger: cinnabar-600 bg (dark fill) + fg-on-cinnabar text — most assertive variant */}
       <Alert variant="danger" title="Payment failed">
         We couldn&apos;t charge your card ending in 4242. Update your billing details.
       </Alert>

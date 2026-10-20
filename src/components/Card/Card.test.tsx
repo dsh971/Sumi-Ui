@@ -9,14 +9,22 @@ describe("Card", () => {
     expect(screen.getByText("Card content")).toBeInTheDocument();
   });
 
-  it("renders default variant without throwing", () => {
-    render(<Card variant="default">Default</Card>);
-    expect(screen.getByText("Default")).toBeInTheDocument();
+  it("defaults to the plain variant: no fill, no box, one top hairline", () => {
+    render(<Card>Plain</Card>);
+    const card = screen.getByText("Plain");
+    expect(card).toHaveAttribute("data-variant", "plain");
+    expect(card).toHaveClass("border-t");
+    expect(card).not.toHaveClass("bg-bg-card");
+    expect(card).not.toHaveClass("rounded-lg");
+    expect(card.className).not.toMatch(/shadow/);
   });
 
-  it("renders elevated variant without throwing", () => {
-    render(<Card variant="elevated">Elevated</Card>);
-    expect(screen.getByText("Elevated")).toBeInTheDocument();
+  it("renders the bordered variant as a white sheet with a hairline edge and no shadow", () => {
+    render(<Card variant="bordered">Bordered</Card>);
+    const card = screen.getByText("Bordered");
+    expect(card).toHaveAttribute("data-variant", "bordered");
+    expect(card).toHaveClass("bg-bg-card", "rounded-lg", "border");
+    expect(card.className).not.toMatch(/shadow/);
   });
 
   it("accepts additional className", () => {
@@ -145,5 +153,33 @@ describe("Card accessibility", () => {
       </Card>,
     );
     expect(await axe(container)).toHaveNoViolations();
+  });
+});
+
+describe("Card — section padding follows the variant", () => {
+  it("sets plain sections flush and bordered sections inset", () => {
+    render(
+      <>
+        <Card>
+          <CardBody>Plain body</CardBody>
+        </Card>
+        <Card variant="bordered">
+          <CardBody>Bordered body</CardBody>
+        </Card>
+      </>,
+    );
+    expect(screen.getByText("Plain body")).toHaveClass("px-0");
+    expect(screen.getByText("Bordered body")).toHaveClass("px-5");
+  });
+
+  it("lets a consumer's own px-* on a section win", () => {
+    render(
+      <Card>
+        <CardHeader className="px-8">Header</CardHeader>
+      </Card>,
+    );
+    const header = screen.getByText("Header");
+    expect(header).toHaveClass("px-8");
+    expect(header).not.toHaveClass("px-0");
   });
 });

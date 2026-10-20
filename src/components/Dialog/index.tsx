@@ -41,7 +41,7 @@ export const DialogContent = React.forwardRef<
   // BUG-018 fix: --radius-4 (10px, Sheet's own default desktop rounding)
   // is the same value the old rounded-xl override resolved to — no
   // Dialog-specific corner-radius override needed, and leaving it out
-  // lets Sheet's mobile rounded-t-[18px] form apply correctly too.
+  // lets Sheet's mobile rounded-t-[var(--radius-3)] form apply correctly too.
   <SheetContent
     ref={ref}
     breakpoint={640}
@@ -88,7 +88,7 @@ export const DialogFooter = ({ className, ...props }: DialogFooterProps) => (
 );
 DialogFooter.displayName = "DialogFooter";
 
-// BUG-017 fix: Cormorant Garamond (font-display) at 20px per spec, not Inter 18px
+// BUG-017 fix: Song display face (font-display) at 20px per spec, not Inter 18px
 export const DialogTitle = React.forwardRef<
   React.ElementRef<typeof RadixDialog.Title>,
   DialogTitleProps

@@ -17,14 +17,14 @@ export const Default: Story = {
     <div style={{ padding: "24px", maxWidth: "360px" }}>
       <Card>
         <CardHeader>
-          <h3 style={{ margin: 0, fontSize: "18px", fontWeight: 500 }}>Default card</h3>
+          <h3 style={{ margin: 0, fontSize: "18px", fontWeight: 500 }}>Plain card</h3>
           <p style={{ margin: "4px 0 0", fontSize: "14px", color: "var(--fg-2)" }}>
             A quiet surface for content.
           </p>
         </CardHeader>
         <CardBody>
           <p style={{ margin: 0, fontSize: "14px", color: "var(--fg-2)" }}>
-            Sumi cards are border-led, not shadow-led. Border at rest, light shadow on hover.
+            The default card is space and a single hairline — no box, no fill, no shadow.
           </p>
         </CardBody>
       </Card>
@@ -32,16 +32,16 @@ export const Default: Story = {
   ),
 };
 
-export const Elevated: Story = {
+export const Bordered: Story = {
   render: () => (
     <div style={{ padding: "24px", maxWidth: "360px" }}>
-      <Card variant="elevated">
+      <Card variant="bordered">
         <CardHeader>
-          <h3 style={{ margin: 0, fontSize: "18px", fontWeight: 500 }}>Elevated card</h3>
+          <h3 style={{ margin: 0, fontSize: "18px", fontWeight: 500 }}>Bordered card</h3>
         </CardHeader>
         <CardBody>
           <p style={{ margin: 0, fontSize: "14px", color: "var(--fg-2)" }}>
-            Shadow-md — used for detached surfaces like menus and popovers.
+            A white sheet on the silk page, for dense app regions. Hairline edge, never a shadow.
           </p>
         </CardBody>
       </Card>

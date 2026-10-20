@@ -51,3 +51,26 @@ describe("Switch accessibility", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 });
+
+describe("Switch — generated ids (useId)", () => {
+  it("gives two switches with the same label distinct ids", () => {
+    render(
+      <>
+        <Switch label="Enabled" />
+        <Switch label="Enabled" />
+      </>,
+    );
+    const switches = screen.getAllByRole("switch", { name: "Enabled" });
+    expect(switches).toHaveLength(2);
+    expect(switches[0]?.id).not.toBe(switches[1]?.id);
+  });
+});
+
+describe("Switch — unlabelled error wiring", () => {
+  it("points aria-describedby at the rendered error, never undefined-*", () => {
+    render(<Switch aria-label="Sync" errorText="Required" />);
+    const id = screen.getByRole("switch").getAttribute("aria-describedby") ?? "";
+    expect(id).not.toMatch(/^undefined/);
+    expect(document.getElementById(id)).toHaveTextContent("Required");
+  });
+});

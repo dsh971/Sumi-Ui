@@ -88,7 +88,7 @@ export const InBrandContext: Story = {
           maxWidth: "360px",
         }}
       >
-        <p style={{ margin: 0, fontSize: "14px", color: "var(--fg-2)", fontStyle: "italic" }}>
+        <p style={{ margin: 0, fontSize: "14px", color: "var(--fg-2)" }}>
           &quot;A great deal of unmarked paper, a few decisive marks, a single red seal.&quot;
         </p>
         <div style={{ position: "absolute", bottom: "12px", right: "12px" }}>

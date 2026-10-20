@@ -108,11 +108,11 @@ export const SheetContent = React.forwardRef<
           style={{ ...(!isMobile ? { maxWidth: desktopMaxWidth } : undefined), ...style }}
           className={cn(
             "fixed z-50 outline-none box-border",
-            "bg-bg-card border border-[color:var(--line-1)] [box-shadow:var(--shadow-lg)]",
+            "bg-bg-card border border-[color:var(--line-1)] [box-shadow:var(--shadow-lg)] [--knockout:var(--bg-1)]",
             "[overscroll-behavior:contain]",
             isMobile
               ? cn(
-                  "inset-x-0 bottom-0 w-full rounded-t-[18px] max-h-[90vh] overflow-y-auto",
+                  "inset-x-0 bottom-0 w-full rounded-t-[var(--radius-3)] max-h-[90vh] overflow-y-auto",
                   sheetMobileTransition,
                 )
               : cn(
@@ -125,7 +125,7 @@ export const SheetContent = React.forwardRef<
         >
           {isMobile && showHandle && (
             <div aria-hidden="true" className="flex justify-center pt-2.5 pb-0.5">
-              <div className="h-1 w-[34px] rounded-full bg-[color:var(--line-3)]" />
+              <div className="h-[3px] w-[34px] bg-[color:var(--line-3)]" />
             </div>
           )}
           {children}

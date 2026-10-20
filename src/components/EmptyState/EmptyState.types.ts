@@ -1,7 +1,7 @@
 import type React from "react";
 
 export interface EmptyStateProps {
-  /** ≤ 6 words; optionally one italic-tinted word via <accent-em> */
+  /** ≤ 6 words; optionally one ink-weight word via <span className="ink-em"> */
   title: string;
   /** ≤ 18 words of context */
   description?: string;

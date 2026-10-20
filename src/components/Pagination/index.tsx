@@ -47,8 +47,10 @@ const itemBase = cn(
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
 );
 
-// BUG-022 fix: active page uses ink-800 fill (charcoal), not malachite accent
-const activePageClasses = "bg-ink-800 text-[color:var(--silk-50)] border border-ink-800";
+// BUG-022 fix: active page is an ink fill, not the malachite accent. Ink tones flip
+// with the theme (like Button `ink`), so the current page stays visible on charcoal.
+const activePageClasses =
+  "bg-[color:var(--ink-nong)] text-[color:var(--bg-0)] border border-[color:var(--ink-nong)]";
 
 export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
   ({ page, totalPages, onPageChange, siblingCount = 1, className }, ref) => {

@@ -13,18 +13,24 @@ const variantClasses: VariantClassMap<BadgeVariant> = {
   danger:
     "bg-[color:var(--status-danger-bg)] text-[color:var(--status-danger)] border border-[color:var(--cinnabar-200)]",
   info: "bg-[color:var(--status-info-bg)] text-[color:var(--status-info)] border border-[color:var(--azurite-200)]",
-  jade: "bg-malachite-100 text-malachite-700 border border-malachite-200",
-  clay: "bg-canvas-100 text-canvas-700 border border-canvas-200",
+  jade: "bg-[color:var(--badge-malachite-bg)] text-[color:var(--badge-malachite-fg)] border border-[color:var(--badge-malachite-border)]",
+  clay: "bg-[color:var(--badge-canvas-bg)] text-[color:var(--badge-canvas-fg)] border border-[color:var(--badge-canvas-border)]",
   // sienna and its deprecated alias peach must stay identical — Badge.test.tsx
   // asserts they render the same classes. Previously both resolved to
   // cinnabar-* (a copy-paste bug from peach's pre-migration name); sienna
   // has its own token scale in tokens.css, matching the malachite/canvas
   // sibling entries' -100/-700/-200 triad.
-  peach: "bg-sienna-100 text-sienna-700 border border-sienna-200",
-  malachite: "bg-malachite-100 text-malachite-700 border border-malachite-200",
-  canvas: "bg-canvas-100 text-canvas-700 border border-canvas-200",
-  sienna: "bg-sienna-100 text-sienna-700 border border-sienna-200",
-  seal: "bg-[color:var(--highlight)] text-[color:var(--fg-on-cinnabar)] border-transparent",
+  peach:
+    "bg-[color:var(--badge-sienna-bg)] text-[color:var(--badge-sienna-fg)] border border-[color:var(--badge-sienna-border)]",
+  malachite:
+    "bg-[color:var(--badge-malachite-bg)] text-[color:var(--badge-malachite-fg)] border border-[color:var(--badge-malachite-border)]",
+  canvas:
+    "bg-[color:var(--badge-canvas-bg)] text-[color:var(--badge-canvas-fg)] border border-[color:var(--badge-canvas-border)]",
+  sienna:
+    "bg-[color:var(--badge-sienna-bg)] text-[color:var(--badge-sienna-fg)] border border-[color:var(--badge-sienna-border)]",
+  // The seal is pressed in full pigment in both themes (decision 004); --highlight
+  // steps lighter in dark and would drop its text below AA.
+  seal: "bg-[color:var(--pigment-cinnabar)] text-[color:var(--fg-on-cinnabar)] border-transparent",
 };
 
 const dotColorClasses: VariantClassMap<BadgeVariant> = {
@@ -50,7 +56,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         "inline-flex items-center gap-1.5",
         // BUG-009 fix: padding 10px/3px per spec (not on 4pt grid — use arbitrary values)
         // BUG-010 fix: 11.5px per spec, not 12px (text-xs)
-        "rounded-full px-[10px] py-[3px]",
+        "rounded-sm px-[8px] py-[3px]",
         "text-[11.5px] font-medium leading-none",
         "whitespace-nowrap",
         variantClass(variantClasses, variant),

@@ -3,37 +3,29 @@ import React from "react";
 import { cn } from "../../lib/cn";
 import type { TabsContentProps, TabsListProps, TabsProps, TabsTriggerProps } from "./Tabs.types";
 
-// BUG-012 fix: add `variant` prop supporting "underline" (spec primary) and "segmented"
-// "underline" is now the default to match the spec's primary tabs pattern
+// Tabs are underline-only: an ink rule under the active label, no container
+// fill. The segmented/pill pattern belongs to SegmentedControl (decision 004).
 
 export const Tabs = React.forwardRef<React.ElementRef<typeof RadixTabs.Root>, TabsProps>(
   (props, ref) => <RadixTabs.Root ref={ref} {...props} />,
 );
 Tabs.displayName = "Tabs";
 
-export const TabsList = React.forwardRef<
-  React.ElementRef<typeof RadixTabs.List>,
-  TabsListProps & { variant?: "underline" | "segmented" }
->(({ className, variant = "underline", ...props }, ref) => (
-  <RadixTabs.List
-    ref={ref}
-    className={cn(
-      variant === "underline"
-        ? // Primary tabs pattern per spec: flush bottom border, no container fill
-          "flex gap-0 border-b border-[color:var(--line-2)]"
-        : // Secondary segmented pill pattern
-          "inline-flex items-center gap-0.5 rounded-lg bg-bg-sunken p-1 border border-[color:var(--line-1)]",
-      className,
-    )}
-    {...props}
-  />
-));
+export const TabsList = React.forwardRef<React.ElementRef<typeof RadixTabs.List>, TabsListProps>(
+  ({ className, ...props }, ref) => (
+    <RadixTabs.List
+      ref={ref}
+      className={cn("flex gap-0 border-b border-[color:var(--line-2)]", className)}
+      {...props}
+    />
+  ),
+);
 TabsList.displayName = "TabsList";
 
 export const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof RadixTabs.Trigger>,
-  TabsTriggerProps & { variant?: "underline" | "segmented" }
->(({ className, variant = "underline", ...props }, ref) => (
+  TabsTriggerProps
+>(({ className, ...props }, ref) => (
   <RadixTabs.Trigger
     ref={ref}
     className={cn(
@@ -42,23 +34,14 @@ export const TabsTrigger = React.forwardRef<
       "transition-colors",
       "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
       "disabled:pointer-events-none disabled:opacity-50",
-      variant === "underline"
-        ? [
-            // Underline pattern: bottom-border indicator, no background
-            "px-4 py-[10px]",
-            "border-b-2 border-transparent -mb-px",
-            "data-[state=active]:border-[color:var(--ink-800)] data-[state=active]:text-fg-1 data-[state=active]:font-medium",
-            "data-[state=inactive]:text-fg-2 data-[state=inactive]:font-normal",
-            "data-[state=inactive]:hover:text-fg-1 data-[state=inactive]:hover:border-[color:var(--line-2)]",
-          ].join(" ")
-        : [
-            // Segmented pattern: filled active tab
-            "rounded-md px-3 py-1.5 font-medium",
-            "data-[state=active]:bg-bg-card data-[state=active]:text-fg-1",
-            "data-[state=active]:[box-shadow:var(--shadow-xs)]",
-            // M-3 fix: use semantic bg-bg-sunken not raw var(--bg-2)
-            "data-[state=inactive]:text-fg-2 data-[state=inactive]:hover:bg-bg-sunken data-[state=inactive]:hover:text-fg-1",
-          ].join(" "),
+      "px-4 py-[10px]",
+      "border-b-2 border-transparent -mb-px",
+      // One weight for every state, so switching tabs never reflows the row; the
+      // active tab reads by ink colour and the underline (decision 004).
+      "font-medium",
+      "data-[state=active]:border-[color:var(--line-ink)] data-[state=active]:text-fg-1",
+      "data-[state=inactive]:text-fg-2",
+      "data-[state=inactive]:hover:text-fg-1 data-[state=inactive]:hover:border-[color:var(--line-2)]",
       className,
     )}
     {...props}

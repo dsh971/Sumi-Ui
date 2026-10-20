@@ -36,7 +36,8 @@ export const TooltipContent = React.forwardRef<
       className={cn(
         "z-50 max-w-[240px] overflow-hidden",
         "rounded-md px-2.5 py-1.5",
-        "bg-ink-800 text-[color:var(--silk-50)]",
+        // Inverted ink chip that flips with the theme: charcoal on silk, pale on charcoal.
+        "bg-[color:var(--ink-nong)] text-[color:var(--bg-0)]",
         "text-xs leading-snug",
         "[box-shadow:var(--shadow-md)]",
         "origin-[--radix-tooltip-content-transform-origin]",
@@ -46,7 +47,7 @@ export const TooltipContent = React.forwardRef<
       {...props}
     >
       {children}
-      <RadixTooltip.Arrow className="fill-ink-800" />
+      <RadixTooltip.Arrow className="fill-[color:var(--ink-nong)]" />
     </RadixTooltip.Content>
   </RadixTooltip.Portal>
 ));

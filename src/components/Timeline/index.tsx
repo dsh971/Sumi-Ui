@@ -10,7 +10,7 @@ export type {
   TimelineProps,
 } from "./Timeline.types";
 
-const dotBase = "w-[9px] h-[9px] rounded-full mt-[5px] shadow-[0_0_0_3px_var(--bg-0)] z-10";
+const dotBase = "w-[9px] h-[9px] rounded-full mt-[5px] shadow-[0_0_0_3px_var(--knockout)] z-10";
 
 const dotClasses: Record<Extract<TimelineMarker, `dot${string}`>, string> = {
   dot: cn(dotBase, "bg-[color:var(--ink-300)]"),
@@ -20,14 +20,14 @@ const dotClasses: Record<Extract<TimelineMarker, `dot${string}`>, string> = {
   "dot-danger": cn(dotBase, "bg-[color:var(--cinnabar-500)]"),
   "dot-pending": cn(dotBase, "bg-[color:var(--steel-500)]"),
   "dot-hollow": cn(
-    "w-[7px] h-[7px] mt-[5px] rounded-full bg-[color:var(--bg-0)]",
-    "border-2 border-[color:var(--ink-800)] shadow-[0_0_0_3px_var(--bg-0)] z-10",
+    "w-[7px] h-[7px] mt-[5px] rounded-full bg-[color:var(--knockout)]",
+    "border-2 border-[color:var(--fg-1)] shadow-[0_0_0_3px_var(--knockout)] z-10",
   ),
 };
 
 const iconBase = cn(
   "w-[26px] h-[26px] rounded-full flex items-center justify-center z-10",
-  "shadow-[0_0_0_3px_var(--bg-0)]",
+  "shadow-[0_0_0_3px_var(--knockout)]",
 );
 
 const iconClasses: Record<Extract<TimelineMarker, `icon${string}`>, string> = {
@@ -104,7 +104,7 @@ function DisclosureToggle({
       aria-label={expanded ? "Collapse" : "Expand"}
       className={cn(
         "flex items-center justify-center w-5 h-5 mt-[1px] shrink-0 rounded-md bg-transparent border-0 cursor-pointer",
-        "text-fg-3 transition-colors hover:bg-[color:var(--bg-1)] hover:text-fg-1",
+        "text-fg-3 transition-colors hover:bg-bg-sunken hover:text-fg-1",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
       )}
     >
@@ -185,16 +185,18 @@ function TimelineRow({
               aria-current={isSelected ? "true" : undefined}
               className={cn(
                 "block w-full text-left bg-transparent border-0 p-1 -m-1 rounded-md cursor-pointer",
-                "transition-colors hover:bg-[color:var(--bg-1)]",
+                "transition-colors hover:bg-bg-sunken",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
-                isSelected && "bg-[color:var(--bg-1)]",
+                // Selected = sunken wash + an ink bar at the leading edge. --bg-3 would
+                // drop the --fg-3 meta text below AA (4.2:1), so depth comes from the bar.
+                isSelected && "bg-bg-sunken shadow-[inset_2px_0_0_var(--line-ink)]",
               )}
             >
               <div className="text-[13.5px] text-fg-1 leading-[1.45]">
                 {item.avatar && (
                   <span
                     aria-hidden="true"
-                    className="w-6 h-6 rounded-full inline-flex items-center justify-center font-semibold text-[10px] text-[color:var(--silk-50)] align-middle me-1.5"
+                    className="w-6 h-6 rounded-full inline-flex items-center justify-center font-semibold text-[10px] text-[color:var(--fg-on-ink)] align-middle me-1.5"
                     style={{ background: item.avatar.color }}
                   >
                     {item.avatar.initials}

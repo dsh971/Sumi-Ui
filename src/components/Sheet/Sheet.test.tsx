@@ -60,7 +60,7 @@ describe("Sheet", () => {
     render(<TestSheet open />);
     const content = screen.getByRole("dialog");
     expect(content.className).toMatch(/animate-sumi-sheet/);
-    expect(content.className).toMatch(/rounded-t-\[18px\]/);
+    expect(content.className).toMatch(/rounded-t-\[var\(--radius-3\)\]/);
   });
 
   it("shows the drag handle on mobile by default", () => {

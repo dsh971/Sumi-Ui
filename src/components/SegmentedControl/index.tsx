@@ -5,9 +5,9 @@ import type { SegmentedControlItemProps, SegmentedControlProps } from "./Segment
 
 /**
  * Standalone value-picker in the "paper inset" style documented in
- * Sumi-Design-System/preview/tabs.html ("Tabs & segmented" card). Distinct
- * from Tabs' segmented variant, which is a tab-panel switcher (requires an
- * associated TabsContent) — this is a single-select control with no content
+ * Sumi-Design-System/preview/tabs.html ("Tabs & segmented" card): the selected
+ * segment is a white sheet laid on a sunken track. Unlike Tabs (a tab-panel
+ * switcher with TabsContent), this is a single-select control with no content
  * panels, built on @radix-ui/react-radio-group for roving-tabindex/arrow-key
  * navigation and radiogroup/radio ARIA semantics.
  */
@@ -34,7 +34,7 @@ export const SegmentedControlItem = React.forwardRef<
       "transition-colors",
       "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
       "disabled:opacity-50 disabled:cursor-not-allowed",
-      "data-[state=checked]:bg-bg-page data-[state=checked]:text-fg-1 data-[state=checked]:font-medium",
+      "data-[state=checked]:bg-bg-card data-[state=checked]:text-fg-1 data-[state=checked]:font-medium",
       "data-[state=checked]:[box-shadow:var(--shadow-xs)]",
       className,
     )}

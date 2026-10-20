@@ -36,9 +36,9 @@ describe("Toast", () => {
     "applies variant=%s root class",
     (variant: ToastVariant) => {
       const expected: Record<ToastVariant, string> = {
-        success: "border-l-[color:var(--malachite-500)]",
-        info: "border-l-[color:var(--azurite-500)]",
-        warning: "border-l-[color:var(--persimmon-500)]",
+        success: "border-l-[color:var(--status-success)]",
+        info: "border-l-[color:var(--status-info)]",
+        warning: "border-l-[color:var(--status-warning-bar)]",
         danger: "bg-[color:var(--cinnabar-600)]",
       };
       renderToast(
@@ -56,7 +56,7 @@ describe("Toast", () => {
         <ToastTitle>Message</ToastTitle>
       </Toast>,
     );
-    expect(screen.getByTestId("toast")).toHaveClass("border-l-[color:var(--azurite-500)]");
+    expect(screen.getByTestId("toast")).toHaveClass("border-l-[color:var(--status-info)]");
   });
 
   it('exposes role="status"', () => {

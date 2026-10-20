@@ -111,3 +111,14 @@ window.HTMLElement.prototype.scrollTo = function scrollTo(
   }
   this.dispatchEvent(new Event("scroll"));
 };
+
+// TanStack Virtual (Combobox list, virtualized Table body) arms a 150ms
+// "is-scrolling" reset timer on every scroll. Timers still pending when a test
+// file finishes can fire after vitest tears jsdom down, where React's update
+// path reads `window` and throws an unhandled ReferenceError (BUG-001). Waiting
+// just past that delay lets them fire while jsdom is alive; timers fire in
+// expiry order, so this one always runs after them, whatever the machine load.
+const VIRTUALIZER_IS_SCROLLING_RESET_MS = 150;
+afterAll(
+  () => new Promise<void>((done) => setTimeout(done, VIRTUALIZER_IS_SCROLLING_RESET_MS + 50)),
+);

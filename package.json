@@ -8,9 +8,14 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./styles": "./dist/sumi.css",
     "./package.json": "./package.json"
@@ -18,7 +23,7 @@
   "sideEffects": ["dist/sumi.css"],
   "files": ["dist", "README.md"],
   "scripts": {
-    "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist",
+    "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist && cp dist/index.d.ts dist/index.d.cts",
     "dev": "vite build --watch",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -31,8 +36,8 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

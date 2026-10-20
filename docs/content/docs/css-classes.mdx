@@ -1,0 +1,233 @@
+---
+title: CSS classes & recipes
+description: The classes @sumiui/react/styles ships, how to use tokens in your own CSS, Tailwind utilities via the theme export, and layout recipes.
+---
+
+`@sumiui/react/styles` gives you three things beyond the components: base
+styles for plain HTML elements, a small set of named classes, and the token
+layer. This page shows how to use each, then puts them together.
+
+## Typography classes
+
+Plain elements are already styled — `h1`–`h6`, `p`, `small`, `blockquote`,
+`code`, `kbd`, `pre`, `a`, `hr`. The classes below apply the same styles to any
+element, so the visual level doesn't have to match the document outline.
+
+<ComponentDemo name="css/typography" />
+
+| Class | Same as | Looks like | Use for |
+|---|---|---|---|
+| `.display` | — | Song display, light, fluid 4xl→6xl | One hero headline per page |
+| `.h1` / `.h2` / `.h3` | `h1`–`h3` | Song display face, 4xl / 3xl / 2xl | Page and section titles |
+| `.h4` / `.h5` | `h4`, `h5` | Inter semibold, lg / md | Card titles, field groups |
+| `.h6` / `.eyebrow` | `h6` | Inter 12px, uppercase, tracked, `--fg-2` | The small label above a title — once per section |
+| `.p` | `p` | Inter 15px / 1.55, `--fg-1` | Body copy on a non-`p` element |
+| `.lead` | — | Inter light, lg, `--fg-2` | The standfirst under a headline |
+| `.small` | `small` | 13px, `--fg-2` | Secondary detail |
+| `.caption` | — | 12px, `--fg-3` | Meta lines, image captions, timestamps |
+| `.quote` | `blockquote` | Song light, xl, ink rule on the left | Pull quotes |
+| `.code` | `code`, `kbd`, `samp` | Mono on a `--bg-2` wash | Inline code, key caps |
+
+The base styles live in `@layer base`, so a Tailwind utility or any rule of
+your own wins over them without `!important`.
+
+## Voice classes
+
+### `.ink-em` — one heavier word
+
+Emphasis comes from ink density, not colour or slant: one word at
+`--weight-semi` in `--ink-jiao`, upright.
+
+```html
+<h1 class="display">A <span class="ink-em">quiet</span> place to write.</h1>
+```
+
+Use it **once per headline**, never in body copy. It replaces the 2.x
+`.accent-em`.
+
+### `.brush-rule` — the section divider
+
+A 56px tapered ink stroke, pressed at the head and lifted to a point. It is
+drawn in `--line-ink` through a mask, so it inverts in dark mode.
+
+```html
+<div class="eyebrow">Journal</div>
+<h2>Recent pieces</h2>
+<hr class="brush-rule" />
+```
+
+One per section at most. Use plain `<hr>` (a `--line-1` hairline) for every
+other separation.
+
+### `.sm-skeleton` — loading shimmer
+
+The shimmer the `Skeleton` component uses, for custom placeholder shapes:
+
+```tsx
+<div className="sm-skeleton" style={{ height: 12, width: "60%", borderRadius: "var(--radius-1)" }} />
+```
+
+Prefer the `Skeleton` component, which adds the right ARIA; reach for the
+class only for shapes it doesn't cover.
+
+## Tokens in your own CSS
+
+Every design value is a custom property. Write custom CSS against the
+**semantic** tokens — they flip in dark mode — and keep raw scale steps for
+the rare fixed-colour case.
+
+```css
+.note {
+  background: var(--bg-1);
+  border: 1px solid var(--line-1);
+  border-radius: var(--radius-3);
+  padding: var(--space-4) var(--space-5);
+  color: var(--fg-1);
+}
+
+.note__meta {
+  font-size: var(--sumi-text-xs);
+  color: var(--fg-3);
+}
+
+.note:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+```
+
+Two tokens solve specific layout problems:
+
+```css
+/* A white panel that hosts Timeline dots, Stepper nodes or an AvatarSeal:
+   tell their rings what surface they sit on. */
+.side-panel {
+  background: var(--bg-1);
+  --knockout: var(--bg-1);
+}
+
+/* A full-bleed plate that should carry the silk fibre like the page does. */
+.hero-plate {
+  background-color: var(--bg-0);
+  background-image: var(--paper-grain);
+}
+```
+
+See **[CSS & Styling](/docs/css)** for the full token reference.
+
+## Tailwind utilities
+
+`@sumiui/react/styles` is precompiled, so it only contains the utilities the
+components themselves use. If your app uses Tailwind v4, import the theme and
+every Sumi utility generates on demand:
+
+```css
+/* app.css */
+@import "tailwindcss";
+@import "@sumiui/react/theme.css";
+```
+
+Load `@sumiui/react/styles` **after** this stylesheet (see
+[Installation](/docs/installation#using-sumi-utilities-in-your-own-tailwind-optional)):
+both put element styles in `@layer base`, so the one that loads last wins.
+
+The utilities reference the Sumi tokens directly (`text-ink-jiao` →
+`color: var(--ink-jiao)`), so they follow dark mode with no extra setup.
+
+| Group | Utilities | Token |
+|---|---|---|
+| Surfaces | `bg-bg-page` · `bg-bg-card` · `bg-bg-sunken` · `bg-bg-pressed` | `--bg-0` … `--bg-3` |
+| Text | `text-fg-1` · `text-fg-2` · `text-fg-3` · `text-fg-4` | `--fg-*` |
+| Ink tones | `text-ink-jiao` · `text-ink-nong` · `bg-ink-nong` · … | `--ink-jiao` … `--ink-qing` |
+| Brand | `bg-accent` · `text-accent-on` · `text-secondary` · `text-highlight` | `--accent`, `--secondary`, `--highlight` |
+| Status | `text-status-danger` · `bg-status-danger-bg` · … | `--status-*` |
+| Lines | `border-line-1` · `border-line-2` · `border-line-ink` | `--line-*` |
+| Pigments | `bg-malachite-50` · `text-azurite-700` · `border-cinnabar-200` · … | raw scales |
+| Radius | `rounded-sm` 2px · `rounded-md` 4px · `rounded-lg` 6px · `rounded-xl` 10px | `--radius-1` … `--radius-4` |
+| Shadow | `shadow-xs` · `shadow-sm` · `shadow-md` · `shadow-lg` | `--shadow-*` |
+| Spacing | `p-1` 4px · `p-4` 16px · `gap-7` 32px · `gap-9` 56px | `--space-*` |
+| Type | `font-display` · `font-mono` | Noto Serif SC, JetBrains Mono |
+| Grid shells | `grid-cols-shell-sidebar-content` · `grid-cols-shell-sidebar-content-properties` | named tracks |
+
+```tsx
+// An article header with utilities. Tailwind's text scale isn't re-mapped, so
+// text-4xl / text-lg are Tailwind's sizes — use .display / .lead for Sumi's
+// exact type, or arbitrary values such as text-[length:var(--sumi-text-lg)].
+<header className="grid gap-2">
+  <p className="text-xs uppercase tracking-[0.18em] text-fg-2">Journal</p>
+  <h1 className="font-display text-4xl font-light text-ink-nong">
+    A <span className="font-semibold text-ink-jiao">quiet</span> place to write.
+  </h1>
+  <p className="text-lg font-light text-fg-2">Four times a year. Read at your pace.</p>
+</header>
+
+// An app shell
+<div className="grid min-h-screen grid-cols-shell-sidebar-content bg-bg-page">
+  <aside className="border-r border-line-1 bg-bg-card p-4">…</aside>
+  <main className="p-7">…</main>
+</div>
+```
+
+The theme changes your Tailwind scales app-wide: spacing steps `1`–`12`
+follow Sumi's (`p-7` is 32px, `w-10` is 72px), `rounded-lg` is 6px, and
+`slate-*` and `teal-*` become Sumi's pigments. Text sizes stay Tailwind's, and
+Tailwind's own `shadow-xl` and `rounded-2xl` keep their defaults.
+
+## Recipes
+
+<ComponentDemo name="css/recipes" />
+
+### Settings panel
+
+App UI that must read as a discrete object goes on a **bordered** card. The
+eyebrow labels the section; the footer holds the actions, primary last.
+
+### Status note
+
+Status text sits on its own tint (`--status-*-bg`) — that pairing is tested to
+4.5:1 in both themes. The bar is square, 3px, in `--status-warning-bar` (or the
+status colour for the other tones).
+
+### Content in space
+
+For lists of content — articles, pieces, results — use **plain** cards: no
+fill, no box, one hairline above each item, text flush with the column. Space
+does the separating.
+
+### Scoped dark pane
+
+For a dark preview inside a light page, put the `theme-dark` class on the pane.
+It re-declares every token and alias for that subtree, so the shipped classes,
+the components and `theme.css` utilities all follow it. Give the pane its own
+background and text colour:
+
+```tsx
+<section className="theme-dark" style={{ background: "var(--bg-0)", color: "var(--fg-1)" }}>
+  <div className="eyebrow">Preview</div>
+  <h2>
+    Night <span className="ink-em">reading</span>
+  </h2>
+  <p className="caption">Inherits the dark tokens</p>
+</section>
+```
+
+Don't hand-copy a few dark values into your own selector: anything you miss
+(`--ink-*`, `--line-ink`, `--fg-3`, the code wash…) stays light, and text such
+as `.ink-em` can drop to near-invisible contrast. Portaled overlays (Dialog,
+Popover, Tooltip) render under `<body>`, outside the pane, so they keep the page
+theme; for a fully dark surface, theme the whole document instead.
+
+## Rules of thumb
+
+- **No pills.** `--radius-full` is for true circles — avatars and dots. Badges,
+  buttons, tabs and inputs stay near-square.
+- **One `.ink-em` per headline, one `.eyebrow` per section, one `.brush-rule`
+  per section.**
+- **Cinnabar belongs to the seal.** Use `--status-danger` for errors and the
+  seal for identity; don't paint headings or links red.
+- **No shadows on cards.** `--shadow-md` and `--shadow-lg` are for floating
+  overlays (menus, popovers, dialogs, toasts).
+- **Keep `--fg-3` off `--bg-3`.** Muted text fails contrast on the pressed
+  surface; selected states use `--bg-2` plus an ink mark.
+- **Prefer semantic tokens** (`--bg-*`, `--fg-*`) over raw scale steps so dark
+  mode works without extra rules.

@@ -169,6 +169,9 @@ than hard-coded pixel values.
 
 ## Writing custom CSS with tokens
 
+For the shipped classes (`.display`, `.eyebrow`, `.ink-em`, `.brush-rule`…) and
+worked layout recipes, see **[CSS classes & recipes](/docs/css-classes)**.
+
 Reference any token directly in your own CSS:
 
 ```css
@@ -193,9 +196,18 @@ dark mode — you get light and dark for free without any conditional logic.
 
 ## Tailwind utilities
 
-The token layer bridges into Tailwind via `@theme` mappings in `index.css`.
-This means raw color scales like `--malachite-500` are available as Tailwind
-color utilities:
+The token layer bridges into Tailwind via `@theme` mappings. Two things to
+know before writing these in your own markup:
+
+- `@sumiui/react/styles` is **precompiled**: it only contains the utilities
+  SumiUi's components use. A utility nothing in the library uses (for example
+  `text-ink-jiao`, `shadow-md` or `p-7`) is not in it.
+- To use any Sumi utility, add the theme to your own Tailwind v4 entry —
+  `@import "tailwindcss"; @import "@sumiui/react/theme.css";` — and Tailwind
+  generates them on demand. See
+  [CSS classes & recipes](/docs/css-classes#tailwind-utilities).
+
+With the theme imported:
 
 ```tsx
 // Color scales as Tailwind utilities
@@ -242,14 +254,16 @@ Override at `:root` to theme the library without touching component code.
 Import your override file **after** `@sumiui/react/styles`:
 
 ```css
-/* your-theme.css */
+/* your-theme.css — azurite as the primary accent, kept inside Sumi's pigments */
 :root {
-  --accent: #2563eb;          /* swap primary brand colour */
-  --accent-soft: #dbeafe;
-  --accent-strong: #1d4ed8;
-  --accent-on: #ffffff;
+  --accent: var(--azurite-600);
+  --accent-soft: var(--azurite-50);
+  --accent-strong: var(--azurite-700);
+  --accent-on: var(--fg-on-azurite);
 }
 ```
+
+Re-declare the dark values too — see [Theming](/docs/theming#customizing-tokens).
 
 If you need a scoped dark-mode toggle on a subtree (not `<html>`), re-declare
 the semantic aliases at that same selector — CSS resolves `var()` at

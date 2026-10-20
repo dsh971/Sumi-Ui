@@ -13,6 +13,8 @@ import CommandPaletteVariants, {
   code as commandPaletteVariantsCode,
 } from "./command-palette/variants";
 import ContainerVariants, { code as containerVariantsCode } from "./container/variants";
+import CssRecipes, { code as cssRecipesCode } from "./css/recipes";
+import CssTypography, { code as cssTypographyCode } from "./css/typography";
 import DatePickerVariants, { code as datePickerVariantsCode } from "./date-picker/variants";
 import DialogVariants, { code as dialogVariantsCode } from "./dialog/variants";
 import DropdownMenuVariants, { code as dropdownMenuVariantsCode } from "./dropdown-menu/variants";
@@ -56,6 +58,8 @@ export const demoRegistry: Record<string, { Component: ComponentType; code: stri
     code: commandPaletteVariantsCode,
   },
   "container/variants": { Component: ContainerVariants, code: containerVariantsCode },
+  "css/recipes": { Component: CssRecipes, code: cssRecipesCode },
+  "css/typography": { Component: CssTypography, code: cssTypographyCode },
   "date-picker/variants": { Component: DatePickerVariants, code: datePickerVariantsCode },
   "dialog/variants": { Component: DialogVariants, code: dialogVariantsCode },
   "dropdown-menu/variants": { Component: DropdownMenuVariants, code: dropdownMenuVariantsCode },

@@ -1,0 +1,152 @@
+---
+title: Upgrading to 3.0
+description: Breaking changes in @sumiui/react 3.0 and how to migrate from 2.x.
+---
+
+3.0 is the **Fresh Silk** release: a near-white ground, a Song display face,
+ink-tone hierarchy and real brushwork, plus a hardening pass on accessibility
+and packaging. It is a clean break — there are no deprecation shims — so work
+through the list below once.
+
+## 1. React 19
+
+`react` and `react-dom` 19 or later are now required.
+
+```bash
+npm install react@^19 react-dom@^19
+```
+
+## 2. Card variants
+
+`CardVariant` is now `"plain" | "bordered"`, defaulting to `"plain"`.
+
+```tsx
+// 2.x
+<Card variant="default">…</Card>
+<Card variant="elevated">…</Card>
+
+// 3.0
+<Card>…</Card>                    {/* plain: no box, one hairline above */}
+<Card variant="bordered">…</Card> {/* white sheet with a hairline edge */}
+```
+
+Cards never carry a shadow. Sections take their side padding from the variant
+(`px-0` plain, `px-5` bordered); your own `px-*` on `CardHeader`, `CardBody` or
+`CardFooter` now wins.
+
+## 3. Tabs
+
+The `variant` prop is gone from `TabsList` and `TabsTrigger`; tabs are
+underline-only. For the pill-style switcher, use `SegmentedControl`.
+
+```tsx
+// 2.x
+<TabsList variant="segmented">
+  <TabsTrigger value="draft" variant="segmented">Draft</TabsTrigger>
+</TabsList>
+
+// 3.0
+<SegmentedControl defaultValue="draft" aria-label="Status">
+  <SegmentedControlItem value="draft" label="Draft" />
+  <SegmentedControlItem value="published" label="Published" />
+</SegmentedControl>
+```
+
+Every tab now uses one weight, so switching tabs no longer shifts the row.
+
+## 4. `.accent-em` → `.ink-em`
+
+The italic cinnabar headline word is retired. Emphasise one word per headline
+with ink density instead:
+
+```html
+<!-- 2.x -->
+<h1>A quiet <span class="accent-em">place</span> to write.</h1>
+
+<!-- 3.0 -->
+<h1>A <span class="ink-em">quiet</span> place to write.</h1>
+```
+
+Cinnabar is reserved for the seal.
+
+## 5. Removed tokens and utilities
+
+| Removed | Use instead |
+|---|---|
+| `--shadow-xl`, `--sumi-shadow-xl`, `shadow-xl`, `shadow-2xl` | `--shadow-lg` / `shadow-lg`, and only on floating overlays |
+| `--shadow-seal`, `--sumi-shadow-seal` | Nothing — the seal is pressed flat |
+| `--radius-5`, `--radius-2xl`, `rounded-2xl`, `rounded-3xl` | `--radius-4` / `rounded-xl` (10px) is the largest radius |
+| Cormorant Garamond | `--font-display` is now Noto Serif SC |
+
+In `@sumiui/react/styles` the removed utilities generate no CSS at all. (If you
+use [`@sumiui/react/theme.css`](/docs/installation#using-sumi-utilities-in-your-own-tailwind-optional),
+your own Tailwind keeps its defaults for `shadow-xl` and `rounded-2xl`.)
+
+## 6. Surfaces and colour values
+
+The ground moved from cream to near-white, and cards are now **lighter** than
+the page:
+
+| Token | 2.x | 3.0 |
+|---|---|---|
+| `--bg-0` (page) | `#F7F4EB` | `#F9F8F4` |
+| `--bg-1` (card) | `#F1ECDD` | `#FFFFFF` |
+| `--bg-2` (sunken) | `#EBE5D8` | `#F1F0EB` |
+| `--bg-3` (pressed) | `#DCD2BA` | `#E4E2DB` |
+
+If you read raw scale steps directly, these changed too: `--silk-50` `#FFFFFF`,
+`--silk-100` `#F9F8F4`, `--silk-200` `#F1F0EB`, `--silk-300` `#E4E2DB`,
+`--pigment-silk` `#F9F8F4`, `--ink-400` `#6E6962`, `--malachite-50` `#E8F1EB`,
+`--azurite-50` `#E8EDF3`, `--cinnabar-50` `#FAEBE7`. Prefer the semantic
+tokens (`--bg-*`, `--fg-*`), which also flip in dark mode.
+
+## 7. Base styles are layered
+
+The base element styles (`p`, `h1`–`h6`, `blockquote`…) now live in
+`@layer base`, so Tailwind utilities and your own CSS override them. If some
+text relied on the old unlayered `p` colour, size or margin beating a utility,
+it now takes the utility you set.
+
+## 8. Form field IDs
+
+Fields no longer build their `id` from the label text:
+
+```tsx
+// 2.x rendered id="input-email"; 3.0 renders a React useId value.
+<Input label="Email" />
+
+// Pass id when your tests, CSS or scripts need a stable one:
+<Input id="email" label="Email" />
+```
+
+This affects `Input`, `TextArea`, `Checkbox`, `Switch`, `RadioItem`, `Select`
+and `DatePicker`.
+
+## 9. Packaging
+
+- Dependencies (Radix, lucide-react, clsx, tailwind-merge, TanStack Virtual)
+  are no longer bundled in. They install as normal dependencies and your
+  bundler keeps one copy — nothing to change unless you pinned conflicting
+  versions.
+- The bundle is marked `"use client"`; components import straight into
+  Next.js Server Components.
+- CommonJS consumers get their own type declarations (`index.d.cts`).
+- New, optional: [`@sumiui/react/theme.css`](/docs/installation#using-sumi-utilities-in-your-own-tailwind-optional)
+  lets your own Tailwind generate any Sumi utility.
+
+## Smaller rendering changes
+
+These need no code change, but you may notice them:
+
+- Badges, the Alert bar, the Stepper bar, the Switch and the Sheet handle are
+  square; there are no pills.
+- The seal is flat cinnabar with a worn edge and no glow.
+- The selected Timeline row is a sunken wash with an ink bar.
+- `EmptyState`'s `closingBeat` and blockquotes are upright, not italic.
+- The page carries a faint paper grain in light mode (`--paper-grain`).
+- Selected text is a pale malachite wash, not cinnabar.
+- The skeleton shimmer holds still under `prefers-reduced-motion`.
+- Pagination's current page and Tooltip flip with the theme; native controls
+  follow dark mode (`color-scheme`).
+- `DatePicker` gained full keyboard navigation and a `locale` prop; it formats
+  dates in the runtime locale unless you pass one.

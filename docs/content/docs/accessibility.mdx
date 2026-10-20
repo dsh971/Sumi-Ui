@@ -1,11 +1,11 @@
 ---
 title: Accessibility
-description: Keyboard navigation, ARIA conventions, focus management, and automated testing across the library.
+description: Keyboard navigation, ARIA conventions, focus management, contrast guarantees and automated testing across the library.
 ---
 
-All components meet WCAG 2.1 AA (4.5:1 body text, 3:1 large text and UI components).
-Focus rings use `--accent` (malachite green). Every interactive component has
-keyboard navigation and appropriate ARIA roles.
+All components target WCAG 2.1 AA (4.5:1 body text, 3:1 large text and UI components)
+in both light and dark mode. Focus rings use `--accent` (malachite green). Every
+interactive component has keyboard navigation and appropriate ARIA roles.
 
 ## Foundations
 
@@ -29,13 +29,32 @@ keyboard navigation and appropriate ARIA roles.
 | Navigate list items (DropdownMenu, Select, Combobox, CommandPalette) | `↑` / `↓` |
 | Select highlighted option | `Enter` |
 | Navigate Tabs | `←` / `→` (roving tabindex within tab list) |
-| Navigate Stepper (read-only) | `Tab` between steps |
+| Navigate Stepper (read-only) | Not focusable — the progress bar is announced, not a tab stop |
 | Pagination prev/next | `Tab` to button, `Enter` to activate |
 | Table column sort | `Enter` on a `sortable` `TableHead` |
 | Table row select-all | `Space` on `TableSelectHead` checkbox |
-| Combobox search | Type to filter; `↑`/`↓` to move active option |
-| DatePicker | Keyboard-navigable calendar grid; `Escape` to dismiss |
+| Combobox search | Type to filter; `↑`/`↓` to move the active option; `Backspace` on an empty input removes the last chip (multiple) |
 | Toast dismiss | `Escape` |
+
+### DatePicker calendar
+
+Opening the picker focuses the selected day (or today) and shows that month.
+The grid holds a single tab stop and follows the WAI-ARIA date picker dialog
+pattern:
+
+| Key | Action |
+|---|---|
+| `←` / `→` | Previous / next day |
+| `↑` / `↓` | Same day last / next week |
+| `Home` / `End` | First / last day of the week |
+| `PageUp` / `PageDown` | Same day last / next month |
+| `Shift+PageUp` / `Shift+PageDown` | Same day last / next year |
+| `Enter` / `Space` | Select the focused day |
+| `Escape` | Close and return focus to the trigger |
+
+Moving past the first or last day changes the visible month. Days outside
+`min`/`max` stay reachable (`aria-disabled`) so the grid never has gaps, but
+they can't be selected. Today carries `aria-current="date"`.
 
 ## ARIA patterns
 
@@ -43,13 +62,16 @@ keyboard navigation and appropriate ARIA roles.
 |---|---|
 | `Alert` | `role="alert"` (live region, announces on mount) |
 | `Avatar` | `role="img"` with `aria-label` |
-| `Checkbox` | `<input type="checkbox">` with `aria-invalid` on error |
-| `Combobox` | `<input role="combobox">` + `aria-expanded` + `aria-controls` pointing to listbox |
+| `Checkbox` | Radix `<button role="checkbox">` with `aria-checked`, `aria-invalid` on error |
+| `Combobox` | `<input role="combobox">` + `aria-expanded`, `aria-controls`, `aria-autocomplete="list"` and `aria-activedescendant`; listbox is `aria-multiselectable` in multiple mode; loading/empty states are `role="status"` |
+| `CommandPalette` | Same combobox pattern inside a `Dialog` |
+| `DatePicker` | Trigger `aria-haspopup="dialog"`; calendar `role="grid"` with `aria-selected` on the selected cell |
 | `Dialog` | `role="dialog"` + `aria-modal` + focus trap; `aria-labelledby` from title |
 | `DropdownMenu` | `role="menu"` + `role="menuitem"` items |
-| `Pagination` | `<nav aria-label="Pagination">` wrapping `<button>` elements |
-| `Radio` | `<input type="radio">` grouped in a `<fieldset>` with `<legend>` |
+| `Pagination` | `<nav aria-label="Pagination">` wrapping `<button>` elements; current page `aria-current="page"` |
+| `Radio` | Radix `role="radiogroup"` with `role="radio"` items and roving focus |
 | `Select` | Radix `listbox` pattern with `aria-expanded` on trigger |
+| `Stepper` (compact) | `role="progressbar"` with `aria-valuenow` / `aria-valuemax` and a step label |
 | `Switch` | `<button role="switch">` with `aria-checked` |
 | `Table` | Native `<table>` with `<caption>`, `scope` on headers, `aria-sort` on sortable columns |
 | `Tabs` | `role="tablist"` + `role="tab"` + `role="tabpanel"` with `aria-selected` / `aria-controls` |
@@ -59,21 +81,50 @@ keyboard navigation and appropriate ARIA roles.
 ## Focus management
 
 - Focus rings: all interactive elements use `outline: 2px solid var(--accent)` with
-  a 2px offset. The accent token is malachite green (#1e4d2b in light mode) — selected
-  for both distinctiveness and WCAG 3:1 contrast against all background surfaces.
-- Overlays (Dialog, DropdownMenu, CommandPalette, Combobox): focus moves to the first
-  interactive element on open, and returns to the trigger on close.
+  a 2px offset. The accent is malachite in light mode and a lighter malachite step
+  in dark, so the ring keeps 3:1 against every surface.
+- Overlays (Dialog, DropdownMenu, CommandPalette): focus moves into the overlay on
+  open and returns to the trigger on close.
 - Radix manages focus trapping for Dialog automatically via `aria-modal`.
-- Combobox uses `aria-activedescendant` rather than moving DOM focus, so the text
-  input retains focus while the active list option is announced.
+- Combobox and CommandPalette use `aria-activedescendant` rather than moving DOM
+  focus: the text input keeps focus while the highlighted option is announced.
+  The highlighted row stays rendered even when the virtualized list is scrolled
+  away from it.
 
-## Form validation
+## Form fields
 
-`Input`, `Checkbox`, and `Switch` share a consistent error pattern:
+`Input`, `TextArea`, `Checkbox`, `Switch`, `RadioItem`, `Select` and `DatePicker`
+share one pattern:
 
-- `errorText` prop renders a red helper message below the control.
-- The field is marked `aria-invalid="true"` when `errorText` is set.
-- The error message element is referenced via `aria-describedby`.
+- **IDs are generated** with `React.useId()` when you don't pass `id`, so two
+  fields with the same label (or none) never collide, and the `<label>` always
+  points at its own control. Pass `id` when you need a stable value.
+- **Refs reach the control.** `Select` and `DatePicker` forward `ref` to their
+  trigger button, so form libraries can focus a field after validation.
+- **Errors are wired:** `errorText` renders a message below the control, marks the
+  field `aria-invalid="true"`, and links the message with `aria-describedby`.
+  `errorText` replaces `helperText` while it is set.
+
+## Colour and contrast
+
+- Every text token (`--fg-1` … `--fg-3`, accent, secondary, highlight, status) meets
+  4.5:1 on the page, card and sunken surfaces (`--bg-0`, `--bg-1`, `--bg-2`) in
+  both themes. Status text also meets 4.5:1 on its own tint.
+- `--fg-3` (muted text) is **not** allowed on `--bg-3` (≈4.2:1). Selected and
+  pressed states use `--bg-2` plus an ink mark instead.
+- Translucent text that components mix in CSS (the danger Toast description,
+  the danger Alert body) is checked after compositing onto its surface.
+- These rules are enforced by `src/styles/tokens.contrast.test.ts`, which fails the
+  build if a token change breaks a pairing.
+- Dark mode sets `color-scheme: dark`, so native checkboxes, scrollbars and form
+  controls follow the theme.
+
+## Motion
+
+Under `prefers-reduced-motion: reduce`, overlay enter and exit animations
+(Dialog, Sheet, Popover, Select, DropdownMenu, Tooltip, Toast — anything Radix
+marks with `data-state`) finish instantly, and the skeleton shows a still bar
+instead of a sweeping shimmer.
 
 ## Automated testing
 
@@ -93,7 +144,7 @@ describe("MyComponent accessibility", () => {
 `color-contrast` is disabled in the test config — jsdom has no layout engine,
 so every element computes as 0/0 contrast; disabling this rule prevents false
 positives across the whole suite while still catching all structural ARIA
-violations.
+violations. Contrast is covered by the token test above instead.
 
 Portal components (Dialog, Toast, CommandPalette) run axe against `document.body`
 rather than `container`, since Radix renders them outside the React root.

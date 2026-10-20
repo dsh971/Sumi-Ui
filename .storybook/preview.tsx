@@ -24,10 +24,10 @@ const preview: Preview = {
     },
     backgrounds: {
       // Map Storybook backgrounds to sumi surfaces
-      default: "Aged Silk (light)",
+      default: "Fresh Silk (light)",
       values: [
-        { name: "Aged Silk (light)", value: "#F7F4EB" },
-        { name: "Hemp Canvas", value: "#EBE5D8" },
+        { name: "Fresh Silk (light)", value: "#F9F8F4" },
+        { name: "White card", value: "#FFFFFF" },
         { name: "Charcoal Ink (dark)", value: "#161514" },
       ],
     },
@@ -37,6 +37,9 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       const isDark = context.globals.backgrounds?.value === "#161514";
+      // Portaled overlays render outside this wrapper, so the theme class must
+      // also sit on <html> for Dialog, Popover, Toast and friends.
+      document.documentElement.classList.toggle("theme-dark", isDark);
       return (
         <div
           className={cn(

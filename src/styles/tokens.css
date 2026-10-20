@@ -14,11 +14,12 @@
    -------------------------------------------------------------------------- */
 
 /* --------------------------------------------------------------------------
-   :root — LIGHT (default). Aged silk paper, charcoal ink, sparing pigment.
+   :root — LIGHT (default). Fresh silk paper, charcoal ink, sparing pigment.
    -------------------------------------------------------------------------- */
 :root {
+  color-scheme: light; /* native controls and scrollbars follow the theme */
   /* ---- Brand pigments (raw) ----------------------------------------------- */
-  --pigment-silk: #f7f4eb;
+  --pigment-silk: #f9f8f4;
   --pigment-canvas: #ebe5d8;
   --pigment-ink: #1c1b1a;
   --pigment-diluted: #5c564e;
@@ -33,10 +34,10 @@
   --pigment-steel: #5d8aa8;
 
   /* ---- Silk scale (絹) — warm cream --------------------------------------- */
-  --silk-50: #fcfaf3;
-  --silk-100: #f7f4eb;
-  --silk-200: #f1ecdd;
-  --silk-300: #ebe5d8;
+  --silk-50: #ffffff;
+  --silk-100: #f9f8f4;
+  --silk-200: #f1f0eb;
+  --silk-300: #e4e2db;
   --silk-400: #dcd2ba;
   --silk-500: #c8bb97;
   --silk-600: #a89a75;
@@ -61,7 +62,7 @@
   --ink-100: #dddbd5;
   --ink-200: #bab6ab;
   --ink-300: #9a9184;
-  --ink-400: #75706a;
+  --ink-400: #6e6962;
   --ink-500: #5c564e;
   --ink-600: #3f3b36;
   --ink-700: #2c2a26;
@@ -69,7 +70,7 @@
   --ink-900: #0e0d0c;
 
   /* ---- Malachite (翠) — primary brand ------------------------------------ */
-  --malachite-50: #ecf2ee;
+  --malachite-50: #e8f1eb;
   --malachite-100: #d7e4dc;
   --malachite-200: #adc9b7;
   --malachite-300: #7fa88e;
@@ -81,7 +82,7 @@
   --malachite-900: #0e2a16;
 
   /* ---- Azurite (藍) — secondary brand / active --------------------------- */
-  --azurite-50: #eceff3;
+  --azurite-50: #e8edf3;
   --azurite-100: #d4dce5;
   --azurite-200: #a5b6c6;
   --azurite-300: #748da5;
@@ -105,7 +106,7 @@
   --teal-900: #0a211c;
 
   /* ---- Cinnabar (朱) — seal · critical ----------------------------------- */
-  --cinnabar-50: #faefec;
+  --cinnabar-50: #faebe7;
   --cinnabar-100: #f2d9d3;
   --cinnabar-200: #e5b0a6;
   --cinnabar-300: #d58579;
@@ -216,18 +217,36 @@
   --sumi-ink: var(--ink-800);
 
   /* ---- Semantic surfaces ------------------------------------------------- */
-  --bg-0: #f7f4eb;
-  --bg-1: #f1ecdd;
-  --bg-2: #ebe5d8;
-  --bg-3: #dcd2ba;
+  --bg-0: var(--silk-100);
+  --bg-1: var(--silk-50);
+  --bg-2: var(--silk-200);
+  --bg-3: var(--silk-300);
   --bg-overlay: rgba(28, 27, 26, 0.32);
   --bg-scrim: rgba(28, 27, 26, 0.55);
+  /* --knockout: the surface an element sits on, for rings that cut a marker out of
+     its background. Defaults to the page; white containers (bordered Card, Sheet,
+     Popover) re-point it at --bg-1. */
+  --knockout: var(--bg-0);
+  /* --paper-grain: the silk's fibre, a fixed-seed noise tile whose peaks reach
+     ≈3% ink (mean ≈0.5%) over --bg-0 (body, .paper). Felt, not seen; the flat
+     colour still carries every contrast pairing. Off in dark and under
+     prefers-contrast: more (decision 004). */
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85 .6' numOctaves='2' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .106 0 0 0 0 .1 0 0 0 .1 -.045'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+
+  /* ---- Ink tones (墨分五色) — hierarchy by ink density -----------------
+     焦 jiao scorched · 浓 nong thick · 重 zhong heavy · 淡 dan light · 清 qing clear.
+     Text, rules and washes take their weight from these, not from chrome. */
+  --ink-jiao: var(--ink-900);
+  --ink-nong: var(--ink-800);
+  --ink-zhong: var(--ink-500);
+  --ink-dan: var(--ink-400);
+  --ink-qing: var(--ink-200);
 
   /* ---- Semantic foregrounds ---------------------------------------------- */
-  --fg-1: var(--ink-800);
-  --fg-2: var(--ink-500);
-  --fg-3: var(--ink-300);
-  --fg-4: var(--ink-200);
+  --fg-1: var(--ink-nong);
+  --fg-2: var(--ink-zhong);
+  --fg-3: var(--ink-dan);
+  --fg-4: var(--ink-qing);
   --fg-on-malachite: var(--silk-50);
   --fg-on-azurite: var(--silk-50);
   --fg-on-cinnabar: var(--silk-50);
@@ -257,7 +276,7 @@
   --status-success-bg: var(--malachite-50);
   --status-warning: var(--persimmon-700);
   --status-warning-bg: var(--persimmon-100);
-  --status-warning-bar: var(--persimmon-400);
+  --status-warning-bar: var(--persimmon-600);
   --status-danger: var(--cinnabar-600);
   --status-danger-bg: var(--cinnabar-50);
   --status-info: var(--azurite-600);
@@ -267,7 +286,7 @@
   --line-1: rgba(28, 27, 26, 0.08);
   --line-2: rgba(28, 27, 26, 0.14);
   --line-3: rgba(28, 27, 26, 0.26);
-  --line-ink: var(--ink-800);
+  --line-ink: var(--ink-nong);
 
   /* ---- Shadows — paper on paper -------------------------------------------
      Prefixed --sumi-shadow-* (not --shadow-*): Tailwind v4 reserves
@@ -282,20 +301,17 @@
   --sumi-shadow-sm: 0 1px 2px rgba(28, 27, 26, 0.06), 0 1px 1px rgba(28, 27, 26, 0.04);
   --sumi-shadow-md: 0 4px 12px -2px rgba(28, 27, 26, 0.1), 0 2px 4px rgba(28, 27, 26, 0.05);
   --sumi-shadow-lg: 0 12px 32px -8px rgba(28, 27, 26, 0.16), 0 4px 8px rgba(28, 27, 26, 0.05);
-  --sumi-shadow-xl: 0 24px 56px -16px rgba(28, 27, 26, 0.22), 0 8px 16px rgba(28, 27, 26, 0.07);
   --sumi-shadow-inset: inset 0 1px 0 rgba(28, 27, 26, 0.06);
-  --sumi-shadow-seal: 0 0 0 1px rgba(166, 43, 43, 0.4), 0 6px 16px -4px rgba(166, 43, 43, 0.28);
 
   /* ---- Radii — modest, paper folds -----------------------------------------
      --sumi-radius-full (not --radius-full): collides with Tailwind's
-     reserved --radius-full otherwise; --radius-0..5 below don't collide
+     reserved --radius-full otherwise; --radius-0..4 below don't collide
      (Tailwind's own scale uses -sm/-md/-lg/-xl/-2xl/-3xl, not numbers). --- */
   --radius-0: 0;
   --radius-1: 2px;
   --radius-2: 4px;
   --radius-3: 6px;
   --radius-4: 10px;
-  --radius-5: 14px;
   --sumi-radius-full: 999px;
 
   /* ---- Spacing scale — named (8px base: value = number/100 * 8px) -------- */
@@ -381,11 +397,11 @@
      --color-* and --shadow-* below. --font-body/--font-han don't collide with
      Tailwind but are renamed too for scale consistency; they have no @theme
      entry — decisions log, 2026-08-24. --------------------------------------- */
-  --sumi-font-display: "Cormorant Garamond", "Noto Serif SC", "Songti SC", Georgia, serif;
+  --sumi-font-display: "Noto Serif SC", "Songti SC", "Source Han Serif", Georgia, serif;
   --sumi-font-body: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC",
-    sans-serif;
+    "Microsoft YaHei", sans-serif;
   --sumi-font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
-  --sumi-font-han: "Noto Serif SC", "Songti SC", serif;
+  --sumi-font-han: "Noto Serif SC", "Songti SC", "Source Han Serif", serif;
 
   /* ---- Type scale ------------------------------------------------------
      Prefixed --sumi-text-* (not --text-*): collides with Tailwind's
@@ -432,7 +448,24 @@
   --textarea-min-h: 80px; /* TextArea — no shared scale step fits */
   --avatar-fallback-text-sm: 9px; /* Avatar sm fallback initials — text-xs (12px) reads too large at size-6 */
   --badge-dot-size: 6px; /* Badge status dot */
+  /* Badge brand tones — pale pigment fills in light, translucent washes in dark
+     (raw -100 fills don't flip and glare on charcoal). SumiUi component tokens. */
+  --badge-malachite-bg: var(--malachite-100);
+  --badge-malachite-fg: var(--malachite-700);
+  --badge-malachite-border: var(--malachite-200);
+  --badge-canvas-bg: var(--canvas-100);
+  --badge-canvas-fg: var(--canvas-700);
+  --badge-canvas-border: var(--canvas-200);
+  --badge-sienna-bg: var(--sienna-100);
+  --badge-sienna-fg: var(--sienna-700);
+  --badge-sienna-border: var(--sienna-200);
   --dialog-backdrop-blur: 2px; /* Dialog backdrop — subtler than any shared blur step */
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --paper-grain: none;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -440,59 +473,74 @@
    -------------------------------------------------------------------------- */
 :root[data-theme="dark"],
 .theme-dark {
+  color-scheme: dark;
   --bg-0: #161514;
   --bg-1: #1f1e1c;
   --bg-2: #2a2825;
   --bg-3: #34312c;
   --bg-overlay: rgba(0, 0, 0, 0.55);
   --bg-scrim: rgba(0, 0, 0, 0.72);
+  --knockout: var(--bg-0);
+  --paper-grain: none; /* moonlit ink has no visible fibre */
+  --badge-malachite-bg: rgba(127, 168, 142, 0.14);
+  --badge-malachite-fg: var(--malachite-200);
+  --badge-malachite-border: rgba(127, 168, 142, 0.28);
+  --badge-canvas-bg: rgba(176, 160, 121, 0.14);
+  --badge-canvas-fg: var(--canvas-200);
+  --badge-canvas-border: rgba(176, 160, 121, 0.28);
+  --badge-sienna-bg: rgba(189, 139, 95, 0.14);
+  --badge-sienna-fg: var(--sienna-200);
+  --badge-sienna-border: rgba(189, 139, 95, 0.28);
 
-  --fg-1: #eee7d6;
-  --fg-2: #c2bcaa;
-  --fg-3: #9a9184;
-  --fg-4: #645e54;
+  --ink-jiao: #f7f6f3; /* on ink the scale inverts: jiao is the brightest */
+  --ink-nong: #eceae5;
+  --ink-zhong: #c3c0b8;
+  --ink-dan: #9a9184;
+  --ink-qing: #645e54;
+  --fg-1: var(--ink-nong);
+  --fg-2: var(--ink-zhong);
+  --fg-3: var(--ink-dan);
+  --fg-4: var(--ink-qing);
   --fg-on-malachite: #161514;
-  --fg-on-azurite: #eee7d6;
-  --fg-on-cinnabar: #eee7d6;
-  --fg-on-ink: #eee7d6;
+  --fg-on-azurite: #eceae5;
+  --fg-on-cinnabar: #eceae5;
+  --fg-on-ink: #eceae5;
   --fg-on-jade: #161514;
   --fg-on-clay: #161514;
 
-  --accent: var(--malachite-400);
+  --accent: var(--malachite-300);
   --accent-soft: rgba(127, 168, 142, 0.14);
-  --accent-strong: var(--malachite-300);
+  --accent-strong: var(--malachite-200);
   --accent-hover: var(--teal-300);
   --accent-on: #161514;
 
-  --secondary: var(--azurite-300);
+  --secondary: var(--azurite-200);
   --secondary-soft: rgba(116, 141, 165, 0.14);
-  --secondary-strong: var(--azurite-200);
+  --secondary-strong: var(--azurite-100);
 
-  --highlight: var(--cinnabar-400);
+  --highlight: var(--cinnabar-300);
   --highlight-soft: rgba(194, 96, 84, 0.16);
-  --highlight-strong: var(--cinnabar-300);
+  --highlight-strong: var(--cinnabar-200);
 
-  --status-success: var(--malachite-300);
+  --status-success: var(--malachite-200);
   --status-success-bg: rgba(127, 168, 142, 0.14);
   --status-warning: var(--persimmon-300);
   --status-warning-bg: rgba(255, 183, 106, 0.14);
   --status-warning-bar: var(--persimmon-400);
-  --status-danger: var(--cinnabar-300);
+  --status-danger: var(--cinnabar-200);
   --status-danger-bg: rgba(213, 133, 121, 0.14);
-  --status-info: var(--azurite-300);
+  --status-info: var(--azurite-200);
   --status-info-bg: rgba(116, 141, 165, 0.14);
 
-  --line-1: rgba(238, 231, 214, 0.06);
-  --line-2: rgba(238, 231, 214, 0.12);
-  --line-3: rgba(238, 231, 214, 0.22);
-  --line-ink: var(--silk-100);
+  --line-1: rgba(236, 234, 229, 0.06);
+  --line-2: rgba(236, 234, 229, 0.12);
+  --line-3: rgba(236, 234, 229, 0.22);
+  --line-ink: var(--ink-jiao);
 
   --sumi-shadow-xs: 0 1px 0 rgba(0, 0, 0, 0.3);
   --sumi-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 1px rgba(0, 0, 0, 0.3);
   --sumi-shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.35);
   --sumi-shadow-lg: 0 12px 32px -8px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.35);
-  --sumi-shadow-xl: 0 24px 56px -16px rgba(0, 0, 0, 0.7), 0 8px 16px rgba(0, 0, 0, 0.4);
-  --sumi-shadow-seal: 0 0 0 1px rgba(213, 133, 121, 0.35), 0 6px 16px -4px rgba(0, 0, 0, 0.5);
 
   /* Re-assert the @theme aliases from index.css (--color-bg-card, etc.).
      Those are declared once, on :root, so their var() substitution is
@@ -511,6 +559,11 @@
   --color-bg-pressed: var(--bg-3);
   --color-bg-overlay: var(--bg-overlay);
   --color-bg-scrim: var(--bg-scrim);
+  --color-ink-jiao: var(--ink-jiao);
+  --color-ink-nong: var(--ink-nong);
+  --color-ink-zhong: var(--ink-zhong);
+  --color-ink-dan: var(--ink-dan);
+  --color-ink-qing: var(--ink-qing);
   --color-fg-1: var(--fg-1);
   --color-fg-2: var(--fg-2);
   --color-fg-3: var(--fg-3);
@@ -546,7 +599,5 @@
   --shadow-sm: var(--sumi-shadow-sm);
   --shadow-md: var(--sumi-shadow-md);
   --shadow-lg: var(--sumi-shadow-lg);
-  --shadow-xl: var(--sumi-shadow-xl);
-  --shadow-seal: var(--sumi-shadow-seal);
   --color-line-ink: var(--line-ink);
 }

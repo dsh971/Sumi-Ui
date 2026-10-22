@@ -10,17 +10,3 @@
    that show Sumi typography wrap themselves in `not-prose` to keep the docs'
    article styles off them. The docs app deliberately does NOT import
    @sumiui/react/theme.css: it would re-map this site's own Tailwind scales. */
-
-/* The Sumi stylesheet's base `p` rule (16px bottom margin, body size and
-   leading) also hits the Fumadocs prev/next pager, which centers its chevron
-   against a bare <p>. Undo it there. Kept in @layer base so Fumadocs'
-   utilities (e.g. the description's muted colour) still win. */
-@layer base {
-  .sumi-docs-pager p {
-    margin: 0;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    color: inherit;
-  }
-}

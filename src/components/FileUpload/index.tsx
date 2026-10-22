@@ -11,8 +11,8 @@ function formatBytes(bytes: number): string {
 
 // BUG-006 fix: plain sentence-case label, consistent with Input/Select
 const labelClasses = "block text-xs font-medium text-fg-2 mb-1.5";
-const helperClasses = "mt-1 text-xs text-fg-3";
-const errorClasses = "mt-1 text-xs text-[color:var(--status-danger)]";
+const helperClasses = "mt-1 mb-0 text-xs text-fg-3";
+const errorClasses = "mt-1 mb-0 text-xs text-[color:var(--status-danger)]";
 
 // C-3 fix: forwardRef so form libraries can attach ref to the drop-zone button
 export const FileUpload = React.forwardRef<HTMLButtonElement, FileUploadProps>(function FileUpload(
@@ -159,7 +159,7 @@ export const FileUpload = React.forwardRef<HTMLButtonElement, FileUploadProps>(f
           <span className="text-sm text-fg-3"> or </span>
           <span className="text-sm font-medium text-accent">browse</span>
         </div>
-        {maxSize && <p className="text-xs text-fg-3">Max {formatBytes(maxSize)} per file</p>}
+        {maxSize && <p className="mb-0 text-xs text-fg-3">Max {formatBytes(maxSize)} per file</p>}
       </button>
 
       {/* Error / helper */}

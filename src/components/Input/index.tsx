@@ -5,8 +5,8 @@ import type { InputProps, TextAreaProps } from "./Input.types";
 
 // BUG-006 fix: plain sentence-case label — no uppercase, no tracking-wide
 const labelClasses = "block text-xs font-medium text-fg-2 mb-1.5";
-const helperClasses = "mt-1 text-xs text-fg-3";
-const errorClasses = "mt-1 text-xs text-[color:var(--status-danger)]";
+const helperClasses = "mt-1 mb-0 text-xs text-fg-3";
+const errorClasses = "mt-1 mb-0 text-xs text-[color:var(--status-danger)]";
 
 // Fields use bg-bg-page (--bg-0): on the page they sit flush, on white cards they
 // read as inset wells. Select, DatePicker and Combobox triggers match (decision 004).

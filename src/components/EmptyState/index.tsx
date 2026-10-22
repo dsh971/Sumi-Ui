@@ -24,13 +24,13 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
         {/* Display serif at 20px matches spec h3 styling for empty states */}
         <h3 className="font-display text-[20px] font-medium text-fg-1 leading-snug">{title}</h3>
         {description && (
-          <p className="text-sm text-fg-2 leading-snug max-w-[320px]">{description}</p>
+          <p className="mb-0 text-sm text-fg-2 leading-snug max-w-[320px]">{description}</p>
         )}
       </div>
 
       {action && <div className="mt-2">{action}</div>}
 
-      {closingBeat && <p className="text-xs text-fg-3 mt-1">{closingBeat}</p>}
+      {closingBeat && <p className="mb-0 text-xs text-fg-3 mt-1">{closingBeat}</p>}
     </div>
   ),
 );

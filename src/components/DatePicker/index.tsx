@@ -93,8 +93,8 @@ const DAY_KEYS: Record<string, (date: Date, shift: boolean) => Date> = {
 
 // BUG-006 fix: plain sentence-case label
 const labelClasses = "block text-xs font-medium text-fg-2 mb-1.5";
-const helperClasses = "mt-1 text-xs text-fg-3";
-const errorClasses = "mt-1 text-xs text-[color:var(--status-danger)]";
+const helperClasses = "mt-1 mb-0 text-xs text-fg-3";
+const errorClasses = "mt-1 mb-0 text-xs text-[color:var(--status-danger)]";
 
 const monthNavClasses = cn(
   "flex items-center justify-center size-7 rounded-md",

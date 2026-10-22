@@ -22,7 +22,9 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
 
       <div className="flex flex-col gap-2">
         {/* Display serif at 20px matches spec h3 styling for empty states */}
-        <h3 className="font-display text-[20px] font-medium text-fg-1 leading-snug">{title}</h3>
+        <h3 className="mb-[var(--space-3)] font-display text-[20px] font-medium text-fg-1 leading-snug">
+          {title}
+        </h3>
         {description && (
           <p className="mb-0 text-sm text-fg-2 leading-snug max-w-[320px]">{description}</p>
         )}

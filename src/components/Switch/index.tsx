@@ -64,7 +64,7 @@ export const Switch = React.forwardRef<React.ElementRef<typeof RadixSwitch.Root>
           <p
             id={`${switchId}-error`}
             role="alert"
-            className="text-xs text-[color:var(--status-danger)]"
+            className="mb-0 text-xs text-[color:var(--status-danger)]"
           >
             {errorText}
           </p>

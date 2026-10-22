@@ -61,13 +61,13 @@ export const Checkbox = React.forwardRef<
         <p
           id={`${checkId}-error`}
           role="alert"
-          className="text-xs text-[color:var(--status-danger)] ps-6.5"
+          className="mb-0 text-xs text-[color:var(--status-danger)] ps-6.5"
         >
           {errorText}
         </p>
       )}
       {!errorText && helperText && (
-        <p id={`${checkId}-helper`} className="text-xs text-fg-3 ps-6.5">
+        <p id={`${checkId}-helper`} className="mb-0 text-xs text-fg-3 ps-6.5">
           {helperText}
         </p>
       )}

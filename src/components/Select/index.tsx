@@ -15,8 +15,8 @@ import type {
 
 // BUG-006 fix (Select): plain sentence-case label to match spec, consistent with Input
 const labelClasses = "block text-xs font-medium text-fg-2 mb-1.5";
-const helperClasses = "mt-1 text-xs text-fg-3";
-const errorClasses = "mt-1 text-xs text-[color:var(--status-danger)]";
+const helperClasses = "mt-1 mb-0 text-xs text-fg-3";
+const errorClasses = "mt-1 mb-0 text-xs text-[color:var(--status-danger)]";
 
 /** Composed root — adds label/helper/error wrapper around the Radix primitive.
  *  H-4 fix: wrapped in forwardRef so react-hook-form and other ref consumers work.

@@ -16,41 +16,63 @@ const pkg = JSON.parse(readFileSync(resolve(__dirname, "package.json"), "utf-8")
 const externals = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
 const isExternal = (id: string) => externals.some((dep) => id === dep || id.startsWith(`${dep}/`));
 
-export default defineConfig({
-  plugins: [
-    tailwindcss(),
-    react(),
-    dts({
-      include: ["src"],
-      exclude: ["src/**/*.test.tsx", "src/**/*.test.ts", "src/**/*.stories.tsx"],
-      rollupTypes: true,
-    }),
-  ],
-  build: {
-    lib: {
-      entry: resolve(__dirname, "src/index.ts"),
-      name: "SumiUi",
-      formats: ["es", "cjs"],
-      fileName: (format) => (format === "es" ? "index.js" : "index.cjs"),
-    },
-    rollupOptions: {
-      external: isExternal,
-      output: {
-        // Every export is interactive (hooks, Radix), so the whole bundle is a
-        // client module for React Server Components (Next.js App Router).
-        banner: '"use client";',
-        globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-          "react/jsx-runtime": "jsx",
+const preflightStub = {
+  find: /^tailwindcss\/preflight\.css$/,
+  replacement: resolve(__dirname, "src/styles/no-preflight.css"),
+};
+
+export default defineConfig(({ mode }) =>
+  mode === "core"
+    ? // `--mode core` builds only the stylesheet, with preflight stubbed out:
+      // dist/sumi-core.css (@sumiui/react/styles/core). Tailwind scans the same
+      // sources, so its utilities match dist/sumi.css.
+      {
+        plugins: [tailwindcss()],
+        resolve: { alias: [preflightStub] },
+        build: {
+          emptyOutDir: false,
+          rollupOptions: {
+            input: { "sumi-core": resolve(__dirname, "src/styles/index.css") },
+            output: { assetFileNames: "[name].css" },
+          },
         },
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === "style.css") return "sumi.css";
-          return assetInfo.name ?? "asset";
+      }
+    : {
+        plugins: [
+          tailwindcss(),
+          react(),
+          dts({
+            include: ["src"],
+            exclude: ["src/**/*.test.tsx", "src/**/*.test.ts", "src/**/*.stories.tsx"],
+            rollupTypes: true,
+          }),
+        ],
+        build: {
+          lib: {
+            entry: resolve(__dirname, "src/index.ts"),
+            name: "SumiUi",
+            formats: ["es", "cjs"],
+            fileName: (format) => (format === "es" ? "index.js" : "index.cjs"),
+          },
+          rollupOptions: {
+            external: isExternal,
+            output: {
+              // Every export is interactive (hooks, Radix), so the whole bundle is a
+              // client module for React Server Components (Next.js App Router).
+              banner: '"use client";',
+              globals: {
+                react: "React",
+                "react-dom": "ReactDOM",
+                "react/jsx-runtime": "jsx",
+              },
+              assetFileNames: (assetInfo) => {
+                if (assetInfo.name === "style.css") return "sumi.css";
+                return assetInfo.name ?? "asset";
+              },
+            },
+          },
+          cssCodeSplit: false,
+          sourcemap: true,
         },
       },
-    },
-    cssCodeSplit: false,
-    sourcemap: true,
-  },
-});
+);

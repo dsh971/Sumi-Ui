@@ -68,6 +68,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled: disabled || loading,
       "aria-busy": loading || undefined,
       className: cn(
+        "sumi-control",
         "inline-flex items-center justify-center",
         "font-medium leading-none select-none rounded-md",
         // Fix: transform must be in the transitioned property list, or the

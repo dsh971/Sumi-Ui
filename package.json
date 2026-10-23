@@ -18,13 +18,14 @@
       }
     },
     "./styles": "./dist/sumi.css",
+    "./styles/core": "./dist/sumi-core.css",
     "./theme.css": "./dist/theme.css",
     "./package.json": "./package.json"
   },
-  "sideEffects": ["dist/sumi.css", "dist/theme.css"],
+  "sideEffects": ["dist/sumi.css", "dist/sumi-core.css", "dist/theme.css"],
   "files": ["dist", "README.md"],
   "scripts": {
-    "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist && cp dist/index.d.ts dist/index.d.cts && node scripts/build-theme.mjs",
+    "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist && cp dist/index.d.ts dist/index.d.cts && node scripts/build-theme.mjs && vite build --mode core && node scripts/check-core-css.mjs",
     "dev": "vite build --watch",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -32,6 +33,7 @@
     "format": "biome format --write .",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
+    "storybook:core": "SUMI_STYLES=core storybook dev -p 6007",
     "ladle": "ladle serve",
     "ladle:build": "ladle build",
     "typecheck": "tsc --noEmit"

@@ -90,6 +90,7 @@ export const ToastViewport = React.forwardRef<
   <RadixToast.Viewport
     ref={ref}
     className={cn(
+      "sumi-list",
       "fixed top-4 end-4 start-4 sm:start-auto z-50 flex flex-col gap-2.5 w-auto sm:w-80 max-h-screen outline-none",
       className,
     )}
@@ -121,7 +122,7 @@ export const Toast = React.forwardRef<React.ElementRef<typeof RadixToast.Root>, 
             className={cn("flex-none mt-px", variantClass(iconClasses, variant))}
             aria-hidden="true"
           >
-            <Icon size={19} />
+            <Icon size={19} className="block" />
           </span>
           <div className="flex-1 min-w-0 pe-6">{children}</div>
           <span
@@ -190,6 +191,7 @@ export const ToastAction = React.forwardRef<
     <RadixToast.Action
       ref={ref}
       className={cn(
+        "sumi-control",
         "text-[12.5px] font-semibold leading-none",
         "bg-transparent border-0 p-0 pt-[7px] m-0 cursor-pointer hover:underline",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
@@ -212,6 +214,7 @@ export const ToastClose = React.forwardRef<
       ref={ref}
       aria-label={ariaLabel}
       className={cn(
+        "sumi-control",
         // Pinned to the top-right corner regardless of where it sits among the children.
         "absolute top-[2px] end-[2px] flex items-center justify-center min-w-[36px] min-h-[36px]",
         "bg-transparent border-0 cursor-pointer rounded opacity-55 hover:opacity-100",
@@ -222,7 +225,7 @@ export const ToastClose = React.forwardRef<
       )}
       {...props}
     >
-      <X size={13} aria-hidden="true" />
+      <X size={13} className="block" aria-hidden="true" />
     </RadixToast.Close>
   );
 });

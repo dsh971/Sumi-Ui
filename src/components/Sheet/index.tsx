@@ -28,13 +28,17 @@ Sheet.displayName = "Sheet";
 export const SheetTrigger = React.forwardRef<
   React.ElementRef<typeof RadixDialog.Trigger>,
   SheetTriggerProps
->((props, ref) => <RadixDialog.Trigger ref={ref} {...props} />);
+>(({ className, ...props }, ref) => (
+  <RadixDialog.Trigger ref={ref} className={cn("sumi-control", className)} {...props} />
+));
 SheetTrigger.displayName = "SheetTrigger";
 
 export const SheetClose = React.forwardRef<
   React.ElementRef<typeof RadixDialog.Close>,
   SheetCloseProps
->((props, ref) => <RadixDialog.Close ref={ref} {...props} />);
+>(({ className, ...props }, ref) => (
+  <RadixDialog.Close ref={ref} className={cn("sumi-control", className)} {...props} />
+));
 SheetClose.displayName = "SheetClose";
 
 export const SheetTitle = React.forwardRef<

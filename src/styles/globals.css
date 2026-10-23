@@ -1,7 +1,13 @@
 /* ==========================================================================
    SUMI — globals.css
    Minimal reset + sumi base typography.
-   Intentionally excludes Tailwind preflight (handled by the consumer app).
+   Tailwind preflight is not here: index.css imports
+   `tailwindcss/preflight.css` itself, unguarded, and the reset-free build
+   (@sumiui/react/styles/core) swaps it for an empty file.
+
+   Bare element rules (h1–h6, p, a, code…) skip anything inside
+   `.sumi-unstyled`, so third-party markup can opt out. The :where() guard
+   adds no specificity; the class twins (.h1, .p…) apply everywhere.
    ========================================================================== */
 
 *,
@@ -40,7 +46,7 @@ body {
   margin: 0;
 }
 
-h1,
+h1:where(:not(.sumi-unstyled, .sumi-unstyled *)),
 .h1 {
   font-family: var(--font-display);
   font-weight: var(--weight-normal);
@@ -51,7 +57,7 @@ h1,
   margin: 0 0 var(--space-4);
 }
 
-h2,
+h2:where(:not(.sumi-unstyled, .sumi-unstyled *)),
 .h2 {
   font-family: var(--font-display);
   font-weight: var(--weight-normal);
@@ -62,7 +68,7 @@ h2,
   margin: 0 0 var(--space-4);
 }
 
-h3,
+h3:where(:not(.sumi-unstyled, .sumi-unstyled *)),
 .h3 {
   font-family: var(--font-display);
   font-weight: var(--weight-medium);
@@ -72,7 +78,7 @@ h3,
   margin: 0 0 var(--space-3);
 }
 
-h4,
+h4:where(:not(.sumi-unstyled, .sumi-unstyled *)),
 .h4 {
   font-family: var(--sumi-font-body);
   font-weight: var(--weight-semi);
@@ -82,7 +88,7 @@ h4,
   margin: 0 0 var(--space-2);
 }
 
-h5,
+h5:where(:not(.sumi-unstyled, .sumi-unstyled *)),
 .h5 {
   font-family: var(--sumi-font-body);
   font-weight: var(--weight-semi);
@@ -92,7 +98,7 @@ h5,
   margin: 0 0 var(--space-2);
 }
 
-h6,
+h6:where(:not(.sumi-unstyled, .sumi-unstyled *)),
 .h6,
 .eyebrow {
   font-family: var(--sumi-font-body);
@@ -105,7 +111,7 @@ h6,
   margin: 0 0 var(--space-3);
 }
 
-p,
+p:where(:not(.sumi-unstyled, .sumi-unstyled *)),
 .p {
   font-family: var(--sumi-font-body);
   font-size: var(--sumi-text-base);
@@ -122,7 +128,7 @@ p,
   color: var(--fg-2);
 }
 
-small,
+small:where(:not(.sumi-unstyled, .sumi-unstyled *)),
 .small {
   font-size: var(--sumi-text-sm);
   color: var(--fg-2);
@@ -135,7 +141,7 @@ small,
   letter-spacing: 0.01em;
 }
 
-blockquote,
+blockquote:where(:not(.sumi-unstyled, .sumi-unstyled *)),
 .quote {
   font-family: var(--font-display);
   font-weight: var(--weight-light);
@@ -147,10 +153,10 @@ blockquote,
   margin: var(--space-6) 0;
 }
 
-code,
+code:where(:not(.sumi-unstyled, .sumi-unstyled *)),
 .code,
-kbd,
-samp {
+kbd:where(:not(.sumi-unstyled, .sumi-unstyled *)),
+samp:where(:not(.sumi-unstyled, .sumi-unstyled *)) {
   font-family: var(--font-mono);
   font-size: 0.92em;
   background: var(--bg-2);
@@ -159,7 +165,7 @@ samp {
   border-radius: var(--radius-1);
 }
 
-pre {
+pre:where(:not(.sumi-unstyled, .sumi-unstyled *)) {
   font-family: var(--font-mono);
   font-size: var(--sumi-text-sm);
   line-height: var(--sumi-leading-snug);
@@ -170,12 +176,13 @@ pre {
   padding: var(--space-4) var(--space-5);
   overflow-x: auto;
 }
-pre > code {
+pre:where(:not(.sumi-unstyled, .sumi-unstyled *))
+  > code:where(:not(.sumi-unstyled, .sumi-unstyled *)) {
   background: transparent;
   padding: 0;
 }
 
-a {
+a:where(:not(.sumi-unstyled, .sumi-unstyled *)) {
   color: var(--accent-strong);
   text-decoration: underline;
   text-decoration-color: var(--line-2);
@@ -184,14 +191,90 @@ a {
   transition: text-decoration-color var(--dur-2) var(--sumi-ease-out), color var(--dur-2)
     var(--sumi-ease-out);
 }
-a:hover {
+a:where(:not(.sumi-unstyled, .sumi-unstyled *)):hover {
   text-decoration-color: currentColor;
 }
 
-hr {
+hr:where(:not(.sumi-unstyled, .sumi-unstyled *)) {
   border: 0;
   border-top: 1px solid var(--line-1);
   margin: var(--space-7) 0;
+}
+
+/* ---- Control and list resets ---------------------------------------------
+   Tailwind preflight's rules for form controls and lists, scoped to the
+   `sumi-control` / `sumi-list` classes SumiUi puts on its own markup, so
+   components render the same under @sumiui/react/styles/core (no preflight).
+   Under @sumiui/react/styles they repeat what preflight already sets.
+   :where() keeps them at zero specificity in @layer base, where preflight
+   sits: any utility or consumer rule still wins. They apply inside
+   .sumi-unstyled too, so components keep their look there. */
+:where(.sumi-control),
+:where(.sumi-control)::file-selector-button {
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+  border-radius: 0;
+  background-color: transparent;
+  color: inherit;
+  font: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  letter-spacing: inherit;
+  opacity: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(.sumi-control)::file-selector-button {
+  margin-inline-end: 4px;
+}
+
+/* Links styled as controls (Button asChild, BreadcrumbLink). Sumi's own `a`
+   rule outranks this outside .sumi-unstyled. */
+:where(a.sumi-control) {
+  text-decoration: inherit;
+}
+
+/* iOS Safari ignores border-radius on buttons without it. */
+:where(button.sumi-control),
+:where(.sumi-control)::file-selector-button {
+  appearance: button;
+}
+
+:where(textarea.sumi-control) {
+  resize: vertical;
+}
+
+/* Firefox fades placeholders by default. */
+:where(.sumi-control)::placeholder {
+  opacity: 1;
+}
+
+@supports (not (-webkit-appearance: -apple-pay-button)) or (contain-intrinsic-size: 1px) {
+  :where(.sumi-control)::placeholder {
+    color: color-mix(in oklab, currentcolor 50%, transparent);
+  }
+}
+
+/* Date and time inputs in Safari: steady height, alignable text. */
+:where(.sumi-control)::-webkit-date-and-time-value {
+  min-height: 1lh;
+  text-align: inherit;
+}
+
+:where(.sumi-control)::-webkit-datetime-edit {
+  display: inline-flex;
+  padding-block: 0;
+}
+
+:where(.sumi-control)::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+:where(.sumi-list) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 /* Selection: a malachite wash that keeps the text its own ink, in both

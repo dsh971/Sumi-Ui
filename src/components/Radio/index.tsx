@@ -27,6 +27,7 @@ export const RadioItem = React.forwardRef<React.ElementRef<typeof RadixRadio.Ite
           ref={ref}
           id={itemId}
           className={cn(
+            "sumi-control",
             "flex size-4 shrink-0 items-center justify-center rounded-full",
             "border border-[color:var(--line-3)]",
             "bg-bg-card",

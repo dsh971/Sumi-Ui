@@ -15,16 +15,18 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       )}
     >
       {icon && (
-        <span className="text-fg-3 mb-1" aria-hidden="true">
+        <span className="text-fg-3 mb-1 [&>svg]:block" aria-hidden="true">
           {icon}
         </span>
       )}
 
       <div className="flex flex-col gap-2">
         {/* Display serif at 20px matches spec h3 styling for empty states */}
-        <h3 className="font-display text-[20px] font-medium text-fg-1 leading-snug">{title}</h3>
+        <h3 className="mt-0 mb-[var(--space-3)] font-display text-[20px] font-medium text-fg-1 leading-snug">
+          {title}
+        </h3>
         {description && (
-          <p className="mb-0 text-sm text-fg-2 leading-snug max-w-[320px]">{description}</p>
+          <p className="my-0 text-sm text-fg-2 leading-snug max-w-[320px]">{description}</p>
         )}
       </div>
 

@@ -25,6 +25,7 @@ export const Switch = React.forwardRef<React.ElementRef<typeof RadixSwitch.Root>
               errorText ? `${switchId}-error` : helperText ? `${switchId}-helper` : undefined
             }
             className={cn(
+              "sumi-control",
               "peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center",
               "rounded-[var(--radius-2)] border-2 border-transparent",
               "transition-colors",
@@ -64,7 +65,7 @@ export const Switch = React.forwardRef<React.ElementRef<typeof RadixSwitch.Root>
           <p
             id={`${switchId}-error`}
             role="alert"
-            className="text-xs text-[color:var(--status-danger)]"
+            className="my-0 text-xs text-[color:var(--status-danger)]"
           >
             {errorText}
           </p>

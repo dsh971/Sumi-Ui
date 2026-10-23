@@ -103,6 +103,7 @@ function DisclosureToggle({
       aria-expanded={expanded}
       aria-label={expanded ? "Collapse" : "Expand"}
       className={cn(
+        "sumi-control",
         "flex items-center justify-center w-5 h-5 mt-[1px] shrink-0 rounded-md bg-transparent border-0 cursor-pointer",
         "text-fg-3 transition-colors hover:bg-bg-sunken hover:text-fg-1",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
@@ -184,6 +185,7 @@ function TimelineRow({
               onClick={() => onItemClick?.(item)}
               aria-current={isSelected ? "true" : undefined}
               className={cn(
+                "sumi-control",
                 "block w-full text-left bg-transparent border-0 p-1 -m-1 rounded-md cursor-pointer",
                 "transition-colors hover:bg-bg-sunken",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",

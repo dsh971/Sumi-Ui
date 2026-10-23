@@ -31,6 +31,30 @@ element, so the visual level doesn't have to match the document outline.
 The base styles live in `@layer base`, so a Tailwind utility or any rule of
 your own wins over them without `!important`.
 
+### Opting out with `.sumi-unstyled`
+
+Markup you don't control, such as a third-party widget or a docs framework's
+chrome, picks up the plain-element styles too: a bare `<p>` gets a 16px bottom
+margin and Sumi body type. Wrap it in `.sumi-unstyled` and Sumi's
+plain-element typography skips everything inside:
+
+```tsx
+<div className="sumi-unstyled">
+  <ThirdPartyWidget />
+</div>
+```
+
+- It covers the whole subtree. There's no way to switch the plain-element
+  styles back on lower down; use the classes above (`.h1`, `.p`, `.quote`…),
+  which still apply inside it.
+- Sumi adds no margin or type to plain elements there, so they fall back to
+  the Tailwind preflight reset that `@sumiui/react/styles` bundles (margins
+  zeroed, headings at inherited size, no list bullets). With
+  [`@sumiui/react/styles/core`](/docs/installation#without-tailwinds-reset)
+  they keep the browser's defaults instead.
+- SumiUi components keep their own spacing inside it, but text without a
+  font utility inherits the wrapper's font.
+
 ## Voice classes
 
 ### `.ink-em` — one heavier word

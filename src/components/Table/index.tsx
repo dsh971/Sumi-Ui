@@ -194,7 +194,7 @@ function TableBodyImpl<T>(
     return (
       <tbody ref={ref} className={className} {...props}>
         <tr>
-          <td colSpan={100}>
+          <td colSpan={100} className="p-0">
             <EmptyState
               title="Nothing here yet"
               description="No rows to display."
@@ -390,7 +390,10 @@ export const TableSelectHead = React.forwardRef<HTMLTableCellElement, TableSelec
           }}
           onChange={handleChange}
           aria-label="Select all rows"
-          className="block size-4 rounded accent-[color:var(--accent)] cursor-pointer"
+          className={cn(
+            "sumi-control",
+            "block size-4 rounded accent-[color:var(--accent)] cursor-pointer",
+          )}
         />
       </th>
     );
@@ -427,7 +430,10 @@ export const TableSelectCell = React.forwardRef<HTMLTableCellElement, TableSelec
           checked={checked}
           onChange={handleChange}
           aria-label={`Select row ${rowId}`}
-          className="block size-4 rounded accent-[color:var(--accent)] cursor-pointer"
+          className={cn(
+            "sumi-control",
+            "block size-4 rounded accent-[color:var(--accent)] cursor-pointer",
+          )}
         />
       </td>
     );

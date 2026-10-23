@@ -36,7 +36,7 @@ export const Logo = React.forwardRef<SVGSVGElement, LogoProps>(
         height={height}
         role="img"
         aria-label={ariaLabel}
-        className={cn("flex-shrink-0", className)}
+        className={cn("block flex-shrink-0", className)}
         {...props}
       >
         <title>{ariaLabel}</title>

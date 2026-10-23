@@ -93,7 +93,9 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
         <div className="flex-1 min-w-0">
           {title && (
-            <p className={cn("text-sm font-medium mb-0.5", variantClass(titleClasses, variant))}>
+            <p
+              className={cn("text-sm font-medium mt-0 mb-0.5", variantClass(titleClasses, variant))}
+            >
               {title}
             </p>
           )}
@@ -110,13 +112,14 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             onClick={handleDismiss}
             aria-label="Dismiss alert"
             className={cn(
+              "sumi-control",
               "flex-shrink-0 rounded p-2 -me-1.5 -mt-1.5",
               "transition-colors",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
               variantClass(dismissClasses, variant),
             )}
           >
-            <X size={14} aria-hidden="true" />
+            <X size={14} className="block" aria-hidden="true" />
           </button>
         )}
       </div>

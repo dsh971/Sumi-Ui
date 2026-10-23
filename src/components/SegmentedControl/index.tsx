@@ -30,6 +30,7 @@ export const SegmentedControlItem = React.forwardRef<
   <RadixRadio.Item
     ref={ref}
     className={cn(
+      "sumi-control",
       "rounded-sm px-[14px] py-[6px] text-[length:var(--sumi-text-sm)] text-fg-2",
       "transition-colors",
       "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",

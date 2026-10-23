@@ -29,6 +29,7 @@ export const TabsTrigger = React.forwardRef<
   <RadixTabs.Trigger
     ref={ref}
     className={cn(
+      "sumi-control",
       "inline-flex items-center justify-center gap-1.5",
       "whitespace-nowrap select-none text-sm",
       "transition-colors",

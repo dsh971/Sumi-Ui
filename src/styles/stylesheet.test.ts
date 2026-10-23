@@ -56,6 +56,78 @@ describe("theme.css export", () => {
   });
 });
 
+/** Compile index.css as the build does; without `preflight`, as `vite build --mode core` does. */
+async function sumiCss(preflight: boolean): Promise<string> {
+  const compiler = await compile(read("index.css"), {
+    base: __dirname,
+    loadStylesheet: async (id: string, base: string) => {
+      const path =
+        !preflight && id === "tailwindcss/preflight.css"
+          ? resolve(__dirname, "no-preflight.css")
+          : id.startsWith(".")
+            ? resolve(base, id)
+            : require.resolve(id);
+      return { path, base: dirname(path), content: readFileSync(path, "utf-8") };
+    },
+  });
+  return compiler.build(["p-7"]);
+}
+
+describe("reset-free build (@sumiui/react/styles/core)", () => {
+  it("drops Tailwind's preflight and adds nothing", async () => {
+    const full = await sumiCss(true);
+    const core = await sumiCss(false);
+
+    expect(full).toMatch(/ol, ul, menu \{\s*list-style: none;/);
+    expect(core).not.toMatch(/ol, ul, menu \{|abbr:where\(\[title\]\)|h1, h2, h3, h4, h5, h6 \{/);
+    expect(core).toContain("p:where(:not(.sumi-unstyled, .sumi-unstyled *))");
+    expect(core).toContain("--bg-0:");
+    expect(core).toContain("padding: var(--spacing-7)");
+
+    // The emptied preflight import leaves a bare `@layer base;` behind.
+    const fullLines = new Set(full.split("\n"));
+    expect(core.split("\n").filter((line) => !fullLines.has(line))).toEqual(["@layer base;"]);
+  });
+
+  it("keeps the component resets where preflight sits: @layer base, zero specificity", async () => {
+    const css = await sumiCss(false);
+    /** The at-rules enclosing the first rule whose selector starts with `selector`. */
+    const enclosing = (selector: string) => {
+      const at = css.indexOf(selector);
+      expect(at, selector).toBeGreaterThan(0);
+      const stack: string[] = [];
+      for (const [, prelude = "", brace] of css.slice(0, at).matchAll(/([^{};]*)([{};])/g)) {
+        if (brace === "{") stack.push(prelude.trim());
+        if (brace === "}") stack.pop();
+      }
+      return stack;
+    };
+
+    // A utility-layer reset would beat Tailwind's zero-specificity `space-x-*`
+    // and any consumer rule in @layer base/components; preflight never did.
+    for (const selector of [
+      ":where(.sumi-control)",
+      ":where(button.sumi-control)",
+      ":where(.sumi-list)",
+    ]) {
+      expect(enclosing(selector), selector).toEqual(["@layer base"]);
+    }
+    const resetSelectors = splitSelectors(css).filter((s) => /sumi-(control|list)/.test(s));
+    expect(resetSelectors.length).toBeGreaterThan(0);
+    for (const selector of resetSelectors) {
+      expect(selector, selector).toMatch(/^:where\([^)]*\)(::?[a-z-]+)?$/);
+    }
+  });
+});
+
+/** Every top-level-comma-separated selector in compiled `css`. */
+function splitSelectors(css: string): string[] {
+  return [...css.matchAll(/([^{};]+)\{/g)]
+    .map(([, prelude = ""]) => prelude.trim())
+    .filter((prelude) => !prelude.startsWith("@"))
+    .flatMap((prelude) => prelude.split(/,(?![^(]*\))/).map((s) => s.trim()));
+}
+
 describe("globals.css rules", () => {
   const globals = read("globals.css");
 
@@ -81,5 +153,80 @@ describe("globals.css rules", () => {
     );
     expect(selection).toContain("var(--accent-soft)");
     expect(selection).not.toMatch(/cinnabar|color-mix/);
+  });
+});
+
+describe(".sumi-unstyled opt-out", () => {
+  const GUARD = ":where(:not(.sumi-unstyled, .sumi-unstyled *))";
+  const guard = GUARD.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const DOCUMENT_ROOTS = new Set(["html", "body"]);
+
+  /** Split `text` at characters matching `separator` that sit outside parentheses. */
+  const splitTopLevel = (text: string, separator: RegExp) => {
+    const parts: string[] = [];
+    let depth = 0;
+    let current = "";
+    for (const char of text) {
+      if (char === "(") depth++;
+      if (char === ")") depth--;
+      if (depth === 0 && separator.test(char)) {
+        parts.push(current);
+        current = "";
+      } else {
+        current += char;
+      }
+    }
+    return [...parts, current].map((part) => part.trim()).filter(Boolean);
+  };
+
+  /** Every selector the `./styles` sources declare, minus at-rule preludes and keyframe stops. */
+  const selectors = ["globals.css", "tokens.css", "index.css"].flatMap((file) =>
+    [
+      ...read(file)
+        .replace(/\/\*[\s\S]*?\*\//g, "")
+        .replace(/@keyframes[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, "")
+        .matchAll(/([^{};]+)\{/g),
+    ]
+      .map(([, prelude = ""]) => prelude.trim())
+      .filter((prelude) => !prelude.startsWith("@"))
+      .flatMap((prelude) => splitTopLevel(prelude, /,/)),
+  );
+
+  it("guards every type selector, wherever it sits in a selector", () => {
+    const typed = selectors
+      .flatMap((selector) => splitTopLevel(selector, /[\s>+~]/))
+      .filter((compound) => /^[a-z]/.test(compound))
+      .filter((compound) => !DOCUMENT_ROOTS.has(compound.match(/^[a-z][a-z0-9-]*/)?.[0] ?? ""));
+    for (const compound of typed) {
+      expect(compound, compound).toMatch(new RegExp(`^[a-z][a-z0-9-]*${guard}`));
+    }
+    // :is() and :matches() could hide a type selector from the check above.
+    expect(selectors.filter((selector) => /:(is|matches)\(/.test(selector))).toEqual([]);
+  });
+
+  it("styles each plain element outside .sumi-unstyled and never inside it", () => {
+    const guarded = selectors.flatMap((selector) => {
+      const tag = selector.match(new RegExp(`^([a-z][a-z0-9]*)${guard}$`))?.[1];
+      return tag ? [{ selector, tag }] : [];
+    });
+    expect(guarded.map(({ tag }) => tag).sort()).toEqual(
+      ["a", "blockquote", "code", "h1", "h2", "h3", "h4", "h5", "h6"]
+        .concat(["hr", "kbd", "p", "pre", "samp", "small"])
+        .sort(),
+    );
+
+    for (const { selector, tag } of guarded) {
+      const outside = document.createElement(tag);
+      const wrapper = document.createElement("div");
+      wrapper.className = "sumi-unstyled";
+      const inside = wrapper.appendChild(document.createElement(tag));
+      const optedOut = document.createElement(tag);
+      optedOut.className = "sumi-unstyled";
+      document.body.replaceChildren(outside, wrapper, optedOut);
+
+      expect(outside.matches(selector), `${tag} outside`).toBe(true);
+      expect(inside.matches(selector), `${tag} inside`).toBe(false);
+      expect(optedOut.matches(selector), `${tag}.sumi-unstyled`).toBe(false);
+    }
   });
 });

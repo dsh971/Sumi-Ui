@@ -21,7 +21,11 @@ export const BreadcrumbList = React.forwardRef<HTMLOListElement, BreadcrumbListP
   ({ className, ...props }, ref) => (
     <ol
       ref={ref}
-      className={cn("flex flex-wrap items-center gap-1.5", "text-sm text-fg-3", className)}
+      className={cn(
+        "sumi-list flex flex-wrap items-center gap-1.5",
+        "text-sm text-fg-3",
+        className,
+      )}
       {...props}
     />
   ),
@@ -42,6 +46,7 @@ export const BreadcrumbLink = React.forwardRef<HTMLAnchorElement, BreadcrumbLink
       <Comp
         ref={ref}
         className={cn(
+          "sumi-control",
           // BUG-024 fix: ancestor links use fg-3 (Misty Wash) per spec, not fg-2
           "text-fg-3 underline-offset-4 hover:text-fg-1",
           "transition-colors",

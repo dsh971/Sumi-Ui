@@ -67,6 +67,7 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
           disabled={page <= 1}
           aria-label="Previous page"
           className={cn(
+            "sumi-control",
             itemBase,
             "text-fg-2 hover:bg-bg-sunken hover:text-fg-1",
             "disabled:pointer-events-none disabled:opacity-40",
@@ -93,6 +94,7 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
               aria-label={`Page ${item}`}
               aria-current={item === page ? "page" : undefined}
               className={cn(
+                "sumi-control",
                 itemBase,
                 item === page ? activePageClasses : "text-fg-2 hover:bg-bg-sunken hover:text-fg-1",
               )}
@@ -109,6 +111,7 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
           disabled={page >= totalPages}
           aria-label="Next page"
           className={cn(
+            "sumi-control",
             itemBase,
             "text-fg-2 hover:bg-bg-sunken hover:text-fg-1",
             "disabled:pointer-events-none disabled:opacity-40",

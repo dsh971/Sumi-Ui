@@ -125,7 +125,10 @@ export const CommandPalette = React.forwardRef<HTMLDivElement, CommandPalettePro
                 aria-activedescendant={
                   visibleItems[activeIndex] ? `${listboxId}-opt-${activeIndex}` : undefined
                 }
-                className="min-w-0 flex-1 bg-transparent text-sm text-fg-1 placeholder:text-fg-3 focus:outline-none"
+                className={cn(
+                  "sumi-control",
+                  "min-w-0 flex-1 bg-transparent text-sm text-fg-1 placeholder:text-fg-3 focus:outline-none",
+                )}
                 onChange={(e) => {
                   setQuery(e.target.value);
                   setActiveIndex(0);

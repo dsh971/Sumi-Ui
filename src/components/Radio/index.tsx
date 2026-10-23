@@ -1,6 +1,7 @@
 import * as RadixRadio from "@radix-ui/react-radio-group";
 import React from "react";
 import { cn } from "../../lib/cn";
+import { controlReset } from "../../lib/reset";
 import type { RadioGroupProps, RadioItemProps } from "./Radio.types";
 
 export const RadioGroup = React.forwardRef<
@@ -27,6 +28,7 @@ export const RadioItem = React.forwardRef<React.ElementRef<typeof RadixRadio.Ite
           ref={ref}
           id={itemId}
           className={cn(
+            controlReset,
             "flex size-4 shrink-0 items-center justify-center rounded-full",
             "border border-[color:var(--line-3)]",
             "bg-bg-card",

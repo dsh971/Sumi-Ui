@@ -21,7 +21,11 @@ export const BreadcrumbList = React.forwardRef<HTMLOListElement, BreadcrumbListP
   ({ className, ...props }, ref) => (
     <ol
       ref={ref}
-      className={cn("flex flex-wrap items-center gap-1.5", "text-sm text-fg-3", className)}
+      className={cn(
+        "list-none m-0 p-0 flex flex-wrap items-center gap-1.5",
+        "text-sm text-fg-3",
+        className,
+      )}
       {...props}
     />
   ),

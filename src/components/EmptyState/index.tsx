@@ -15,7 +15,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       )}
     >
       {icon && (
-        <span className="text-fg-3 mb-1" aria-hidden="true">
+        <span className="text-fg-3 mb-1 [&>svg]:block" aria-hidden="true">
           {icon}
         </span>
       )}

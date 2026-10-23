@@ -16,17 +16,33 @@ const pkg = JSON.parse(readFileSync(resolve(__dirname, "package.json"), "utf-8")
 const externals = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
 const isExternal = (id: string) => externals.some((dep) => id === dep || id.startsWith(`${dep}/`));
 
-export default defineConfig({
+// `--mode core` rebuilds the bundle without Tailwind's preflight reset; the
+// build script keeps only its stylesheet, as dist/sumi-core.css
+// (@sumiui/react/styles/core).
+export default defineConfig(({ mode }) => ({
   plugins: [
     tailwindcss(),
     react(),
-    dts({
-      include: ["src"],
-      exclude: ["src/**/*.test.tsx", "src/**/*.test.ts", "src/**/*.stories.tsx"],
-      rollupTypes: true,
-    }),
+    mode !== "core" &&
+      dts({
+        include: ["src"],
+        exclude: ["src/**/*.test.tsx", "src/**/*.test.ts", "src/**/*.stories.tsx"],
+        rollupTypes: true,
+      }),
   ],
+  resolve: {
+    alias:
+      mode === "core"
+        ? [
+            {
+              find: /^tailwindcss\/preflight\.css$/,
+              replacement: resolve(__dirname, "src/styles/no-preflight.css"),
+            },
+          ]
+        : [],
+  },
   build: {
+    outDir: mode === "core" ? "dist-core" : "dist",
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "SumiUi",
@@ -53,4 +69,4 @@ export default defineConfig({
     cssCodeSplit: false,
     sourcemap: true,
   },
-});
+}));

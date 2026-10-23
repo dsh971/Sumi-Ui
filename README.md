@@ -28,6 +28,10 @@ Import the CSS once at your app root — it provides all design tokens and base 
 import "@sumiui/react/styles";
 ```
 
+It includes Tailwind's preflight reset. If your app doesn't use Tailwind and
+should keep the browser's default styles outside Sumi components, import
+`@sumiui/react/styles/core` instead.
+
 Then use components:
 
 ```tsx

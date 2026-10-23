@@ -3,6 +3,7 @@ import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
 import { popperTransition } from "../../lib/motion";
+import { controlReset } from "../../lib/reset";
 import type { DatePickerProps } from "./DatePicker.types";
 
 function isoToDate(iso: string): Date {
@@ -97,6 +98,7 @@ const helperClasses = "mt-1 mb-0 text-xs text-fg-3";
 const errorClasses = "mt-1 mb-0 text-xs text-[color:var(--status-danger)]";
 
 const monthNavClasses = cn(
+  controlReset,
   "flex items-center justify-center size-7 rounded-md",
   "text-fg-2 hover:bg-bg-sunken hover:text-fg-1",
   "transition-colors",
@@ -143,6 +145,7 @@ function DayCell({
         aria-current={today ? "date" : undefined}
         aria-label={label}
         className={cn(
+          controlReset,
           "flex items-center justify-center size-8 rounded-md text-sm w-full",
           "transition-colors",
           "focus-visible:outline-2 focus-visible:outline-[color:var(--accent)]",
@@ -289,6 +292,7 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(f
               errorText ? `${triggerId}-error` : helperText ? `${triggerId}-helper` : undefined
             }
             className={cn(
+              controlReset,
               "flex w-full items-center justify-between",
               "bg-bg-page text-fg-1",
               "border border-[color:var(--line-2)] rounded-md",

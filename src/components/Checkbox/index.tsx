@@ -2,6 +2,7 @@ import * as RadixCheckbox from "@radix-ui/react-checkbox";
 import { Check, Minus } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
+import { controlReset } from "../../lib/reset";
 import type { CheckboxProps } from "./Checkbox.types";
 
 export const Checkbox = React.forwardRef<
@@ -32,6 +33,7 @@ export const Checkbox = React.forwardRef<
             errorText ? `${checkId}-error` : helperText ? `${checkId}-helper` : undefined
           }
           className={cn(
+            controlReset,
             "flex size-4 shrink-0 items-center justify-center rounded",
             "border border-[color:var(--line-3)]",
             "bg-bg-card",

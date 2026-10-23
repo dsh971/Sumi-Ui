@@ -48,7 +48,7 @@ export const Seal = React.forwardRef<SVGSVGElement, SealProps>(
         height={px}
         role="img"
         aria-label={ariaLabel}
-        className={cn("flex-shrink-0", className)}
+        className={cn("block flex-shrink-0", className)}
         {...props}
       >
         <title>{ariaLabel}</title>

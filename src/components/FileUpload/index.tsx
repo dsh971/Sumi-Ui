@@ -1,6 +1,7 @@
 import { Paperclip, Upload, X } from "lucide-react";
 import React, { useCallback, useId, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
+import { controlReset } from "../../lib/reset";
 import type { FileUploadProps } from "./FileUpload.types";
 
 function formatBytes(bytes: number): string {
@@ -140,6 +141,7 @@ export const FileUpload = React.forwardRef<HTMLButtonElement, FileUploadProps>(f
         onDragLeave={onDragLeave}
         onDrop={onDrop}
         className={cn(
+          controlReset,
           "flex flex-col items-center justify-center gap-2",
           "rounded-lg border-2 border-dashed border-[color:var(--line-2)]",
           "bg-bg-card px-6 py-8 w-full",
@@ -172,7 +174,7 @@ export const FileUpload = React.forwardRef<HTMLButtonElement, FileUploadProps>(f
 
       {/* File list */}
       {files.length > 0 && (
-        <ul className="mt-3 flex flex-col gap-2" aria-label="Selected files">
+        <ul className="list-none p-0 mt-3 mb-0 flex flex-col gap-2" aria-label="Selected files">
           {files.map((file, i) => (
             <li
               key={`${file.name}-${file.size}-${i}`}
@@ -190,6 +192,7 @@ export const FileUpload = React.forwardRef<HTMLButtonElement, FileUploadProps>(f
                 onClick={() => removeFile(i)}
                 aria-label={`Remove ${file.name}`}
                 className={cn(
+                  controlReset,
                   "flex-shrink-0 rounded p-0.5",
                   "text-fg-3 hover:text-fg-1 hover:bg-bg-pressed",
                   "transition-colors",

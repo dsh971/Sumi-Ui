@@ -18,13 +18,14 @@
       }
     },
     "./styles": "./dist/sumi.css",
+    "./styles/core": "./dist/sumi-core.css",
     "./theme.css": "./dist/theme.css",
     "./package.json": "./package.json"
   },
-  "sideEffects": ["dist/sumi.css", "dist/theme.css"],
+  "sideEffects": ["dist/sumi.css", "dist/sumi-core.css", "dist/theme.css"],
   "files": ["dist", "README.md"],
   "scripts": {
-    "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist && cp dist/index.d.ts dist/index.d.cts && node scripts/build-theme.mjs",
+    "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist && cp dist/index.d.ts dist/index.d.cts && node scripts/build-theme.mjs && vite build --mode core && node scripts/copy-core-css.mjs",
     "dev": "vite build --watch",
     "test": "vitest run",
     "test:watch": "vitest",

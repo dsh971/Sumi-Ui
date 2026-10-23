@@ -49,7 +49,9 @@ plain-element typography skips everything inside:
   which still apply inside it.
 - Sumi adds no margin or type to plain elements there, so they fall back to
   the Tailwind preflight reset that `@sumiui/react/styles` bundles (margins
-  zeroed, headings at inherited size, no list bullets).
+  zeroed, headings at inherited size, no list bullets). With
+  [`@sumiui/react/styles/core`](/docs/installation#without-tailwinds-reset)
+  they keep the browser's defaults instead.
 - SumiUi components keep their own spacing inside it, but text without a
   font utility inherits the wrapper's font.
 

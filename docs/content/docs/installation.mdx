@@ -47,9 +47,26 @@ if your app uses them too, your bundler keeps a single copy.
 |---|---|
 | `@sumiui/react` | The components. ESM and CommonJS builds, fully typed (`.d.ts` for `import`, `.d.cts` for `require`) |
 | `@sumiui/react/styles` | One stylesheet: design tokens, base typography, the shipped CSS classes and the component styles. Import it once at your app root |
+| `@sumiui/react/styles/core` | The same stylesheet without Tailwind's reset. Import it instead of `/styles`, not as well (see below) |
 | `@sumiui/react/theme.css` | Optional. Sumi's Tailwind v4 theme for your own Tailwind build (see below) |
 
 You don't need Tailwind in your own app to use the components.
+
+## Without Tailwind's reset
+
+`@sumiui/react/styles` includes Tailwind's preflight reset, which applies to
+the whole page: lists lose their bullets, headings their sizes, links their
+colour, and every element its default margin. That's fine if your app already
+uses Tailwind or a similar reset. If it doesn't, and markup you don't control
+should keep the browser defaults, import the reset-free build instead:
+
+```tsx
+import "@sumiui/react/styles/core";
+```
+
+It has everything else: tokens, Sumi's typography for plain elements, the CSS
+classes and every component style. The components carry their own resets, so
+they look the same with either stylesheet.
 
 ## Frameworks
 

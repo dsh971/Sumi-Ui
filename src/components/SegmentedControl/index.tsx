@@ -1,6 +1,7 @@
 import * as RadixRadio from "@radix-ui/react-radio-group";
 import React from "react";
 import { cn } from "../../lib/cn";
+import { controlReset } from "../../lib/reset";
 import type { SegmentedControlItemProps, SegmentedControlProps } from "./SegmentedControl.types";
 
 /**
@@ -30,7 +31,8 @@ export const SegmentedControlItem = React.forwardRef<
   <RadixRadio.Item
     ref={ref}
     className={cn(
-      "rounded-sm px-[14px] py-[6px] text-[length:var(--sumi-text-sm)] text-fg-2",
+      controlReset,
+      "rounded-sm px-[14px] py-[6px] text-[length:var(--sumi-text-sm)] leading-[inherit] text-fg-2",
       "transition-colors",
       "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
       "disabled:opacity-50 disabled:cursor-not-allowed",

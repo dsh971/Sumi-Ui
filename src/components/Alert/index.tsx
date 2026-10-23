@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import React, { useCallback, useState } from "react";
 import { cn } from "../../lib/cn";
+import { controlReset } from "../../lib/reset";
 import { type VariantClassMap, variantClass } from "../../lib/variantClasses";
 import type { AlertProps, AlertVariant } from "./Alert.types";
 
@@ -110,13 +111,14 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             onClick={handleDismiss}
             aria-label="Dismiss alert"
             className={cn(
+              controlReset,
               "flex-shrink-0 rounded p-2 -me-1.5 -mt-1.5",
               "transition-colors",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]",
               variantClass(dismissClasses, variant),
             )}
           >
-            <X size={14} aria-hidden="true" />
+            <X size={14} className="block" aria-hidden="true" />
           </button>
         )}
       </div>

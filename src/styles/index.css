@@ -6,8 +6,13 @@
 /* Google Fonts — must precede all other rules */
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@300;400;500;600&display=swap");
 
-/* Tailwind v4 utilities */
-@import "tailwindcss";
+/* Tailwind v4, spelled out as `@import "tailwindcss"` expands. Preflight is
+   its own import so the reset-free build (`vite build --mode core`, shipped
+   as @sumiui/react/styles/core) can swap it for an empty file. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
 
 /* Sumi design tokens + Tailwind @theme mapping */
 @import "./tokens.css";

@@ -2,6 +2,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { Loader2 } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
+import { controlReset } from "../../lib/reset";
 import { type VariantClassMap, variantClass } from "../../lib/variantClasses";
 import type { ButtonProps, ButtonSize, ButtonVariant } from "./Button.types";
 
@@ -68,6 +69,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled: disabled || loading,
       "aria-busy": loading || undefined,
       className: cn(
+        controlReset,
         "inline-flex items-center justify-center",
         "font-medium leading-none select-none rounded-md",
         // Fix: transform must be in the transitioned property list, or the
@@ -79,6 +81,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         "active:[transform:translateY(1px)]",
         variantClass(variantClasses, variant),
         variantClass(sizeClasses, size),
+        // tailwind-merge lets the text-[length:…] sizes above cancel
+        // leading-none, so buttons inherit their line-height. Say so
+        // explicitly: without preflight a <button> wouldn't inherit it.
+        "leading-[inherit]",
         className,
       ),
       ...props,

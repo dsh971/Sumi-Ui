@@ -3,6 +3,7 @@ import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
 import { popperTransition } from "../../lib/motion";
+import { controlReset } from "../../lib/reset";
 import type {
   SelectContentProps,
   SelectGroupProps,
@@ -74,6 +75,7 @@ export const SelectTrigger = React.forwardRef<
   <RadixSelect.Trigger
     ref={ref}
     className={cn(
+      controlReset,
       "flex w-full items-center justify-between",
       "bg-bg-page text-fg-1",
       "border border-[color:var(--line-2)] rounded-md",

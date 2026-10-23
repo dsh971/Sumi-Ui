@@ -2,6 +2,7 @@ import * as RadixDialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
+import { controlReset } from "../../lib/reset";
 import { SheetContent } from "../Sheet";
 import type {
   DialogCloseProps,
@@ -54,6 +55,7 @@ export const DialogContent = React.forwardRef<
     {showClose && (
       <RadixDialog.Close
         className={cn(
+          controlReset,
           "absolute end-4 top-4",
           "rounded-md p-1",
           "text-fg-3 hover:text-fg-1",

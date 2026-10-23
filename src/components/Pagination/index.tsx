@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
+import { controlReset } from "../../lib/reset";
 import type { PaginationProps } from "./Pagination.types";
 
 type PageItem = number | "left-ellipsis" | "right-ellipsis";
@@ -67,6 +68,7 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
           disabled={page <= 1}
           aria-label="Previous page"
           className={cn(
+            controlReset,
             itemBase,
             "text-fg-2 hover:bg-bg-sunken hover:text-fg-1",
             "disabled:pointer-events-none disabled:opacity-40",
@@ -93,6 +95,7 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
               aria-label={`Page ${item}`}
               aria-current={item === page ? "page" : undefined}
               className={cn(
+                controlReset,
                 itemBase,
                 item === page ? activePageClasses : "text-fg-2 hover:bg-bg-sunken hover:text-fg-1",
               )}
@@ -109,6 +112,7 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
           disabled={page >= totalPages}
           aria-label="Next page"
           className={cn(
+            controlReset,
             itemBase,
             "text-fg-2 hover:bg-bg-sunken hover:text-fg-1",
             "disabled:pointer-events-none disabled:opacity-40",

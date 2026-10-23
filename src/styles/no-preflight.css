@@ -1,0 +1,2 @@
+/* Stands in for tailwindcss/preflight.css in the reset-free build
+   (`vite build --mode core` → dist/sumi-core.css). Intentionally empty. */

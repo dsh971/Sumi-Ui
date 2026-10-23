@@ -1,6 +1,7 @@
 import * as RadixTabs from "@radix-ui/react-tabs";
 import React from "react";
 import { cn } from "../../lib/cn";
+import { controlReset } from "../../lib/reset";
 import type { TabsContentProps, TabsListProps, TabsProps, TabsTriggerProps } from "./Tabs.types";
 
 // Tabs are underline-only: an ink rule under the active label, no container
@@ -29,6 +30,7 @@ export const TabsTrigger = React.forwardRef<
   <RadixTabs.Trigger
     ref={ref}
     className={cn(
+      controlReset,
       "inline-flex items-center justify-center gap-1.5",
       "whitespace-nowrap select-none text-sm",
       "transition-colors",

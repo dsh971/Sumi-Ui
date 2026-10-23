@@ -4,6 +4,7 @@ import { Check, ChevronDown, Search, X } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
 import { popperTransition } from "../../lib/motion";
+import { controlReset } from "../../lib/reset";
 import type { ComboboxGroup, ComboboxOption, ComboboxProps } from "./Combobox.types";
 
 const labelClasses = "block text-xs font-medium text-fg-2 mb-1.5";
@@ -106,7 +107,10 @@ function MultiTrigger({
             <button
               type="button"
               aria-label={`Remove ${opt?.label ?? value}`}
-              className="flex rounded-[3px] p-[1px] text-fg-3 hover:bg-[color:var(--line-1)] hover:text-fg-1"
+              className={cn(
+                controlReset,
+                "flex rounded-[3px] p-[1px] text-fg-3 hover:bg-[color:var(--line-1)] hover:text-fg-1",
+              )}
               onClick={(e) => {
                 e.stopPropagation();
                 onRemoveChip(value);
@@ -131,7 +135,10 @@ function MultiTrigger({
         // aria-activedescendant (WAI-ARIA combobox pattern).
         aria-activedescendant={activeDescendant}
         placeholder={selectedValues.length === 0 ? placeholder : ""}
-        className="min-w-[60px] flex-1 bg-transparent text-fg-1 placeholder:text-fg-3 focus:outline-none"
+        className={cn(
+          controlReset,
+          "min-w-[60px] flex-1 bg-transparent text-fg-1 placeholder:text-fg-3 focus:outline-none",
+        )}
         onChange={(e) => onQueryChange(e.target.value)}
         onKeyDown={onKeyDown}
       />
@@ -188,6 +195,7 @@ function SingleTrigger({
         aria-activedescendant={activeDescendant}
         placeholder={selectedSingle ? selectedSingle.label : placeholder}
         className={cn(
+          controlReset,
           "min-w-0 flex-1 bg-transparent focus:outline-none",
           selectedSingle && !query
             ? "text-fg-1 placeholder:text-fg-1"
@@ -553,7 +561,7 @@ export const Combobox = React.forwardRef<HTMLDivElement, ComboboxProps>(
                 <button
                   type="button"
                   aria-label="Clear selection"
-                  className="flex flex-none text-fg-3 hover:text-fg-1"
+                  className={cn(controlReset, "flex flex-none text-fg-3 hover:text-fg-1")}
                   onClick={(e) => {
                     e.stopPropagation();
                     clearSingle();

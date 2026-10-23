@@ -56,6 +56,40 @@ describe("theme.css export", () => {
   });
 });
 
+/** Compile index.css as the build does; without `preflight`, as `vite build --mode core` does. */
+async function sumiCss(preflight: boolean): Promise<string> {
+  const compiler = await compile(read("index.css"), {
+    base: __dirname,
+    loadStylesheet: async (id: string, base: string) => {
+      const path =
+        !preflight && id === "tailwindcss/preflight.css"
+          ? resolve(__dirname, "no-preflight.css")
+          : id.startsWith(".")
+            ? resolve(base, id)
+            : require.resolve(id);
+      return { path, base: dirname(path), content: readFileSync(path, "utf-8") };
+    },
+  });
+  return compiler.build(["p-7"]);
+}
+
+describe("reset-free build (@sumiui/react/styles/core)", () => {
+  it("drops Tailwind's preflight and adds nothing", async () => {
+    const full = await sumiCss(true);
+    const core = await sumiCss(false);
+
+    expect(full).toMatch(/ol, ul, menu \{\s*list-style: none;/);
+    expect(core).not.toMatch(/list-style: none|border: 0 solid|font-size: inherit/);
+    expect(core).toContain("p:where(:not(.sumi-unstyled, .sumi-unstyled *))");
+    expect(core).toContain("--bg-0:");
+    expect(core).toContain("padding: var(--spacing-7)");
+
+    // The emptied preflight import leaves a bare `@layer base;` behind.
+    const fullLines = new Set(full.split("\n"));
+    expect(core.split("\n").filter((line) => !fullLines.has(line))).toEqual(["@layer base;"]);
+  });
+});
+
 describe("globals.css rules", () => {
   const globals = read("globals.css");
 

@@ -1,5 +1,19 @@
 # @sumiui/react
 
+## 3.1.0
+
+### Minor Changes
+
+- e69b7a0: Add `@sumiui/react/styles/core`: the same stylesheet as `@sumiui/react/styles` without Tailwind's preflight reset. Import it instead of `/styles` in an app that doesn't use Tailwind, so markup Sumi doesn't own keeps the browser's list markers, element margins and padding, borders and form-control defaults. Sumi's own typography for plain elements (`h1`–`h6`, `p`, `a`…) still applies in both; wrap markup in `.sumi-unstyled` to opt out of it. Tailwind's `--default-font-family` / `--default-mono-font-family` variables, which only preflight reads, aren't emitted in core.
+
+  Components no longer depend on preflight: native controls carry a `sumi-control` class and lists a `sumi-list` class, whose resets (in `@layer base`, zero specificity, like preflight) restore the same defaults. `@sumiui/react/styles` renders as before, and any utility or consumer rule still overrides them.
+
+- b0bc091: Add the `.sumi-unstyled` class. Sumi's typography rules for plain elements (`h1`–`h6`, `p`, `a`, `small`, `blockquote`, `code`, `kbd`, `samp`, `pre`, `hr`) now skip anything inside it, so third-party markup can opt out. Specificity is unchanged, so nothing changes outside the class. The Tailwind preflight reset bundled in `@sumiui/react/styles` still applies inside it.
+
+### Patch Changes
+
+- ba8c239: Remove the stray 16px bottom margin under helper and error text in Input, Select, DatePicker, FileUpload, Checkbox and Switch, and under EmptyState's description. EmptyState's title now sets its own bottom margin. The base `p` and `h3` styles from `@sumiui/react/styles` were leaking onto these elements.
+
 ## 3.0.0
 
 ### Major Changes

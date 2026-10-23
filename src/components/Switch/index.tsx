@@ -1,7 +1,6 @@
 import * as RadixSwitch from "@radix-ui/react-switch";
 import React from "react";
 import { cn } from "../../lib/cn";
-import { controlReset } from "../../lib/reset";
 import type { SwitchProps } from "./Switch.types";
 
 export const Switch = React.forwardRef<React.ElementRef<typeof RadixSwitch.Root>, SwitchProps>(
@@ -26,7 +25,7 @@ export const Switch = React.forwardRef<React.ElementRef<typeof RadixSwitch.Root>
               errorText ? `${switchId}-error` : helperText ? `${switchId}-helper` : undefined
             }
             className={cn(
-              controlReset,
+              "sumi-control",
               "peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center",
               "rounded-[var(--radius-2)] border-2 border-transparent",
               "transition-colors",
@@ -66,7 +65,7 @@ export const Switch = React.forwardRef<React.ElementRef<typeof RadixSwitch.Root>
           <p
             id={`${switchId}-error`}
             role="alert"
-            className="mb-0 text-xs text-[color:var(--status-danger)]"
+            className="my-0 text-xs text-[color:var(--status-danger)]"
           >
             {errorText}
           </p>

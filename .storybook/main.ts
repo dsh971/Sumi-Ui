@@ -21,6 +21,20 @@ const config: StorybookConfig = {
     config.plugins = (config.plugins ?? []).filter(
       (p) => !(p && !Array.isArray(p) && (p as { name?: string }).name === "vite:dts"),
     );
+    // `pnpm storybook:core` previews the stories under
+    // @sumiui/react/styles/core: Tailwind's preflight swapped for an empty file.
+    if (process.env.SUMI_STYLES === "core") {
+      const { resolve } = await import("node:path");
+      config.resolve = {
+        ...config.resolve,
+        alias: [
+          {
+            find: /^tailwindcss\/preflight\.css$/,
+            replacement: resolve(process.cwd(), "src/styles/no-preflight.css"),
+          },
+        ],
+      };
+    }
     return config;
   },
   typescript: {

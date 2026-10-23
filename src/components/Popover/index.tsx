@@ -22,7 +22,9 @@ Popover.displayName = "Popover";
 export const PopoverTrigger = React.forwardRef<
   React.ElementRef<typeof RadixPopover.Trigger>,
   PopoverTriggerProps
->((props, ref) => <RadixPopover.Trigger ref={ref} {...props} />);
+>(({ className, ...props }, ref) => (
+  <RadixPopover.Trigger ref={ref} className={cn("sumi-control", className)} {...props} />
+));
 PopoverTrigger.displayName = "PopoverTrigger";
 
 export const PopoverAnchor = React.forwardRef<
@@ -34,7 +36,9 @@ PopoverAnchor.displayName = "PopoverAnchor";
 export const PopoverClose = React.forwardRef<
   React.ElementRef<typeof RadixPopover.Close>,
   PopoverCloseProps
->((props, ref) => <RadixPopover.Close ref={ref} {...props} />);
+>(({ className, ...props }, ref) => (
+  <RadixPopover.Close ref={ref} className={cn("sumi-control", className)} {...props} />
+));
 PopoverClose.displayName = "PopoverClose";
 
 export const PopoverContent = React.forwardRef<

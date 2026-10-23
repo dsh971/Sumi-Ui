@@ -1,7 +1,6 @@
 import { Paperclip, Upload, X } from "lucide-react";
 import React, { useCallback, useId, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
-import { controlReset } from "../../lib/reset";
 import type { FileUploadProps } from "./FileUpload.types";
 
 function formatBytes(bytes: number): string {
@@ -123,7 +122,7 @@ export const FileUpload = React.forwardRef<HTMLButtonElement, FileUploadProps>(f
         multiple={multiple}
         disabled={disabled}
         onChange={onInputChange}
-        className="sr-only"
+        className="sumi-control sr-only"
         aria-hidden="true"
         tabIndex={-1}
       />
@@ -141,7 +140,7 @@ export const FileUpload = React.forwardRef<HTMLButtonElement, FileUploadProps>(f
         onDragLeave={onDragLeave}
         onDrop={onDrop}
         className={cn(
-          controlReset,
+          "sumi-control",
           "flex flex-col items-center justify-center gap-2",
           "rounded-lg border-2 border-dashed border-[color:var(--line-2)]",
           "bg-bg-card px-6 py-8 w-full",
@@ -161,7 +160,7 @@ export const FileUpload = React.forwardRef<HTMLButtonElement, FileUploadProps>(f
           <span className="text-sm text-fg-3"> or </span>
           <span className="text-sm font-medium text-accent">browse</span>
         </div>
-        {maxSize && <p className="mb-0 text-xs text-fg-3">Max {formatBytes(maxSize)} per file</p>}
+        {maxSize && <p className="my-0 text-xs text-fg-3">Max {formatBytes(maxSize)} per file</p>}
       </button>
 
       {/* Error / helper */}
@@ -174,7 +173,7 @@ export const FileUpload = React.forwardRef<HTMLButtonElement, FileUploadProps>(f
 
       {/* File list */}
       {files.length > 0 && (
-        <ul className="list-none p-0 mt-3 mb-0 flex flex-col gap-2" aria-label="Selected files">
+        <ul className="sumi-list mt-3 flex flex-col gap-2" aria-label="Selected files">
           {files.map((file, i) => (
             <li
               key={`${file.name}-${file.size}-${i}`}
@@ -192,14 +191,14 @@ export const FileUpload = React.forwardRef<HTMLButtonElement, FileUploadProps>(f
                 onClick={() => removeFile(i)}
                 aria-label={`Remove ${file.name}`}
                 className={cn(
-                  controlReset,
+                  "sumi-control",
                   "flex-shrink-0 rounded p-0.5",
                   "text-fg-3 hover:text-fg-1 hover:bg-bg-pressed",
                   "transition-colors",
                   "focus-visible:outline-2 focus-visible:outline-[color:var(--accent)]",
                 )}
               >
-                <X size={12} aria-hidden="true" />
+                <X size={12} className="block" aria-hidden="true" />
               </button>
             </li>
           ))}

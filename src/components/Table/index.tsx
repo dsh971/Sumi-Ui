@@ -2,7 +2,6 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import React, { createContext, useCallback, useContext } from "react";
 import { cn } from "../../lib/cn";
-import { controlReset } from "../../lib/reset";
 import { EmptyState } from "../EmptyState";
 import type {
   SortDirection,
@@ -392,7 +391,7 @@ export const TableSelectHead = React.forwardRef<HTMLTableCellElement, TableSelec
           onChange={handleChange}
           aria-label="Select all rows"
           className={cn(
-            controlReset,
+            "sumi-control",
             "block size-4 rounded accent-[color:var(--accent)] cursor-pointer",
           )}
         />
@@ -432,7 +431,7 @@ export const TableSelectCell = React.forwardRef<HTMLTableCellElement, TableSelec
           onChange={handleChange}
           aria-label={`Select row ${rowId}`}
           className={cn(
-            controlReset,
+            "sumi-control",
             "block size-4 rounded accent-[color:var(--accent)] cursor-pointer",
           )}
         />

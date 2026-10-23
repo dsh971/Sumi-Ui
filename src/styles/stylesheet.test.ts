@@ -79,7 +79,7 @@ describe("reset-free build (@sumiui/react/styles/core)", () => {
     const core = await sumiCss(false);
 
     expect(full).toMatch(/ol, ul, menu \{\s*list-style: none;/);
-    expect(core).not.toMatch(/list-style: none|border: 0 solid|font-size: inherit/);
+    expect(core).not.toMatch(/ol, ul, menu \{|abbr:where\(\[title\]\)|h1, h2, h3, h4, h5, h6 \{/);
     expect(core).toContain("p:where(:not(.sumi-unstyled, .sumi-unstyled *))");
     expect(core).toContain("--bg-0:");
     expect(core).toContain("padding: var(--spacing-7)");
@@ -88,7 +88,45 @@ describe("reset-free build (@sumiui/react/styles/core)", () => {
     const fullLines = new Set(full.split("\n"));
     expect(core.split("\n").filter((line) => !fullLines.has(line))).toEqual(["@layer base;"]);
   });
+
+  it("keeps the component resets where preflight sits: @layer base, zero specificity", async () => {
+    const css = await sumiCss(false);
+    /** The at-rules enclosing the first rule whose selector starts with `selector`. */
+    const enclosing = (selector: string) => {
+      const at = css.indexOf(selector);
+      expect(at, selector).toBeGreaterThan(0);
+      const stack: string[] = [];
+      for (const [, prelude = "", brace] of css.slice(0, at).matchAll(/([^{};]*)([{};])/g)) {
+        if (brace === "{") stack.push(prelude.trim());
+        if (brace === "}") stack.pop();
+      }
+      return stack;
+    };
+
+    // A utility-layer reset would beat Tailwind's zero-specificity `space-x-*`
+    // and any consumer rule in @layer base/components; preflight never did.
+    for (const selector of [
+      ":where(.sumi-control)",
+      ":where(button.sumi-control)",
+      ":where(.sumi-list)",
+    ]) {
+      expect(enclosing(selector), selector).toEqual(["@layer base"]);
+    }
+    const resetSelectors = splitSelectors(css).filter((s) => /sumi-(control|list)/.test(s));
+    expect(resetSelectors.length).toBeGreaterThan(0);
+    for (const selector of resetSelectors) {
+      expect(selector, selector).toMatch(/^:where\([^)]*\)(::?[a-z-]+)?$/);
+    }
+  });
 });
+
+/** Every top-level-comma-separated selector in compiled `css`. */
+function splitSelectors(css: string): string[] {
+  return [...css.matchAll(/([^{};]+)\{/g)]
+    .map(([, prelude = ""]) => prelude.trim())
+    .filter((prelude) => !prelude.startsWith("@"))
+    .flatMap((prelude) => prelude.split(/,(?![^(]*\))/).map((s) => s.trim()));
+}
 
 describe("globals.css rules", () => {
   const globals = read("globals.css");

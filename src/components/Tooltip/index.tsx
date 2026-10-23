@@ -20,7 +20,9 @@ Tooltip.displayName = "Tooltip";
 export const TooltipTrigger = React.forwardRef<
   React.ElementRef<typeof RadixTooltip.Trigger>,
   TooltipTriggerProps
->((props, ref) => <RadixTooltip.Trigger ref={ref} {...props} />);
+>(({ className, ...props }, ref) => (
+  <RadixTooltip.Trigger ref={ref} className={cn("sumi-control", className)} {...props} />
+));
 TooltipTrigger.displayName = "TooltipTrigger";
 
 export const TooltipContent = React.forwardRef<

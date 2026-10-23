@@ -1,6 +1,5 @@
 import React from "react";
 import { cn } from "../../lib/cn";
-import { controlReset } from "../../lib/reset";
 import { type VariantClassMap, variantClass } from "../../lib/variantClasses";
 import type { InputProps, TextAreaProps } from "./Input.types";
 
@@ -55,7 +54,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             errorText ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined
           }
           className={cn(
-            controlReset,
+            "sumi-control",
             inputBaseClasses,
             variantClass(sizeClasses, size),
             hasError && inputErrorClasses,
@@ -103,7 +102,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
             errorText ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined
           }
           className={cn(
-            controlReset,
+            "sumi-control",
             inputBaseClasses,
             "px-3 py-2 text-sm resize-y min-h-[var(--textarea-min-h)]",
             hasError && inputErrorClasses,

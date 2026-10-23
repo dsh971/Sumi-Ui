@@ -55,18 +55,27 @@ You don't need Tailwind in your own app to use the components.
 ## Without Tailwind's reset
 
 `@sumiui/react/styles` includes Tailwind's preflight reset, which applies to
-the whole page: lists lose their bullets, headings their sizes, links their
-colour, and every element its default margin. That's fine if your app already
-uses Tailwind or a similar reset. If it doesn't, and markup you don't control
-should keep the browser defaults, import the reset-free build instead:
+the whole page: lists lose their markers, every element loses its default
+margin, padding and border, and form controls lose their native look. That's
+fine if your app already uses Tailwind or a similar reset. If it doesn't, and
+markup you don't control should keep those browser defaults, import the
+reset-free build instead:
 
 ```tsx
 import "@sumiui/react/styles/core";
 ```
 
-It has everything else: tokens, Sumi's typography for plain elements, the CSS
-classes and every component style. The components carry their own resets, so
-they look the same with either stylesheet.
+It has everything else: tokens, the CSS classes, every component style, and
+Sumi's typography for plain elements (`h1`–`h6`, `p`, `a`…), which you can
+switch off for a subtree with
+[`.sumi-unstyled`](/docs/css-classes#opting-out-with-sumi-unstyled). The
+components carry their own resets, so they look the same with either
+stylesheet.
+
+One rule from the reset is worth knowing about: preflight forces
+`[hidden]` elements to `display: none` even when they also have a `display`
+class. Without it, the browser's own `[hidden]` rule loses to that class, so
+pair `hidden` with no `display` utility (or use `hidden` the utility).
 
 ## Frameworks
 

@@ -29,8 +29,8 @@ import "@sumiui/react/styles";
 ```
 
 It includes Tailwind's preflight reset. If your app doesn't use Tailwind and
-should keep the browser's default styles outside Sumi components, import
-`@sumiui/react/styles/core` instead.
+the rest of the page should keep the browser's list, margin and form-control
+defaults, import `@sumiui/react/styles/core` instead.
 
 Then use components:
 

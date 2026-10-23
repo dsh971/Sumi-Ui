@@ -24,7 +24,9 @@ DropdownMenu.displayName = "DropdownMenu";
 export const DropdownMenuTrigger = React.forwardRef<
   React.ElementRef<typeof RadixDropdown.Trigger>,
   DropdownMenuTriggerProps
->((props, ref) => <RadixDropdown.Trigger ref={ref} {...props} />);
+>(({ className, ...props }, ref) => (
+  <RadixDropdown.Trigger ref={ref} className={cn("sumi-control", className)} {...props} />
+));
 DropdownMenuTrigger.displayName = "DropdownMenuTrigger";
 
 export const DropdownMenuContent = React.forwardRef<
@@ -121,7 +123,7 @@ export const DropdownMenuCheckboxItem = React.forwardRef<
   >
     <span className="absolute start-2 flex size-3.5 items-center justify-center">
       <RadixDropdown.ItemIndicator>
-        <Check size={14} className="text-accent" aria-hidden="true" />
+        <Check size={14} className="block text-accent" aria-hidden="true" />
       </RadixDropdown.ItemIndicator>
     </span>
     {children}
@@ -153,7 +155,7 @@ export const DropdownMenuRadioItem = React.forwardRef<
   >
     <span className="absolute start-2 flex size-3.5 items-center justify-center">
       <RadixDropdown.ItemIndicator>
-        <Circle size={8} className="fill-accent text-accent" aria-hidden="true" />
+        <Circle size={8} className="block fill-accent text-accent" aria-hidden="true" />
       </RadixDropdown.ItemIndicator>
     </span>
     {children}

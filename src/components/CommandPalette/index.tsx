@@ -3,7 +3,6 @@ import { Search } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
 import { modalTransition, scrimTransition } from "../../lib/motion";
-import { controlReset } from "../../lib/reset";
 import type { CommandGroup, CommandItem, CommandPaletteProps } from "./CommandPalette.types";
 
 function matches(item: CommandItem, query: string): boolean {
@@ -127,7 +126,7 @@ export const CommandPalette = React.forwardRef<HTMLDivElement, CommandPalettePro
                   visibleItems[activeIndex] ? `${listboxId}-opt-${activeIndex}` : undefined
                 }
                 className={cn(
-                  controlReset,
+                  "sumi-control",
                   "min-w-0 flex-1 bg-transparent text-sm text-fg-1 placeholder:text-fg-3 focus:outline-none",
                 )}
                 onChange={(e) => {

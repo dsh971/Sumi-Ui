@@ -2,7 +2,6 @@ import * as RadixDialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
-import { controlReset } from "../../lib/reset";
 import { SheetContent } from "../Sheet";
 import type {
   DialogCloseProps,
@@ -22,13 +21,17 @@ Dialog.displayName = "Dialog";
 export const DialogTrigger = React.forwardRef<
   React.ElementRef<typeof RadixDialog.Trigger>,
   DialogTriggerProps
->((props, ref) => <RadixDialog.Trigger ref={ref} {...props} />);
+>(({ className, ...props }, ref) => (
+  <RadixDialog.Trigger ref={ref} className={cn("sumi-control", className)} {...props} />
+));
 DialogTrigger.displayName = "DialogTrigger";
 
 export const DialogClose = React.forwardRef<
   React.ElementRef<typeof RadixDialog.Close>,
   DialogCloseProps
->((props, ref) => <RadixDialog.Close ref={ref} {...props} />);
+>(({ className, ...props }, ref) => (
+  <RadixDialog.Close ref={ref} className={cn("sumi-control", className)} {...props} />
+));
 DialogClose.displayName = "DialogClose";
 
 // Dialog is Sumi's confirm/prompt archetype built on Sheet, the responsive
@@ -55,7 +58,7 @@ export const DialogContent = React.forwardRef<
     {showClose && (
       <RadixDialog.Close
         className={cn(
-          controlReset,
+          "sumi-control",
           "absolute end-4 top-4",
           "rounded-md p-1",
           "text-fg-3 hover:text-fg-1",
@@ -65,7 +68,7 @@ export const DialogContent = React.forwardRef<
         )}
         aria-label="Close"
       >
-        <X size={16} aria-hidden="true" />
+        <X size={16} className="block" aria-hidden="true" />
       </RadixDialog.Close>
     )}
   </SheetContent>

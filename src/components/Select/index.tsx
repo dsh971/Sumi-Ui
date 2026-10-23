@@ -3,7 +3,6 @@ import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import React from "react";
 import { cn } from "../../lib/cn";
 import { popperTransition } from "../../lib/motion";
-import { controlReset } from "../../lib/reset";
 import type {
   SelectContentProps,
   SelectGroupProps,
@@ -75,7 +74,7 @@ export const SelectTrigger = React.forwardRef<
   <RadixSelect.Trigger
     ref={ref}
     className={cn(
-      controlReset,
+      "sumi-control",
       "flex w-full items-center justify-between",
       "bg-bg-page text-fg-1",
       "border border-[color:var(--line-2)] rounded-md",
@@ -149,7 +148,7 @@ export const SelectItem = React.forwardRef<
   >
     <span className="absolute start-2 flex size-3.5 items-center justify-center">
       <RadixSelect.ItemIndicator>
-        <Check size={14} className="text-accent" aria-hidden="true" />
+        <Check size={14} className="block text-accent" aria-hidden="true" />
       </RadixSelect.ItemIndicator>
     </span>
     <RadixSelect.ItemText>{children}</RadixSelect.ItemText>

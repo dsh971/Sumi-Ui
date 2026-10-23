@@ -3,7 +3,6 @@ import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
 import { popperTransition } from "../../lib/motion";
-import { controlReset } from "../../lib/reset";
 import type { DatePickerProps } from "./DatePicker.types";
 
 function isoToDate(iso: string): Date {
@@ -98,7 +97,7 @@ const helperClasses = "mt-1 mb-0 text-xs text-fg-3";
 const errorClasses = "mt-1 mb-0 text-xs text-[color:var(--status-danger)]";
 
 const monthNavClasses = cn(
-  controlReset,
+  "sumi-control",
   "flex items-center justify-center size-7 rounded-md",
   "text-fg-2 hover:bg-bg-sunken hover:text-fg-1",
   "transition-colors",
@@ -145,7 +144,7 @@ function DayCell({
         aria-current={today ? "date" : undefined}
         aria-label={label}
         className={cn(
-          controlReset,
+          "sumi-control",
           "flex items-center justify-center size-8 rounded-md text-sm w-full",
           "transition-colors",
           "focus-visible:outline-2 focus-visible:outline-[color:var(--accent)]",
@@ -292,7 +291,7 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(f
               errorText ? `${triggerId}-error` : helperText ? `${triggerId}-helper` : undefined
             }
             className={cn(
-              controlReset,
+              "sumi-control",
               "flex w-full items-center justify-between",
               "bg-bg-page text-fg-1",
               "border border-[color:var(--line-2)] rounded-md",
@@ -366,7 +365,7 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(f
                       key={d.long}
                       scope="col"
                       abbr={d.long}
-                      className="text-xs font-medium text-fg-3 h-7 text-center"
+                      className="p-0 text-xs font-medium text-fg-3 h-7 text-center"
                     >
                       {d.short}
                     </th>
@@ -382,7 +381,7 @@ export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(f
                     <tr key={rowKey}>
                       {weekCells.map(({ date, key: cellKey }) => {
                         if (!date) {
-                          return <td key={cellKey} aria-hidden="true" />;
+                          return <td key={cellKey} className="p-0" aria-hidden="true" />;
                         }
                         const iso = cellKey; // cellKey IS the ISO string for date cells
                         return (
